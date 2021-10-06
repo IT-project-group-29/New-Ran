@@ -1,0 +1,182 @@
+﻿@model WebApplication4.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>AspNetUsers</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+ 
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2"> Select Account Type </label>
+
+            <div class="col-md-10">
+                <select class="form-control userTypeSelect" onchange="multipleUserTypeChange()">
+                    <option value="student">Student</option>
+                    <option value="client">Client</option>
+                    <option value="staff">Staff</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.firstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.firstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.lastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.lastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group divClient divStaff">
+            <label class="col-md-2 control-label">  Company: </label>
+
+            <div class="col-md-10">
+                <input type="text" name="name" value="" class="form-control" placeholder="Company Name" />
+            </div>
+        </div>
+
+        <div class="form-group divStudent divStaff">
+            <label class="col-md-2 control-label">  Student ID: </label>
+
+            <div class="col-md-10">
+                <input type="text" name="name" value="" class="form-control" placeholder="Student ID" />
+            </div>
+        </div>
+        <div class="form-group divStudent divStaff">
+            <label class="col-md-2 control-label">  Plan: </label>
+
+            <div class="col-md-10">
+                <input type="text" name="name" value="" class="form-control" placeholder="Plan" />
+            </div>
+        </div>
+        <div class="form-group divStudent divStaff">
+            <label class="col-md-2 control-label"> GPA: </label>
+
+            <div class="col-md-10">
+                <input type="text" name="name" value="" class="form-control" placeholder="GPA" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script src="/Scripts/jquery-3.4.1.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        multipleUserTypeChange();
+    });
+
+
+    function multipleUserTypeChange() {
+
+
+        $(".divHeading").slideUp();
+        $(".divStudent").slideUp();
+        $(".divClient").slideUp();
+        $(".divStaff").slideUp();
+        $(".divControls").slideUp();
+
+        switch ($(".userTypeSelect").val()) {
+            case "":
+                $(".divHeading").slideDown();
+                break;
+
+            case "student":
+                $(".divStudent").slideDown();
+                $(".divControls").slideDown();
+                break;
+
+            case "client":
+                $(".divClient").slideDown();
+                break;
+
+            case "staff":
+                $(".divStaff").slideUp();;
+                break;
+
+
+
+        }
+    }
+
+
+</script>

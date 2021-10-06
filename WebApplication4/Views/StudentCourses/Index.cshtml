@@ -1,0 +1,93 @@
+﻿@model IEnumerable<WebApplication4.Models.StudentCourses>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create",null,new{@class = "btn btn-primary" })
+</p>
+<table class="table table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.courseName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Students.uniUserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.semester)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.year)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.grade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.mark)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.courseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Students.uniUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.semester)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.grade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mark)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.studentCourseID }, new {@class= "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.studentCourseID}, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.studentCourseID }, new { @class = "btn btn-primary" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+<form action="/StudentCourses/UploadFile" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <h2>UploadFile:</h2>
+        <p>This file must contain the following fields:</p>
+        <ul id="StudentList">
+            <li>Student Id</li>
+            <li>Term Desc Medium</li>
+            <li>Course Id</li>
+            <li>Course Grade Code</li>
+        </ul>
+
+        <hr />
+      
+        <div class="form-group">
+            <div class="control-label col-md-2">uploadFile</div>
+            <div class="col-md-10">
+                <input type="file" name="file" value="" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Upload" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>

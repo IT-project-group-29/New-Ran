@@ -1,0 +1,234 @@
+﻿@model WebApplication4.Models.Projects
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Projects</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectStatus1.StatusName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectStatus1.StatusName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectScope)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectScope)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectOutcomes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectOutcomes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectDuration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectDuration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectPlacementRequirements)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectPlacementRequirements)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectSponsorAgreement)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectSponsorAgreement)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectStatusComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectStatusComment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectStatusChangeDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectStatusChangeDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectSemester)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectSemester)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectSemesterCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectSemesterCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectSequenceNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectSequenceNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.honoursUndergrad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.honoursUndergrad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.requirementsMet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.requirementsMet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectCreatorID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectCreatorID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dateCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projectEffortRequirements)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projectEffortRequirements)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.austCitizenOnly)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.austCitizenOnly)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.studentsReq)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.studentsReq)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.scholarshipAmt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.scholarshipAmt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.scholarshipDetail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.scholarshipDetail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.staffEmailSentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.staffEmailSentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.clientEmailSentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.clientEmailSentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.studentEmailSentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.studentEmailSentDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.projectID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

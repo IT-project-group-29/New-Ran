@@ -1,0 +1,93 @@
+﻿@model IEnumerable<WebApplication4.Models.Students>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create",null, new { @class = "btn btn-primary" })
+</p>
+<table class="table table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Plans.planName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.uniUserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.uniStudentID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.gpa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.genderCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.international)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.externalStudent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.studentEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.year)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.semester)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dateEnded)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Plans.planName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.uniUserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.uniStudentID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.gpa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.genderCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.international)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.externalStudent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.studentEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.year)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.semester)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateEnded)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.studentID }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Details", "Details", new { id=item.studentID }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.studentID }, new { @class = "btn btn-primary" })
+        </td>
+    </tr>
+}
+
+</table>

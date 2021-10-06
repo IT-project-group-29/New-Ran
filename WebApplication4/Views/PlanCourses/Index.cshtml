@@ -1,0 +1,44 @@
+﻿@model IEnumerable<WebApplication4.Models.PlanCourses>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", new { @class = "btn btn-primary" })
+</p>
+<table class="table table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.courseName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Plans.planName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.temp)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Course.courseName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Plans.planName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.temp)
+        </td>
+        <td>
+        
+            @Html.ActionLink("Delete", "Delete", new {courid= item.Course.courseID,planid=item.planId}, new { @class = "btn btn-primary" })
+        </td>
+    </tr>
+}
+
+</table>

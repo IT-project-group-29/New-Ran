@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+
+                        if (!User.IsInRole("Admin"))
+                        {
+                            <li class="dropdown" id="projectsLI">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Projects<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+
+                                    <li>@Html.ActionLink("Project Management", "index", "Projects")</li>
+                                    <li>@Html.ActionLink("Email Allocated Students", "LiEmailStudents", "Email")</li>
+                                    <li>@Html.ActionLink("Email Allocated Staff", "LiEmailStaff", "Email")</li>
+                                    <li>@Html.ActionLink("Email Clients", "LiEmailClients", "Email")</li>
+                                </ul>
+
+                            </li>
+                        }
+
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li class="dropdown" id="projectsLI">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Projects<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+
+
+                                    <li>@Html.ActionLink("Project Management", "index", "Projects")</li>
+                                    <li>@Html.ActionLink("Project Allocation", "Index", "ProjectPeopleAllocations")</li>
+                                    <li>@Html.ActionLink("Project Prioritisation", "Index", "PriorityProjects")</li>
+                                    <li>@Html.ActionLink("Email Allocated Students", "LiEmailStudents", "Email")</li>
+                                    <li>@Html.ActionLink("Email Allocated Staff", "LiEmailStaff", "Email")</li>
+                                    <li>@Html.ActionLink("Email Clients", "LiEmailClients", "Email")</li>
+                                </ul>
+
+                            </li>
+                        }
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li class="dropdown" id="adminManagementLI">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Management<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+
+                                    <li>@Html.ActionLink("Add Single Account", "Create", "AspNetUsers")</li>
+                                    <li>@Html.ActionLink("Add Multiple Accounts", "Index", "MulAccount")</li>
+                                    <li>@Html.ActionLink("Link Students to Courses", "Index", "StudentCourses")</li>
+                                    <li>@Html.ActionLink("Link Courses to Plans", "Index", "PlanCourses")</li>
+                                    <li>@Html.ActionLink("Student Management", "Index", "Students")</li>
+                                    <li>@Html.ActionLink("Role Management", "Index", "AspNetRoles")</li>
+                                    <li>@Html.ActionLink("Effort Management", "Index", "ProjectEfforts")</li>
+                                </ul>
+                            </li>
+                        }
+
+                    }
+
+
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - my ASP.NET application</p>
+        </footer>
+    </div>
+    
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

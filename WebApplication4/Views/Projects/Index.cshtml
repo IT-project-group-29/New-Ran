@@ -1,0 +1,75 @@
+﻿@model IEnumerable<WebApplication4.Models.Projects>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+<form action="/Projects/Index" method="post">
+    <div class="row">
+        <div class="col-md-4">
+            @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <input type="submit" class="btn btn-primary" value="serch" />
+        </div>
+    </div>
+</form>
+  <br>
+
+
+<table class="table table-hover">
+    <tr>
+
+
+        <th>
+            @Html.DisplayNameFor(model => model.projectTitle)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectStatus1.StatusName)
+        </th>
+
+
+        <th>
+            @Html.DisplayNameFor(model => model.dateCreated)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.projectTitle)
+            </td>
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectStatus1.StatusName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.dateCreated)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.projectID }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.projectID }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.projectID }, new { @class = "btn btn-primary" })
+            </td>
+        </tr>
+    }
+
+</table>
+

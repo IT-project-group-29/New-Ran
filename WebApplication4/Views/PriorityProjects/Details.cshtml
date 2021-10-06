@@ -1,0 +1,79 @@
+﻿@model WebApplication4.Models.PriorityProjects
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PriorityProjects</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Projects.projectTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Projects.projectTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.priorityLevel)
+        </dt>
+
+        <dd>
+
+
+            @switch (Model.priorityLevel)
+            {
+                case "1":
+                    <span>  High   </span>
+                    break;
+                case "2":
+        <span>
+            Medium
+        </span>
+
+            break;
+            case "3":
+        <span>
+            Low
+        </span>
+
+                break;
+                case "4":
+        <span>
+            None
+        </span>
+
+                    break;
+
+                    }
+
+
+
+</dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.priorityReason)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.priorityReason)
+            </dd>
+
+            @*<dt>
+                @Html.DisplayNameFor(model => model.priorityCreatorID)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.priorityCreatorID)
+            </dd>*@
+
+        </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

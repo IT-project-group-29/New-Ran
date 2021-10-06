@@ -1,0 +1,125 @@
+﻿@model IEnumerable<WebApplication4.Models.Students>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Add Accounts</h2>
+
+<form action="/MulAccount/Create" method="post" enctype="multipart/form-data">
+
+    <div class="form-horizontal">
+        <p>Adding multiple accounts is done by uploading a excel file.</p>
+
+        <select onchange="multipleUserTypeChange()" class="form-control userTypeSelect" style="width:80%">
+            <option value="">-- Select Account Type --</option>
+            <option value="student">Student</option>
+            <option value="client">Client</option>
+            <option value="staff">Staff</option>
+        </select>
+
+
+
+        <hr />
+
+        <div class="divStudent" style="display: none">
+
+            <p>This file must contain the following fields:</p>
+
+            <ul id="StudentList">
+                <li>Student Email Address</li>
+                <li>Student Id</li>
+            </ul>
+
+            <label class="control-label" for="Year">Year:</label>
+
+
+            <select class="form-control" id="year" name="year" style="width: auto;">
+                <option>2021</option>
+                <option>2022</option>
+                <option>2023</option>
+                <option>2024</option>
+            </select>
+
+            <label class="control-label" for="Semester">Semester:</label>
+            <select runat="server" class="form-control" id="Semester" name="Semester" style="width: auto;">
+                <option>SP2</option>
+                <option>SP5</option>
+            </select>
+
+            <br />
+
+
+
+
+        </div>
+
+        <div class="divClient" style="display: none">
+
+            <p>Adding of clients has not been implemented yet.</p>
+
+        </div>
+
+        <div class="divStaff" style="display: none">
+
+            <p>Adding of staff has not been implemented yet.</p>
+
+        </div>
+
+        <div class="divControls" style="display: none">
+
+            <label class="btn btn-default">
+                <input type="file" name="name" value="" />
+            </label>
+
+            <br />
+            <br />
+
+            <button class="btn btn-primary" type="submit">Submit File</button>
+        </div>
+    </div>
+</form>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        multipleUserTypeChange();
+    });
+
+
+    function multipleUserTypeChange() {
+
+
+        $(".divHeading").slideUp();
+        $(".divStudent").slideUp();
+        $(".divClient").slideUp();
+        $(".divStaff").slideUp();
+        $(".divControls").slideUp();
+
+        switch ($(".userTypeSelect").val()) {
+            case "":
+                $(".divHeading").slideDown();
+                break;
+
+            case "student":
+                $(".divStudent").slideDown();
+                $(".divControls").slideDown();
+                break;
+
+            case "client":
+                $(".divClient").slideDown();
+                break;
+
+            case "staff":
+                $(".divStaff").slideDown();
+                break;
+
+
+
+        }
+    }
+
+</script>

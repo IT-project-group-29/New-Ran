@@ -1,0 +1,106 @@
+﻿@model WebApplication4.Models.Students
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Students</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Plans.planName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Plans.planName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.uniUserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.uniUserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.uniStudentID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.uniStudentID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.gpa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gpa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.genderCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.genderCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.international)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.international)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.externalStudent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.externalStudent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.studentEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.studentEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.year)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.year)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.semester)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.semester)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dateEnded)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dateEnded)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.studentID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

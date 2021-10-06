@@ -1,0 +1,356 @@
+﻿@model WebApplication4.Models.Projects
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm("Edit", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Projects</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.projectID)
+
+    <div class="form-group" hidden>
+        @Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectCode, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectCode, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectCode, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectTitle, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectTitle, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectScope, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectScope, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectScope, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectOutcomes, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectOutcomes, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectOutcomes, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectDuration, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="projectDuration" class="form-control">
+
+                @if (Model.projectDuration == 4)
+                {
+                    <option value="4" selected>4 Month</option>
+
+                }
+                else
+                {
+                    <option value="4">4 Month</option>
+                }
+
+                @if (Model.projectDuration == 9)
+                {
+                    <option value="9" selected>9 Month</option>
+
+                }
+                else
+                {
+                    <option value="9">9 Month</option>
+                }
+
+
+            </select>
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectPlacementRequirements, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectPlacementRequirements, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectPlacementRequirements, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectSponsorAgreement, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.CheckBoxFor(model => model.projectSponsorAgreement, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.projectSponsorAgreement, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectStatus, "projectStatus", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("projectStatus", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.projectStatus, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectStatusComment, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectStatusComment, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectStatusComment, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectStatusChangeDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectStatusChangeDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectStatusChangeDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectSemester, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="projectSemester" class="form-control">
+
+                @if (Model.projectSemester == "SP2")
+                {
+                    <option value="SP2" selected>SP2</option>
+
+                }
+                else
+                {
+                    <option value="SP2">SP2</option>
+                }
+                @if (Model.projectSemester == "SP5")
+                {
+                <option value="SP5" selected>SP5</option>
+
+                }
+                else
+                {
+                 <option value="SP5">SP5</option>
+                }
+
+                
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectSemesterCode, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectSemesterCode, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectSemesterCode, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectYear, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+
+            <select name="projectYear" class="form-control">
+
+                @if (Model.projectYear == 2019)
+                {
+                    <option value="2019">2019</option>
+
+                }
+                else
+                {
+                    <option value="2019">2019</option>
+                }
+
+                @if (Model.projectYear == 2020)
+                {
+                    <option value="2020" selected>2020</option>
+
+                }
+                else
+                {
+                    <option value="2020">2020</option>
+                }
+                @if (Model.projectYear == 2021)
+                {
+                    <option value="2021" selected>2021</option>
+
+                }
+                else
+                {
+                    <option value="2021">2021</option>
+                }
+
+                @if (Model.projectYear == 2022)
+                {
+                    <option value="2022" selected>2022</option>
+
+                }
+                else
+                {
+                    <option value="2022">2022</option>
+                }
+
+                @if (Model.projectYear == 2023)
+                {
+                    <option value="2023" selected>2023</option>
+
+                }
+                else
+                {
+                    <option value="2023">2023</option>
+                }
+
+            
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectSequenceNo, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectSequenceNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectSequenceNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.honoursUndergrad, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+
+            <select name="honoursUndergrad">
+                @if (Model.honoursUndergrad == "u")
+                {
+                    <option value="u" selected>YES</option>
+
+                }else
+                {
+                <option value="u">YES</option>
+                }
+
+                @if (Model.honoursUndergrad == "w")
+                {
+                    <option value="w" selected>NO</option>
+
+                }else
+                {
+                <option value="w">NO</option>
+                }
+
+            </select>
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.requirementsMet, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.requirementsMet)
+                @Html.ValidationMessageFor(model => model.requirementsMet, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    @* 用户 *@
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectCreatorID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("projectCreatorID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.projectCreatorID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+ 
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectEffortRequirements, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectEffortRequirements, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectEffortRequirements, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.austCitizenOnly, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.austCitizenOnly)
+                @Html.ValidationMessageFor(model => model.austCitizenOnly, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.studentsReq, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="studentsReq" class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </select>
+         
+            @Html.ValidationMessageFor(model => model.studentsReq, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Staff/Client Files</label>
+
+        <div class="col-md-10">
+
+
+            <input type="file" name="name" value="" />
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Additional Files</label>
+
+        <div class="col-md-10">
+
+
+            <input type="file" name="add" multiple value="" />
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

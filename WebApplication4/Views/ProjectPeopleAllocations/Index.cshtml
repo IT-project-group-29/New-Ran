@@ -1,0 +1,74 @@
+﻿
+@model IEnumerable<WebApplication4.Models.ProjectPeopleAllocations>
+
+@{
+    ViewBag.Title = "Index";
+    var users = (List<WebApplication4.Models.AspNetUsers>)ViewBag.personID;
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+<form action="/ProjectPeopleAllocations/Index" method="post">
+    <div class="row">
+        <div class="col-md-4">
+            @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <input type="submit" class="btn btn-primary" value="serch" />
+        </div>
+    </div>
+</form>
+<br>
+
+
+
+<table class="table table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Projects.projectTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.personID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dateCreated)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.creatorComment)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Projects.projectTitle)
+            </td>
+            <td>
+                @users.FirstOrDefault(p => p.personID == item.personID).UserName
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dateCreated)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.creatorComment)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
+            </td>
+        </tr>
+    }
+
+</table>
