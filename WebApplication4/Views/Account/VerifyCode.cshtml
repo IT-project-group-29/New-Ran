@@ -1,6 +1,6 @@
 ﻿@model WebApplication4.Models.VerifyCodeViewModel
 @{
-    ViewBag.Title = "验证";
+    ViewBag.Title = "verify";
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -9,7 +9,7 @@
     @Html.AntiForgeryToken()
     @Html.Hidden("provider", @Model.Provider)
     @Html.Hidden("rememberMe", @Model.RememberMe)
-    <h4>输入验证代码</h4>
+    <h4>Enter the verification code.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
