@@ -73,8 +73,8 @@ namespace WebApplication4.Controllers
                 return View(model);
             }
 
-            // 这不会计入到为执行帐户锁定而统计的登录失败次数中
-            // 若要在多次输入错误password的情况下触发帐户锁定，请更改为 shouldLockout: true
+            // This is not included in the number of login failures counted for account locking
+            // To trigger account lockout if you enter an incorrect password multiple times, change to shouldlockout: true
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
@@ -86,7 +86,7 @@ namespace WebApplication4.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "无效的登录尝试。");
+                    ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
         }
@@ -96,7 +96,7 @@ namespace WebApplication4.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
-            // 要求用户已通过使用用户名/password或外部登录名登录
+            // The user is required to be logged in by using user name / password or external login
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
                 return View("Error");
@@ -116,10 +116,10 @@ namespace WebApplication4.Controllers
                 return View(model);
             }
 
-            // 以下代码可以防范双重身份验证代码遭到暴力破解攻击。
-            // 如果用户输入错误代码的次数达到指定的次数，则会将
-            // 该用户帐户锁定指定的时间。
-            // 可以在 IdentityConfig 中配置帐户锁定设置
+            // The following code can prevent the double authentication code from being brutally cracked.
+            // If the user enters the error code a specified number of times, the
+            // user account is locked for the specified time.
+            // Account lockout settings can be configured in identityconfig
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
@@ -129,7 +129,7 @@ namespace WebApplication4.Controllers
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "代码无效。");
+                    ModelState.AddModelError("", "Invalid code.");
                     return View(model);
             }
         }
@@ -157,18 +157,17 @@ namespace WebApplication4.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
-                    // 有关如何启用帐户确认和password重置的详细信息，请访问 https://go.microsoft.com/fwlink/?LinkID=320771
-                    // 发送包含此链接的电子邮件
+                   
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "确认你的帐户", "请通过单击<a href=\"" + callbackUrl + "\">此处</a>来确认你的帐户");
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please click<a href=\"" + callbackUrl + "\">here</a>To confirm your account");
 
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
 
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
+            // If something goes wrong when we go to this step, the form will be displayed again
             return View(model);
         }
 
@@ -205,19 +204,18 @@ namespace WebApplication4.Controllers
                 var user = await UserManager.FindByNameAsync(model.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
-                    // 请不要显示该用户不存在或者未经确认
+                    // Please do not show that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // 有关如何启用帐户确认和password重置的详细信息，请访问 https://go.microsoft.com/fwlink/?LinkID=320771
-                // 发送包含此链接的电子邮件
+               
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "重置password", "请通过单击<a href=\"" + callbackUrl + "\">此处</a>来重置你的password");
+                // await UserManager.SendEmailAsync(user.Id, "reset password", "Please click<a href=\"" + callbackUrl + "\">here</a>to reset password");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
+            // If something goes wrong when we go to this step, the form will be displayed again
             return View(model);
         }
 
@@ -251,7 +249,7 @@ namespace WebApplication4.Controllers
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
             {
-                // 请不要显示该用户不存在
+                // Please do not show that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
@@ -278,7 +276,7 @@ namespace WebApplication4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            // 请求重定向到外部登录提供程序
+            // Please do not show that the user does not exist and request redirection to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
@@ -309,7 +307,7 @@ namespace WebApplication4.Controllers
                 return View();
             }
 
-            // 生成令牌并发送该令牌
+            // Generate a token and send it
             if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
                 return View("Error");
@@ -328,7 +326,7 @@ namespace WebApplication4.Controllers
                 return RedirectToAction("Login");
             }
 
-            // 如果用户已具有登录名，则使用此外部登录提供程序将该用户登录
+            // If the user already has a login name, use this external login provider to log the user in
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
@@ -340,7 +338,7 @@ namespace WebApplication4.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
-                    // 如果用户没有帐户，则提示该用户创建帐户
+                    // If the user does not have an account, the user is prompted to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
@@ -361,7 +359,7 @@ namespace WebApplication4.Controllers
 
             if (ModelState.IsValid)
             {
-                // 从外部登录提供程序中获取有关用户的信息
+                // Get information about the user from the external login provider
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
@@ -423,8 +421,8 @@ namespace WebApplication4.Controllers
             base.Dispose(disposing);
         }
 
-        #region 帮助程序
-        // 用于在添加外部登录名时提供 XSRF 保护
+        #region 
+        // Used to provide xsrf protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
