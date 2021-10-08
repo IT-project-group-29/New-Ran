@@ -134,8 +134,8 @@ namespace WebApplication4.Controllers
         //}
 
         //// POST: AspNetUsers/Edit/5
-        //// 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        //// 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+        //// To prevent "over-publishing" attacks, enable the specific properties to which you want to bind.
+        //// For more details, see https://go.microsoft.com/fwlink/?LinkId=317598。
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public ActionResult Edit([Bind(Include = "Id,personID,dateCreated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,title,firstName,lastName,AccountAccepted")] AspNetUsers aspNetUsers)
