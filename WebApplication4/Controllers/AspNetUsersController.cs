@@ -83,8 +83,8 @@ namespace WebApplication4.Controllers
         }
 
         // POST: AspNetUsers/Create
-        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+        // To prevent "over-publishing" attacks, enable the specific properties to which you want to bind.
+        // For more details, see https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(RegisterViewModel aspNetUsers)
@@ -108,7 +108,7 @@ namespace WebApplication4.Controllers
 
             }
            
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
+            // If we get to this point with an error somewhere, redisplay the form
             return View(aspNetUsers);
         }
         private void AddErrors(IdentityResult result)
@@ -134,8 +134,8 @@ namespace WebApplication4.Controllers
         //}
 
         //// POST: AspNetUsers/Edit/5
-        //// 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        //// 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+        //// To prevent "over-publishing" attacks, enable the specific properties to which you want to bind.
+        //// For more details, see https://go.microsoft.com/fwlink/?LinkId=317598。
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public ActionResult Edit([Bind(Include = "Id,personID,dateCreated,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,title,firstName,lastName,AccountAccepted")] AspNetUsers aspNetUsers)
