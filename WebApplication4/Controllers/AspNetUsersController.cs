@@ -108,7 +108,7 @@ namespace WebApplication4.Controllers
 
             }
            
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
+            // If we get to this point with an error somewhere, redisplay the form
             return View(aspNetUsers);
         }
         private void AddErrors(IdentityResult result)
