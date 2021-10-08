@@ -42,8 +42,8 @@ namespace WebApplication4.Controllers
         }
 
         // POST: ProjectEfforts/Create
-        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+        // To prevent an "over publish" attack, enable the specific property to bind to.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "effortID,effortDescription,effortRankValue")] ProjectEfforts projectEfforts)
@@ -74,8 +74,7 @@ namespace WebApplication4.Controllers
         }
 
         // POST: ProjectEfforts/Edit/5
-        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+        // To prevent an "over publish" attack, enable the specific property to bind to.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "effortID,effortDescription,effortRankValue")] ProjectEfforts projectEfforts)

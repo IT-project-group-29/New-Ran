@@ -32,7 +32,7 @@ namespace WebApplication4
         }
     }
 
-    // 配置此应用程序中使用的应用程序用户管理器。UserManager 在 ASP.NET Identity 中定义，并由此应用程序使用。
+    
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
@@ -43,14 +43,14 @@ namespace WebApplication4
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
-            // 配置用户名的验证逻辑
+            // Configure user name authentication logic
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
 
-            // 配置password的验证逻辑
+            // Configure the verification logic of password
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
@@ -60,21 +60,21 @@ namespace WebApplication4
                 RequireUppercase = true,
             };
 
-            // 配置用户锁定默认值
+            // Configure user lock defaults
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
-            // regist双重身份验证提供程序。此应用程序使用手机和电子邮件作为接收用于验证用户的代码的一个步骤
-            // 你可以编写自己的提供程序并将其插入到此处。
-            manager.RegisterTwoFactorProvider("电话代码", new PhoneNumberTokenProvider<ApplicationUser>
+            //Register dual authentication provider. This application uses mobile phones and e-mail as a step in receiving code to authenticate users.
+            //You can write your own provider and insert it here.
+            manager.RegisterTwoFactorProvider("Telephone code", new PhoneNumberTokenProvider<ApplicationUser>
             {
-                MessageFormat = "你的安全代码是 {0}"
+                MessageFormat = "Your security code is {0}"
             });
-            manager.RegisterTwoFactorProvider("电子邮件代码", new EmailTokenProvider<ApplicationUser>
+            manager.RegisterTwoFactorProvider("Email code", new EmailTokenProvider<ApplicationUser>
             {
-                Subject = "安全代码",
-                BodyFormat = "你的安全代码是 {0}"
+                Subject = "security code",
+                BodyFormat = "Your security code is {0}"
             });
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
@@ -88,7 +88,7 @@ namespace WebApplication4
         }
     }
 
-    // 配置要在此应用程序中使用的应用程序登录管理器。
+    // Configure the application login manager to use in this application.。
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
