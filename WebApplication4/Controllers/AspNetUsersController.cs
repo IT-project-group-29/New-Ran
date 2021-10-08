@@ -83,8 +83,8 @@ namespace WebApplication4.Controllers
         }
 
         // POST: AspNetUsers/Create
-        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+        // To prevent "over-publishing" attacks, enable the specific properties to which you want to bind.
+        // For more details, see https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(RegisterViewModel aspNetUsers)
