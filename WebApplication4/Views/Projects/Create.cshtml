@@ -30,24 +30,24 @@
             @Html.ValidationMessageFor(model => model.projectTitle, "", new { @class = "text-danger" })
         </div>
     </div>
-    <!--
+   
     <div class="form-group">
-        @Html.LabelFor(model => model.projectScope, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.projectScope, "Project Scope", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.projectScope, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.projectScope, "", new { @class = "text-danger" })
         </div>
     </div>
-        -->
-    <!--
+     
+    
         <div class="form-group">
-            @Html.LabelFor(model => model.projectOutcomes, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.projectOutcomes, "Project Outcomes", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.projectOutcomes, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.projectOutcomes, "", new { @class = "text-danger" })
             </div>
         </div>
-         -->
+         
     <div class="form-group">
         @Html.LabelFor(model => model.projectDuration, "Project Duration", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -60,9 +60,9 @@
 
         </div>
     </div>
-    <!--
+    
     <div class="form-group">
-        @Html.LabelFor(model => model.projectPlacementRequirements, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.projectPlacementRequirements, "Project Placement Requirements", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.projectPlacementRequirements, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.projectPlacementRequirements, "", new { @class = "text-danger" })
@@ -70,17 +70,17 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.projectSponsorAgreement, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.projectSponsorAgreement, "Project Sponsor Agreement", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="checkbox">
-                @Html.CheckBoxFor(model => model.projectSponsorAgreement, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.CheckBoxFor(model => model.projectSponsorAgreement, new { htmlAttributes = new { @class = "form-control " } })
                 @Html.ValidationMessageFor(model => model.projectSponsorAgreement, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.projectStatus, "projectStatus", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.projectStatus, "Project Status", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("projectStatus", null, htmlAttributes: new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.projectStatus, "", new { @class = "text-danger" })
@@ -88,7 +88,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.projectStatusComment, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.projectStatusComment, "Project Status Comment", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.projectStatusComment, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.projectStatusComment, "", new { @class = "text-danger" })
@@ -96,13 +96,13 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.projectStatusChangeDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.projectStatusChangeDate, "Project Status Change Date", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.projectStatusChangeDate, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.projectStatusChangeDate, "", new { @class = "text-danger" })
         </div>
     </div>
-        -->
+        
     <div class="form-group">
         @Html.LabelFor(model => model.projectSemester, "Project Semester", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -135,15 +135,15 @@
             </select>
         </div>
     </div>
-    <!--
+    
     <div class="form-group">
-        @Html.LabelFor(model => model.projectSequenceNo, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.projectSequenceNo, "Project Sequence No", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.projectSequenceNo, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.projectSequenceNo, "", new { @class = "text-danger" })
         </div>
     </div>
-        -->
+        
     <div class="form-group">
         @Html.LabelFor(model => model.honoursUndergrad, "Honours Undergrad", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -153,9 +153,9 @@
             </select>
         </div>
     </div>
-    <!--
+    
         <div class="form-group">
-            @Html.LabelFor(model => model.requirementsMet, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.requirementsMet, "Requirements Met", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.requirementsMet)
@@ -163,11 +163,11 @@
                 </div>
             </div>
         </div>
-        -->
+       
     @* User *@
-    <!--
+    
         <div class="form-group">
-            @Html.LabelFor(model => model.projectCreatorID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.projectCreatorID, "Project Creator ID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("projectCreatorID", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.projectCreatorID, "", new { @class = "text-danger" })
@@ -177,7 +177,7 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.projectEffortRequirements, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.projectEffortRequirements, "Project Effort Requirements", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.projectEffortRequirements, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.projectEffortRequirements, "", new { @class = "text-danger" })
@@ -185,7 +185,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.austCitizenOnly, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.austCitizenOnly, "Aust Citizen Only", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.austCitizenOnly)
@@ -195,7 +195,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.studentsReq, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.studentsReq, "Students Req", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <select name="studentsReq" class="form-control">
                     <option value="1">1</option>
@@ -207,7 +207,7 @@
                 </select>
             </div>
         </div>
-        -->
+       
     <div class="form-group">
         <label class="control-label col-md-2">Staff/Client Files</label>
 
