@@ -23,8 +23,25 @@ namespace WebApplication4.Controllers
             return View(db.AspNetRoles.ToList());
         }
 
+        [HttpPost]
+        public ActionResult Index(string firstname)
+        {
+            if (!string.IsNullOrEmpty(firstname))
+            {
+                ViewBag.User = new SelectList(db.AspNetUsers.Where(p => p.firstName == firstname), "Id", "UserName");
+            }
+            else
+            {
+                ViewBag.User = new SelectList(db.AspNetUsers, "Id", "UserName");
+            }
 
-        public ActionResult AddUserRole(string User,string Role)
+            ViewBag.firstname = firstname;
+            ViewBag.Role = new SelectList(db.AspNetRoles, "Id", "Name");
+            return View(db.AspNetRoles.ToList());
+        }
+
+
+        public ActionResult AddUserRole(string User, string Role)
         {
             using (var context = new Model1())
             {
@@ -45,16 +62,16 @@ namespace WebApplication4.Controllers
         public JsonResult GetUserRole(string User)
         {
             var ssss = db.AspNetUserRoles.SqlQuery("select * from AspNetUserRoles");
-            var ur = ssss.Where(p => p.UserId == User).Select(p=>p.RoleId).ToList();
-            var roles=db.AspNetRoles.Where(p => ur.Contains(p.Id)).ToList();
-            var dic=new Dictionary<string,string>();
+            var ur = ssss.Where(p => p.UserId == User).Select(p => p.RoleId).ToList();
+            var roles = db.AspNetRoles.Where(p => ur.Contains(p.Id)).ToList();
+            var dic = new Dictionary<string, string>();
             foreach (var item in roles)
             {
                 dic.Add(item.Id, item.Name);
             }
-            return  Json(dic);
+            return Json(dic);
         }
-        public JsonResult RemoveUserRole(string User,string Role)
+        public JsonResult RemoveUserRole(string User, string Role)
         {
             using (var context = new Model1())
             {
@@ -85,7 +102,8 @@ namespace WebApplication4.Controllers
         }
 
         // POST: AspNetRoles/Create
-        // To prevent "too many publications" attacks, enable the specific properties you want to bind to
+        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
+        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Name")] AspNetRoles aspNetRoles)

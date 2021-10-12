@@ -102,7 +102,7 @@ namespace WebApplication4.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} must contain at least {2} characters.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "password")]
         public string Password { get; set; }
