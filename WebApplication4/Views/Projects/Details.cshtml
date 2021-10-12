@@ -1,8 +1,6 @@
 ﻿@model WebApplication4.Models.Projects
 
-@{
-    ViewBag.Title = "Details";
-}
+@{ ViewBag.Title = "Details"; }
 
 <h2>Details</h2>
 
@@ -11,13 +9,14 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ProjectStatus1.StatusName)
+            @Html.LabelFor(model => model.ProjectStatus1.StatusName, "Status Name", htmlAttributes: new { @class = "control-label" })
+            <!--@Html.DisplayNameFor(model => model.ProjectStatus1.StatusName)-->
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.ProjectStatus1.StatusName)
         </dd>
-
+        <!--
         <dt>
             @Html.DisplayNameFor(model => model.Id)
         </dt>
@@ -33,15 +32,16 @@
         <dd>
             @Html.DisplayFor(model => model.projectCode)
         </dd>
-
+            -->
         <dt>
-            @Html.DisplayNameFor(model => model.projectTitle)
+            @Html.LabelFor(model => model.projectTitle, "Project Title", htmlAttributes: new { @class = "control-label" })
+            <!--@Html.DisplayNameFor(model => model.projectTitle)-->
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.projectTitle)
         </dd>
-
+        <!--
         <dt>
             @Html.DisplayNameFor(model => model.projectScope)
         </dt>
@@ -57,15 +57,16 @@
         <dd>
             @Html.DisplayFor(model => model.projectOutcomes)
         </dd>
-
+        -->
         <dt>
-            @Html.DisplayNameFor(model => model.projectDuration)
+            @Html.LabelFor(model => model.projectDuration, "Project Duration", htmlAttributes: new { @class = "control-label" })
+            <!--@Html.DisplayNameFor(model => model.projectDuration)-->
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.projectDuration)
         </dd>
-
+        <!--
         <dt>
             @Html.DisplayNameFor(model => model.projectPlacementRequirements)
         </dt>
@@ -97,15 +98,16 @@
         <dd>
             @Html.DisplayFor(model => model.projectStatusChangeDate)
         </dd>
-
+            -->
         <dt>
-            @Html.DisplayNameFor(model => model.projectSemester)
+            @Html.LabelFor(model => model.projectSemester, "Project Semester", htmlAttributes: new { @class = "control-label" })
+            <!--@Html.DisplayNameFor(model => model.projectSemester)-->
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.projectSemester)
         </dd>
-
+        <!--
         <dt>
             @Html.DisplayNameFor(model => model.projectSemesterCode)
         </dt>
@@ -113,15 +115,16 @@
         <dd>
             @Html.DisplayFor(model => model.projectSemesterCode)
         </dd>
-
+            -->
         <dt>
-            @Html.DisplayNameFor(model => model.projectYear)
+            @Html.LabelFor(model => model.projectYear, "Project Year", htmlAttributes: new { @class = "control-label" })
+            <!--@Html.DisplayNameFor(model => model.projectYear)-->
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.projectYear)
         </dd>
-
+        <!--
         <dt>
             @Html.DisplayNameFor(model => model.projectSequenceNo)
         </dt>
@@ -129,15 +132,16 @@
         <dd>
             @Html.DisplayFor(model => model.projectSequenceNo)
         </dd>
-
+            -->
         <dt>
-            @Html.DisplayNameFor(model => model.honoursUndergrad)
+            @Html.LabelFor(model => model.projectYear, "Project Year", htmlAttributes: new { @class = "control-label" })
+            <!--@Html.DisplayNameFor(model => model.honoursUndergrad)-->
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.honoursUndergrad)
         </dd>
-
+        <!--
         <dt>
             @Html.DisplayNameFor(model => model.requirementsMet)
         </dt>
@@ -145,9 +149,10 @@
         <dd>
             @Html.DisplayFor(model => model.requirementsMet)
         </dd>
-
+            -->
         <dt>
-            @Html.DisplayNameFor(model => model.projectCreatorID)
+            @Html.LabelFor(model => model.projectCreatorID, "Project Creator ID", htmlAttributes: new { @class = "control-label" })
+            <!-- @Html.DisplayNameFor(model => model.projectCreatorID)-->
         </dt>
 
         <dd>
@@ -155,37 +160,39 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.dateCreated)
+            @Html.LabelFor(model => model.projectCreatorID, "Project Creator ID", htmlAttributes: new { @class = "control-label" })
+            <!-- @Html.DisplayNameFor(model => model.dateCreated)-->
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.dateCreated)
         </dd>
+        <!--
+                 <dt>
+                     @Html.DisplayNameFor(model => model.projectEffortRequirements)
+                 </dt>
 
+                 <dd>
+                     @Html.DisplayFor(model => model.projectEffortRequirements)
+                 </dd>
+
+             <dt>
+                 @Html.DisplayNameFor(model => model.austCitizenOnly)
+             </dt>
+
+             <dd>
+                 @Html.DisplayFor(model => model.austCitizenOnly)
+             </dd>
+        -->
         <dt>
-            @Html.DisplayNameFor(model => model.projectEffortRequirements)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.projectEffortRequirements)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.austCitizenOnly)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.austCitizenOnly)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.studentsReq)
+            @Html.LabelFor(model => model.studentsReq, "Students Requirment", htmlAttributes: new { @class = "control-label" })
+            <!--@Html.DisplayNameFor(model => model.studentsReq)-->
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.studentsReq)
         </dd>
-
+        <!--
         <dt>
             @Html.DisplayNameFor(model => model.scholarshipAmt)
         </dt>
@@ -225,7 +232,7 @@
         <dd>
             @Html.DisplayFor(model => model.studentEmailSentDate)
         </dd>
-
+            -->
     </dl>
 </div>
 <p>
