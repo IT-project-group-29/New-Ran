@@ -12,63 +12,201 @@
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
 </p>
 
-<form action="/ProjectPeopleAllocations/Index" method="post">
-    <div class="row">
-        <div class="col-md-4">
-            @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control" })
-        </div>
-        <div class="col-md-4">
-            @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control" })
-        </div>
-        <div class="col-md-4">
-            <input type="submit" class="btn btn-primary" value="serch" />
-        </div>
-    </div>
-</form>
 <br>
 
 
+<div class="row">
 
-<table class="table table-hover">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Projects.projectTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.personID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dateCreated)
-        </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model.creatorComment)
-        </th>
-        <th></th>
-    </tr>
+    <div class="col-md-6">
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Projects.projectTitle)
-            </td>
-            <td>
-                @users.FirstOrDefault(p => p.personID == item.personID).UserName
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.dateCreated)
-            </td>
+        <form action="/ProjectPeopleAllocations/Index" method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" class="btn btn-primary" value="serch" />
+                </div>
+            </div>
+        </form>
+        <br />
+        <div style="height: 555px; overflow: auto;">
 
-            <td>
-                @Html.DisplayFor(modelItem => item.creatorComment)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
-                @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
-                @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
-            </td>
-        </tr>
-    }
+            <table class="table table-hover">
+                <tr>
+                    <th>
+                        Project No - Title
+                    </th>
+                    <th>
+                        Staff
+                    </th>
+                    <th>
+                        Students
+                    </th>
 
-</table>
+
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Projects.projectTitle)
+                        </td>
+
+
+
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.creatorComment)*@
+                        </td>
+                        <td>
+                            @users.FirstOrDefault(p => p.personID == item.personID).UserName
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
+                            @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
+                            @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <h3>Filter</h3>
+        <div class="row">
+            <div class="col-md-5">
+                <select class="form-control">
+                    <option value="student">Students</option>
+                    <option value="staff">Supervisors</option>
+                </select>
+            </div>
+
+            <div class="col-md-5">
+                <select class=" form-control">
+                    <option label="All Plans" value="-1" selected="selected">All Plans</option>
+                    <option label="planA" value="1">planA</option>
+                    <option label="planB" value="2">planB</option>
+                </select>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+
+            <div class="col-md-5">
+
+
+                <select class="form-control">
+                    <option value="all" selected="selected">All GPAs</option>
+                    <option value=">0">Between 0.0 and 1.99</option>
+                    <option value=">2">Between 2.0 and 2.99</option>
+                    <option value=">3">Between 3.0 and 3.99</option>
+                    <option value=">4">Between 4.0 and 4.99</option>
+                    <option value=">5">Between 5.0 and 5.99</option>
+                    <option value=">6">Between 6.0 and 7.0</option>
+                    <option value="none">No GPA on record</option>
+                </select>
+
+            </div>
+
+            <div class="col-md-5 ">
+                <input class="form-control" type="text" name="name" value="" placeholder="Search" />
+            </div>
+
+        </div>
+        <br />
+        <input type="checkbox" name="name" value="" /> include allocated people
+        <h3>Sort</h3>
+        <div class="row">
+
+            <div class="col-md-5">
+                <select class=" form-control">
+                    <option value="value">
+                    <option label="Name" value="fullName" selected="selected">Name</option>
+                    <option label="GPA" value="gpa">GPA</option>
+                    <option label="Software Development with C++" value="105295 ">Software Development with C++</option>
+                    <option label="Programming Fundamentals" value="105294">Programming Fundamentals</option>
+                    <option label="Web Development" value="156783">Web Development</option>
+                    <option label="Interface Desgin, Interaction and Experience" value="012540">Interface Desgin, Interaction and Experience</option>
+                    <option label="Agile Development with .NET" value="105284">Agile Development with .NET</option>
+                </select>
+            </div>
+
+
+            <div class="col-md-5">
+
+                <div class="btn btn-primary">ASC</div>
+                <div class="btn btn-primary">DESC</div>
+
+            </div>
+
+
+        </div>
+        <br />
+        <div style="height: 555px; overflow: auto;">
+
+            <table class="table table-hover">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Sdc++
+                    </th>
+                    <th>
+                        PF
+                    </th>
+
+                    <th>
+                        WEB
+                    </th>
+                    <th>
+                        IDIE
+                    </th>
+                    <th>
+                        AgNET
+                    </th>
+                    <th>
+                        GPA
+                    </th>
+                </tr>
+
+                @*@foreach (var item in Model)
+                    {*@
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                @*}*@
+
+            </table>
+
+
+
+        </div>
+
+    </div>
+
+
+
+</div>
