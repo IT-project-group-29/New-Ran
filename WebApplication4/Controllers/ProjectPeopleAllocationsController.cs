@@ -17,7 +17,7 @@ namespace WebApplication4.Controllers
         // GET: ProjectPeopleAllocations
         public ActionResult Index()
         {
-
+            ViewBag.stdt = db.Students.ToList();
             var ddlyear = new List<string>();
             var currentDate = System.DateTime.Now;
             for (int i = -2; i <= 2; i++)
@@ -99,6 +99,8 @@ namespace WebApplication4.Controllers
         {
             var hhh =db.AspNetUsers.FirstOrDefault(p=>p.UserName==User.Identity.Name);
             projectPeopleAllocations.creatorID = hhh.personID;
+
+            projectPeopleAllocations.dateCreated = DateTime.Now;
             if (ModelState.IsValid)
             {
                  

@@ -178,10 +178,11 @@
                     </th>
                 </tr>
 
-                @*@foreach (var item in Model)
-                    {*@
+                @foreach (var item in ViewBag.stdt)
+                {
                 <tr>
                     <td>
+                        @item.uniUserName
                     </td>
                     <td>
                     </td>
@@ -195,9 +196,10 @@
                     <td>
                     </td>
                     <td>
+                        @item.gpa
                     </td>
                 </tr>
-                @*}*@
+                }
 
             </table>
 
