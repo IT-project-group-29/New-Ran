@@ -11,7 +11,8 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Projects.projectTitle)
+            @Html.LabelFor(model => model.Projects.projectTitle, "Project Title", htmlAttributes: new { @class = "control-label" })
+            @*@Html.DisplayNameFor(model => model.Projects.projectTitle)*@
         </dt>
 
         <dd>
@@ -19,7 +20,8 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.dateCreated)
+            @Html.LabelFor(model => model.dateCreated, "Date Created", htmlAttributes: new { @class = "control-label" })
+            @* @Html.DisplayNameFor(model => model.dateCreated)*@
         </dt>
 
         <dd>
@@ -34,9 +36,10 @@
             @Html.DisplayFor(model => model.creatorID)
         </dd>*@
 
-        <dt>
-            @Html.DisplayNameFor(model => model.creatorComment)
-        </dt>
+    <dt>
+        @Html.LabelFor(model => model.creatorComment, "Creator Comment", htmlAttributes: new { @class = "control-label" })
+        @* @Html.DisplayNameFor(model => model.creatorComment)*@
+    </dt>
 
         <dd>
             @Html.DisplayFor(model => model.creatorComment)

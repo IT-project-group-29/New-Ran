@@ -68,9 +68,12 @@
                             @users.FirstOrDefault(p => p.personID == item.personID).UserName
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
-                            @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
-                            @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
+
+                            @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
+                            <!--|
+    @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
+         @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })-->
+
                         </td>
                     </tr>
                 }
