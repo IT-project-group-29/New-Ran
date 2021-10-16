@@ -13,7 +13,7 @@ namespace WebApplication4.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int projectID { get; set; }
 
-        [Key]
+       // [Key]
         [Column(Order = 1)]
         public DateTime dateCreated { get; set; }
 

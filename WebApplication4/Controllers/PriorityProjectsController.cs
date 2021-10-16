@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -177,14 +178,22 @@ namespace WebApplication4.Controllers
             return View(priorityProjects);
         }
 
-        // POST: PriorityProjects/Delete/5
+        //POST: PriorityProjects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PriorityProjects priorityProjects = db.PriorityProjects.FirstOrDefault(p=>p.projectID==id);
-            db.PriorityProjects.Remove(priorityProjects);
-            db.SaveChanges();
+            
+            
+           
+
+         
+                PriorityProjects priorityProjects = db.PriorityProjects.FirstOrDefault(p => p.projectID == id);
+                db.PriorityProjects.Remove(priorityProjects);
+
+                db.SaveChanges();
+            
+
             return RedirectToAction("Index");
         }
 
