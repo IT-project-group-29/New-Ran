@@ -55,6 +55,14 @@
         </div>
     </div>
 
+    <div class=" form-group">
+        @Html.LabelFor(model => model.personRole, "Date Created", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10" style="top:7px;">
+
+            @Html.DisplayFor(model => model.personRole, new { @class = "text-danger" })
+        </div>
+    </div>
+
     <div class="form-group">
         @Html.LabelFor(model => model.creatorComment, "Creator Comment", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -67,14 +75,34 @@
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Save" class="btn btn-default" />
         </div>
+
     </div>
+
+
+
+
+
+    <!-- <div class="form-actions no-color">
+         <input type="submit" value="Delete" class="btn btn-danger" />
+        
+     </div>-->
+   
 </div>
 
 }
+@using (Html.BeginForm())
+{
+    
 
+<div class="form-actions no-color">
+    
+    @Html.ActionLink("Delete", "Delete", new { projectID = Model.projectID, personID = Model.personID }, new { @class = "btn btn-primary" })
+
+</div>
+}
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    
 </div>
 
 @section Scripts {
