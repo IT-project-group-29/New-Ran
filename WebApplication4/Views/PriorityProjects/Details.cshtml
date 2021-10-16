@@ -11,7 +11,9 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Projects.projectTitle)
+            @Html.LabelFor(model => model.Projects.projectTitle, "Project Title", htmlAttributes: new { @class = "control-label" })
+
+            @* @Html.DisplayNameFor(model => model.Projects.projectTitle) *@
         </dt>
 
         <dd>
@@ -19,61 +21,65 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.priorityLevel)
+
+            @Html.LabelFor(model => model.priorityLevel, "Priority Level", htmlAttributes: new { @class = "control-label" })
+            @*   @Html.DisplayNameFor(model => model.priorityLevel)*@
         </dt>
 
-        <dd>
+                <dd>
 
 
-            @switch (Model.priorityLevel)
-            {
-                case "1":
-                    <span>  High   </span>
-                    break;
-                case "2":
-        <span>
-            Medium
-        </span>
-
-            break;
-            case "3":
-        <span>
-            Low
-        </span>
-
-                break;
-                case "4":
-        <span>
-            None
-        </span>
+                    @switch (Model.priorityLevel)
+                    {
+                        case "1":
+                            <span>  High   </span>
+                            break;
+                        case "2":
+                <span>
+                    Medium
+                </span>
 
                     break;
+                    case "3":
+                <span>
+                    Low
+                </span>
 
-                    }
+                        break;
+                        case "4":
+                <span>
+                    None
+                </span>
+
+                            break;
+
+                            }
 
 
 
-</dd>
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.priorityReason)
-            </dt>
+                <dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.priorityReason)
-            </dd>
+                    @Html.LabelFor(model => model.priorityReason, "Priority Reason", htmlAttributes: new { @class = "control-label " })
+                    @* @Html.DisplayNameFor(model => model.priorityReason)*@
+                </dt>
 
-            @*<dt>
-                @Html.DisplayNameFor(model => model.priorityCreatorID)
-            </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.priorityReason)
+                    </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.priorityCreatorID)
-            </dd>*@
+                    @*<dt>
+                        @Html.DisplayNameFor(model => model.priorityCreatorID)
+                    </dt>
 
-        </dl>
+                    <dd>
+                        @Html.DisplayFor(model => model.priorityCreatorID)
+                    </dd>*@
+
+</dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.projectID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

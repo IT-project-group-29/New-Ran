@@ -103,6 +103,7 @@ namespace WebApplication4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "projectID,dateCreated,priorityLevel,priorityReason,priorityCreatorID")] PriorityProjects priorityProjects)
         {
+            priorityProjects.dateCreated = DateTime.Now;
             if (ModelState.IsValid)
             {
                 try

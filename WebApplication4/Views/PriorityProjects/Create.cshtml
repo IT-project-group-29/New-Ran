@@ -16,7 +16,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.projectID, "projectID", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.projectID, "Project ID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("projectID", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.projectID, "", new { @class = "text-danger" })
@@ -32,7 +32,7 @@
         </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.priorityLevel, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.priorityLevel, "Priority Level", htmlAttributes: new { @class = "control -label col-md-2" })
             <div class="col-md-10">
                 <select name="priorityLevel" class="form-control">
                     <option value="1">High</option>
@@ -46,7 +46,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.priorityReason, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.priorityReason, "Priority Reason", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.priorityReason, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.priorityReason, "", new { @class = "text-danger" })
