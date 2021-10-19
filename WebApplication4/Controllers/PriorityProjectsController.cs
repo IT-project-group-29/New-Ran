@@ -104,7 +104,14 @@ namespace WebApplication4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "projectID,dateCreated,priorityLevel,priorityReason,priorityCreatorID")] PriorityProjects priorityProjects)
         {
-            priorityProjects.dateCreated = DateTime.Now;
+            DateTime dttn = DateTime.Now;
+
+            string format = DateTime.Now.ToString();
+            dttn = Convert.ToDateTime(format);
+            
+            
+            priorityProjects.dateCreated = dttn;
+            
             if (ModelState.IsValid)
             {
                 try
@@ -163,7 +170,7 @@ namespace WebApplication4.Controllers
         }
 
         // GET: PriorityProjects/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id , DateTime dt)
         {
             if (id == null)
             {
@@ -181,7 +188,7 @@ namespace WebApplication4.Controllers
         //POST: PriorityProjects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id,DateTime dt)
         {
             
             
@@ -189,9 +196,14 @@ namespace WebApplication4.Controllers
 
          
                 PriorityProjects priorityProjects = db.PriorityProjects.FirstOrDefault(p => p.projectID == id);
+            
+                if(priorityProjects.dateCreated == dt)
+            {
                 db.PriorityProjects.Remove(priorityProjects);
 
                 db.SaveChanges();
+            }
+                
             
 
             return RedirectToAction("Index");

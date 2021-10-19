@@ -13,8 +13,12 @@
 </p>
 
 <br>
-
-
+<!--<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    $(document).ready(function () {
+        alert("hello");
+    })
+</script>-->
 <div class="row">
 
 
@@ -71,8 +75,8 @@
 
                             @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
                             <!--|
-    @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
-         @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })-->
+                            @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
+                                 @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })-->
 
                         </td>
                     </tr>
@@ -183,25 +187,25 @@
 
                 @foreach (var item in ViewBag.stdt)
                 {
-                <tr>
-                    <td>
-                        @item.uniUserName
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
+                    <tr>
+                        <td>
+                            @item.uniUserName
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
 
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                        @item.gpa
-                    </td>
-                </tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            @item.gpa
+                        </td>
+                    </tr>
                 }
 
             </table>
