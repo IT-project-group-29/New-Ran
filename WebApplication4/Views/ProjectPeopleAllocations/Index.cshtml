@@ -125,8 +125,8 @@
                             </td>
                             <td>
 
-                                <!--    @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
-                                                       |
+                                   @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
+                                    <!--                    |
                                 @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
                                      @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })-->
 
@@ -251,17 +251,57 @@
                             <td>
                                 <div id="drag @item.studentID" draggable="true" ondragstart="drag(event)"> @item.uniUserName</div>
                             </td>
+
                             <td>
-                            </td>
-                            <td>
+                                @foreach(var csgd in ViewBag.stcs)
+                                {
+                                    if (csgd.courseID == "012540" && csgd.studentID == item.studentID)
+                                    {
+                                        @csgd.grade;
+                                    }
+                                }                                
                             </td>
 
                             <td>
+                                @foreach (var csgd in ViewBag.stcs)
+                                {
+                                    if (csgd.courseID == "156783" && csgd.studentID == item.studentID)
+                                    {
+                                        @csgd.grade;
+                                    }
+                                }
                             </td>
+
                             <td>
+                                @foreach (var csgd in ViewBag.stcs)
+                                {
+                                    if (csgd.courseID == "105284" && csgd.studentID == item.studentID)
+                                    {
+                                        @csgd.grade;
+                                    }
+                                }
                             </td>
+
                             <td>
+                                @foreach (var csgd in ViewBag.stcs)
+                                {
+                                    if (csgd.courseID == "105294" && csgd.studentID == item.studentID)
+                                    {
+                                        @csgd.grade;
+                                    }
+                                }
                             </td>
+
+                            <td>
+                                @foreach (var csgd in ViewBag.stcs)
+                                {
+                                    if (csgd.courseID == "105295" && csgd.studentID == item.studentID)
+                                    {
+                                        @csgd.grade;
+                                    }
+                                }
+                            </td>
+
                             <td>
                                 @item.gpa
                             </td>

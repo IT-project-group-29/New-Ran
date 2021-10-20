@@ -19,6 +19,7 @@ namespace WebApplication4.Controllers
         {
             ViewBag.namedesc = "asc";
             ViewBag.stdt = db.Students.ToList();
+            ViewBag.stcs = db.StudentCourses.ToList();
             var ddlyear = new List<string>();
             var currentDate = System.DateTime.Now;
             for (int i = -2; i <= 2; i++)
