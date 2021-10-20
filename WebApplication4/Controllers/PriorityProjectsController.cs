@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -103,7 +104,14 @@ namespace WebApplication4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "projectID,dateCreated,priorityLevel,priorityReason,priorityCreatorID")] PriorityProjects priorityProjects)
         {
-            priorityProjects.dateCreated = DateTime.Now;
+            DateTime dttn = DateTime.Now;
+
+            string format = DateTime.Now.ToString();
+            dttn = Convert.ToDateTime(format);
+            
+            
+            priorityProjects.dateCreated = dttn;
+            
             if (ModelState.IsValid)
             {
                 try
@@ -162,7 +170,7 @@ namespace WebApplication4.Controllers
         }
 
         // GET: PriorityProjects/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id , DateTime dt)
         {
             if (id == null)
             {
@@ -177,14 +185,27 @@ namespace WebApplication4.Controllers
             return View(priorityProjects);
         }
 
-        // POST: PriorityProjects/Delete/5
+        //POST: PriorityProjects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id,DateTime dt)
         {
-            PriorityProjects priorityProjects = db.PriorityProjects.FirstOrDefault(p=>p.projectID==id);
-            db.PriorityProjects.Remove(priorityProjects);
-            db.SaveChanges();
+            
+            
+           
+
+         
+                PriorityProjects priorityProjects = db.PriorityProjects.FirstOrDefault(p => p.projectID == id);
+            
+                if(priorityProjects.dateCreated == dt)
+            {
+                db.PriorityProjects.Remove(priorityProjects);
+
+                db.SaveChanges();
+            }
+                
+            
+
             return RedirectToAction("Index");
         }
 

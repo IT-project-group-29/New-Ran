@@ -15,6 +15,7 @@ namespace WebApplication4.Models
 
         [Key]
         [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public DateTime dateCreated { get; set; }
 
         [Required]
