@@ -39,9 +39,19 @@ namespace WebApplication4.Controllers
             return View(projectPeopleAllocations.ToList());
         }
         [HttpPost]
-        public ActionResult Index(int ddlyear, string DDLSemester)
+        public ActionResult Index(int ddlyear, string DDLSemester,string pop)
         {
-
+            ViewBag.pop = pop;
+            if (pop != "student")
+            {
+                ViewBag.staff = "";
+                ViewBag.hidden = "hidden";
+            }
+            else
+            {
+                ViewBag.staff = "hidden";
+                ViewBag.hidden = "";
+            }
             var ddlyearlist = new List<string>();
             var currentDate = System.DateTime.Now;
             for (int i = -2; i <= 2; i++)
