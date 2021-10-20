@@ -53,9 +53,10 @@
         height:50px;">
 
 </div>-->
-<form action="/ProjectPeopleAllocations/Index" method="post">
-    <div class="row">
 
+<form action="/ProjectPeopleAllocations/Index" method="post">
+
+    <div class="row">
 
         <div class="col-md-6">
 
@@ -101,15 +102,30 @@
 
 
                             <td>
-                                @*@Html.DisplayFor(modelItem => item.creatorComment)*@
+                                <div>
+                                    <div id="staff @item.personID" ondrop="drop(event)" style="min-height:10px" ondragover="allowDrop(event)">
+
+
+
+                                        @*<div>@users.FirstOrDefault(p => p.personID == item.personID).UserName</div>*@
+                                    </div>
+
+                                </div>
                             </td>
                             <td>
-                                @users.FirstOrDefault(p => p.personID == item.personID).UserName
+                                <div>
+                                    <div id="div @item.personID" ondrop="drop(event)" ondragover="allowDrop(event)" style="min-height:10px">
+                                        <div>@users.FirstOrDefault(p => p.personID == item.personID).UserName</div>
+                                    </div>
+
+
+
+                                </div>
                             </td>
                             <td>
 
-                                @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
-                                <!--|
+                                <!--    @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
+                                                       |
                                 @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
                                      @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })-->
 
@@ -125,13 +141,22 @@
             <h3>Filter</h3>
             <div class="row">
                 <div class="col-md-5">
-                    <select id="StdORStff" class="form-control">
-                        <option id="std" value="student">Students</option>
-                        <option id="stff" value="staff">Supervisors</option>
+                    <select class="form-control" id="selopt" name="pop" onchange="selpt(this)">
+                        @if (ViewBag.pop == "student")
+                        {
+                            <option value="student" selected>Students</option>
+                            <option value="staff">Supervisors</option>
+                        }
+                        else
+                        {
+                            <option value="student">Students</option>
+                            <option value="staff" selected>Supervisors</option>
+                        }
+
                     </select>
                 </div>
 
-                <div class="col-md-5">
+                <div class="col-md-5 stud" @ViewBag.hidden>
                     <select class=" form-control">
                         <option label="All Plans" value="-1" selected="selected">All Plans</option>
                         <option label="planA" value="1">planA</option>
@@ -142,7 +167,7 @@
             <br />
             <div class="row">
 
-                <div class="col-md-5">
+                <div class="col-md-5 stud" @ViewBag.hidden>
 
 
                     <select class="form-control">
@@ -169,7 +194,7 @@
             <div class="row">
 
                 <div class="col-md-5">
-                    <select class=" form-control">
+                    <select class=" form-control" name="tyt">
                         <option value="value">
                         <option label="Name" value="fullName" selected="selected">Name</option>
                         <option label="GPA" value="gpa">GPA</option>
@@ -181,16 +206,15 @@
                     </select>
                 </div>
 
-
+                <input type="text" name="namedesc" value="@ViewBag.namedesc" hidden />
                 <div class="col-md-5">
-
-                    <div class="btn btn-primary">ASC</div>
-                    <div class="btn btn-primary">DESC</div>
+                    <input type="submit" class="btn btn-primary" value="ASC" />
+                    <input type="submit" class="btn btn-primary" value="DESC" />
 
                 </div>
 
-
             </div>
+
             <br />
             <div style="height: 555px; overflow: auto;">
 
@@ -245,15 +269,37 @@
 
                 </table>
 
+                <table class="table table-hover staff" @ViewBag.staff>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
 
+                        <th>
+                            Allocated projects
+                        </th>
+                    </tr>
+
+                    @foreach (var item in staff)
+                    {
+                        <tr id="istaff @item.staffID">
+                            <td>
+                                <div id="staff @item.staffID" draggable="true" ondragstart="drag(event)"> @item.username</div>
+                            </td>
+
+                            <td>
+                                0
+                            </td>
+                        </tr>
+                    }
+
+                </table>
 
             </div>
-
         </div>
 
-
-
     </div>
+
 </form>
 
 <script>
@@ -272,6 +318,22 @@
         }
         if (po == 'staff' && data.includes('staff') && idstr.includes('staff')) {
             var str = document.getElementById("i" + data); str.setAttribute("hidden", "hidden");; ev.target.appendChild(document.getElementById(data));
+        }
+
+
+    }
+
+    function selpt(params) {
+
+        if (params.value != 'staff') {
+            var strs = document.getElementsByClassName("stud");
+            for (var i = 0; i < strs.length; i++) { strs[i].removeAttribute("hidden"); }; var strp = document.getElementsByClassName("staff");
+            for (var i = 0; i < strp.length; i++) { strp[i].setAttribute("hidden", "true"); };
+
+        } else {
+            var strs = document.getElementsByClassName("stud"); for (var i = 0; i < strs.length; i++) { strs[i].setAttribute("hidden", "hidden"); };
+
+            var strp = document.getElementsByClassName("staff"); for (var i = 0; i < strp.length; i++) { strp[i].removeAttribute("hidden"); };
         }
 
 
