@@ -13,12 +13,46 @@
 </p>
 
 <br>
-<!--<script src="~/Scripts/jquery-3.4.1.js"></script>
-<script>
-    $(document).ready(function () {
-        alert("hello");
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<!--<script>
+    $().ready(function () {
+        var op = $("#StdORStff option:selected");
+        alert($('#StdORStff option:selected').html())
+    });
+
+    $(function () {
+        var val = $('select option:select').val();
+        var sel = document.getElementById("StdORStff");
+        var $slct = $("#StdORStff")
+        var $std = $("#std")
+        var $stff = $("#stff")
+
+
+            if ($("#std").attr.is("selected") == true) {
+                alert("1111");
+            } else if ($("#stff").attr.is("selected") == true) {
+                alert("2222");
+            }
+
+
+
+
     })
-</script>-->
+
+
+</script>
+<style type="text/css">
+    .red{
+        color:red;
+        width:50px;
+        height:50px;
+    }
+</style>
+<div style="color:red;
+        width:50px;
+        height:50px;">
+
+</div>-->
 <div class="row">
 
 
@@ -90,9 +124,9 @@
         <h3>Filter</h3>
         <div class="row">
             <div class="col-md-5">
-                <select class="form-control">
-                    <option value="student">Students</option>
-                    <option value="staff">Supervisors</option>
+                <select id="StdORStff" class="form-control">
+                    <option id="std" value="student">Students</option>
+                    <option id="stff" value="staff">Supervisors</option>
                 </select>
             </div>
 
