@@ -17,6 +17,7 @@ namespace WebApplication4.Controllers
         // GET: ProjectPeopleAllocations
         public ActionResult Index()
         {
+            ViewBag.namedesc = "asc";
             ViewBag.stdt = db.Students.ToList();
             var ddlyear = new List<string>();
             var currentDate = System.DateTime.Now;
@@ -30,16 +31,16 @@ namespace WebApplication4.Controllers
             DDLSemester.Add("SP2");
             DDLSemester.Add("SP5");
 
-
+            ViewBag.pop = "student";
             ViewBag.ddlyear = new SelectList(ddlyear, "");
             ViewBag.DDLSemester = new SelectList(DDLSemester, "");
-
+            ViewBag.staff = db.Staff.ToList();
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
             ViewBag.personID = db.AspNetUsers.ToList();
             return View(projectPeopleAllocations.ToList());
         }
         [HttpPost]
-        public ActionResult Index(int ddlyear, string DDLSemester,string pop)
+        public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop)
         {
             ViewBag.pop = pop;
             if (pop != "student")
@@ -65,10 +66,40 @@ namespace WebApplication4.Controllers
             DDLSemesterlist.Add("SP5");
 
 
+
+            if (namedesc == "desc")
+            {
+                ViewBag.namedesc = "asc";
+                ViewBag.stdt = db.Students.OrderBy(p => p.uniUserName).ToList();
+                ViewBag.staff = db.Staff.OrderBy(p => p.username).ToList();
+            }
+            else
+            {
+                ViewBag.namedesc = "desc";
+                ViewBag.stdt = db.Students.OrderByDescending(p => p.uniUserName).ToList();
+                ViewBag.staff = db.Staff.OrderByDescending(p => p.username).ToList();
+            }
+
+
+            if (namedesc == "desc")
+            {
+                ViewBag.namedesc = "asc";
+                ViewBag.stdt = db.Students.OrderBy(p => p.gpa).ToList();
+            }
+            else
+            {
+                ViewBag.namedesc = "desc";
+                ViewBag.stdt = db.Students.OrderByDescending(p => p.gpa).ToList();
+            }
+
+
+
+
+
             ViewBag.ddlyear = new SelectList(ddlyearlist, "");
             ViewBag.DDLSemester = new SelectList(DDLSemesterlist, "");
- 
-            var projects = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).Select(p=>p.projectID).ToList();
+
+            var projects = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).Select(p => p.projectID).ToList();
 
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Where(p => projects.Contains(p.projectID)).Include(p => p.Projects);
 
@@ -77,12 +108,12 @@ namespace WebApplication4.Controllers
         }
 
         // GET: ProjectPeopleAllocations/Details/5
-        public ActionResult Details(int projectID,int personID)
+        public ActionResult Details(int projectID, int personID)
         {
-           
-            ProjectPeopleAllocations projectPeopleAllocations = db.ProjectPeopleAllocations.FirstOrDefault(p=>p.projectID==projectID&&p.personID==personID);
 
-            projectPeopleAllocations.Projects= db.Projects.FirstOrDefault(p => p.projectID == projectID);
+            ProjectPeopleAllocations projectPeopleAllocations = db.ProjectPeopleAllocations.FirstOrDefault(p => p.projectID == projectID && p.personID == personID);
+
+            projectPeopleAllocations.Projects = db.Projects.FirstOrDefault(p => p.projectID == projectID);
 
             projectPeopleAllocations.Users = db.AspNetUsers.FirstOrDefault(p => p.personID == personID);
             if (projectPeopleAllocations == null)
@@ -107,17 +138,17 @@ namespace WebApplication4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "projectID,personID,personRole,dateCreated,creatorID,creatorComment")] ProjectPeopleAllocations projectPeopleAllocations)
         {
-            var hhh =db.AspNetUsers.FirstOrDefault(p=>p.UserName==User.Identity.Name);
+            var hhh = db.AspNetUsers.FirstOrDefault(p => p.UserName == User.Identity.Name);
             projectPeopleAllocations.creatorID = hhh.personID;
 
             projectPeopleAllocations.dateCreated = DateTime.Now;
             if (ModelState.IsValid)
             {
-                 
-                    db.ProjectPeopleAllocations.Add(projectPeopleAllocations);
-                    db.SaveChanges();
-               
-              
+
+                db.ProjectPeopleAllocations.Add(projectPeopleAllocations);
+                db.SaveChanges();
+
+
                 return RedirectToAction("Index");
             }
 
@@ -135,7 +166,7 @@ namespace WebApplication4.Controllers
                 return HttpNotFound();
             }
             ViewBag.projectID = new SelectList(db.Projects, "projectID", "Id", projectPeopleAllocations.projectID);
-            ViewBag.personID = new SelectList(db.AspNetUsers, "personID", "UserName",projectPeopleAllocations.personID);
+            ViewBag.personID = new SelectList(db.AspNetUsers, "personID", "UserName", projectPeopleAllocations.personID);
             return View(projectPeopleAllocations);
         }
 
@@ -178,7 +209,7 @@ namespace WebApplication4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int projectID, int personID)
         {
-            ProjectPeopleAllocations projectPeopleAllocations = db.ProjectPeopleAllocations.FirstOrDefault(p=>p.personID==personID&&p.projectID==projectID);
+            ProjectPeopleAllocations projectPeopleAllocations = db.ProjectPeopleAllocations.FirstOrDefault(p => p.personID == personID && p.projectID == projectID);
             db.ProjectPeopleAllocations.Remove(projectPeopleAllocations);
             db.SaveChanges();
             return RedirectToAction("Index");
