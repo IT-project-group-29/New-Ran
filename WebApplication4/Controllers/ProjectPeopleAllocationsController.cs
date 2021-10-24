@@ -43,6 +43,7 @@ namespace WebApplication4.Controllers
         [HttpPost]
         public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop)
         {
+            ViewBag.stcs = db.StudentCourses.ToList();
             ViewBag.pop = pop;
             if (pop != "student")
             {
