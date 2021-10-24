@@ -64,7 +64,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control" });
                 </div>
                 <div class="col-md-4">
                     @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control" })
@@ -80,7 +80,10 @@
                 <table class="table table-hover">
                     <tr>
                         <th>
-                            Project No - Title
+                            Project No.
+                        </th>
+                        <th>
+                            Project Title
                         </th>
                         <th>
                             Staff
@@ -95,43 +98,46 @@
 
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Projects.projectTitle)
-                            </td>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Projects.projectID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Projects.projectTitle)
+                    </td>
 
 
 
-                            <td>
-                                <div>
-                                    <div id="staff @item.personID" ondrop="drop(event)" style="min-height:10px" ondragover="allowDrop(event)">
+                    <td>
+                        <div>
+                            <div id="staff @item.personID" ondrop="drop(event)" style="min-height:10px" ondragover="allowDrop(event)">
 
 
 
-                                        @*<div>@users.FirstOrDefault(p => p.personID == item.personID).UserName</div>*@
-                                    </div>
+                                @*<div>@users.FirstOrDefault(p => p.personID == item.personID).UserName</div>*@
+                            </div>
 
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <div id="div @item.personID" ondrop="drop(event)" ondragover="allowDrop(event)" style="min-height:10px">
-                                        <div>@users.FirstOrDefault(p => p.personID == item.personID).UserName</div>
-                                    </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div id="div @item.personID" ondrop="drop(event)" ondragover="allowDrop(event)" style="min-height:10px">
+                                <div>@users.FirstOrDefault(p => p.personID == item.personID).UserName</div>
+                            </div>
 
 
 
-                                </div>
-                            </td>
-                            <td>
+                        </div>
+                    </td>
+                    <td>
 
-                                   @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
-                                    <!--                    |
-                                @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
-                                     @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })-->
+                        <!--   @Html.ActionLink("Edit", "Edit", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })
+                             |
+        @Html.ActionLink("Details", "Details", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" }) |
+             @Html.ActionLink("Delete", "Delete", new { projectID = item.projectID, personID = item.personID }, new { @class = "btn btn-primary" })-->
 
-                            </td>
-                        </tr>
+                    </td>
+                </tr>
                     }
 
                 </table>

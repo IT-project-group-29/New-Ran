@@ -82,7 +82,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.dateEnded)
         </td>
-        <td>
+        <td style="white-space:nowrap;">
             @Html.ActionLink("Edit", "Edit", new { id=item.studentID }, new { @class = "btn btn-primary" }) |
             @Html.ActionLink("Details", "Details", new { id=item.studentID }, new { @class = "btn btn-primary" }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.studentID }, new { @class = "btn btn-primary" })

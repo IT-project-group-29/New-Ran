@@ -6,9 +6,6 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
-</p>
 <table class="table">
     <tr>
         <th>
@@ -24,13 +21,17 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                @*   @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })*@
 
             </td>
         </tr>
     }
 
 </table>
+
+<p>
+    @Html.ActionLink("create new role", "Create", null, new { @class = "btn btn-primary" })
+</p>
 
 
 <div class="form-horizontal">

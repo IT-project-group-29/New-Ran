@@ -28,13 +28,29 @@ namespace WebApplication4.Controllers
 
             }
             var DDLSemester = new List<string>();
-
+            int yearNow = DateTime.Now.Year;
+            int selectyear = 0;
+            for (int i = 0; i < ddlyear.Count - 1; i++)
+            {
+                if (Convert.ToInt32(ddlyear[i]) == yearNow)
+                {
+                    selectyear = i;
+                }
+            }
             DDLSemester.Add("SP2");
             DDLSemester.Add("SP5");
-
+            int selectMonth = 0;
+            if (DateTime.Now.Month < 6)
+            {
+                selectMonth = 0;
+            }
+            else
+            {
+                selectMonth = 1;
+            }
             ViewBag.pop = "student";
-            ViewBag.ddlyear = new SelectList(ddlyear, "");
-            ViewBag.DDLSemester = new SelectList(DDLSemester, "");
+            ViewBag.ddlyear = new SelectList(ddlyear, ddlyear[selectyear]);
+            ViewBag.DDLSemester = new SelectList(DDLSemester,DDLSemester[selectMonth]);
             ViewBag.staff = db.Staff.ToList();
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
             ViewBag.personID = db.AspNetUsers.ToList();
@@ -43,6 +59,7 @@ namespace WebApplication4.Controllers
         [HttpPost]
         public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop)
         {
+            ViewBag.stcs = db.StudentCourses.ToList();
             ViewBag.pop = pop;
             if (pop != "student")
             {
@@ -63,6 +80,9 @@ namespace WebApplication4.Controllers
             }
             var DDLSemesterlist = new List<string>();
 
+            List<SelectListItem> DDLSEM = new List<SelectListItem>();
+            DDLSEM.Add(new SelectListItem { Text = "SP2" });
+            DDLSEM.Add(new SelectListItem { Text = "SP5" ,Selected = true});
             DDLSemesterlist.Add("SP2");
             DDLSemesterlist.Add("SP5");
 
