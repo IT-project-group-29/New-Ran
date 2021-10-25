@@ -17,11 +17,18 @@ namespace WebApplication4.Controllers
         // GET: ProjectPeopleAllocations
         public ActionResult Index()
         {
+            List<StudentInfo> StdInfom = GetStudents();
+        
+
+
+    
             ViewBag.namedesc = "asc";
-            ViewBag.stdt = db.Students.ToList();
-            ViewBag.stcs = db.StudentCourses.ToList();
+            //ViewBag.stcs = db.StudentCourses.ToList();
+            ViewBag.stcs = StdInfom;
             var ddlyear = new List<string>();
             var currentDate = System.DateTime.Now;
+
+
             for (int i = -2; i <= 2; i++)
             {
                 ddlyear.Add(currentDate.AddYears(i).Year.ToString());
@@ -52,25 +59,31 @@ namespace WebApplication4.Controllers
             ViewBag.ddlyear = new SelectList(ddlyear, ddlyear[selectyear]);
             ViewBag.DDLSemester = new SelectList(DDLSemester,DDLSemester[selectMonth]);
             ViewBag.staff = db.Staff.ToList();
+            ViewBag.staffHidden = "hidden";
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
             ViewBag.personID = db.AspNetUsers.ToList();
             return View(projectPeopleAllocations.ToList());
         }
         [HttpPost]
-        public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop)
+        public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop,string tyt , string StudyPlan)
         {
-            ViewBag.stcs = db.StudentCourses.ToList();
+            List<StudentInfo> StdInfom = GetStudents();
+            
+            ViewBag.stcs = StdInfom;
             ViewBag.pop = pop;
+            ViewBag.staff = db.Staff.ToList();
             if (pop != "student")
-            {
-                ViewBag.staff = "";
-                ViewBag.hidden = "hidden";
-            }
-            else
-            {
-                ViewBag.staff = "hidden";
-                ViewBag.hidden = "";
-            }
+                {
+                    ViewBag.staffHidden = "";
+                    ViewBag.hidden = "hidden";
+                }
+                else
+                {
+                    ViewBag.staffHidden = "hidden";
+                    ViewBag.hidden = "";
+                }
+            
+            
             var ddlyearlist = new List<string>();
             var currentDate = System.DateTime.Now;
             for (int i = -2; i <= 2; i++)
@@ -87,33 +100,106 @@ namespace WebApplication4.Controllers
             DDLSemesterlist.Add("SP5");
 
 
+           
 
+
+            if (namedesc == "asc" )
+            {
+                if (tyt == "fullName")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.Name);
+                    ViewBag.staff = db.Staff.OrderBy(p => p.username).ToList();
+                }
+                if(tyt == "gpa")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.Gpa);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+                if (tyt == "105295")
+                {
+                    
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.CPP);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+                if (tyt == "105294")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.PF);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+                if (tyt == "156783")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.WEB);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+                if (tyt == "012540")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.IDIE);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+                if (tyt == "105284")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.AgNET);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+
+
+
+
+            }
             if (namedesc == "desc")
             {
-                ViewBag.namedesc = "asc";
-                ViewBag.stdt = db.Students.OrderBy(p => p.uniUserName).ToList();
-                ViewBag.staff = db.Staff.OrderBy(p => p.username).ToList();
-            }
-            else
-            {
-                ViewBag.namedesc = "desc";
-                ViewBag.stdt = db.Students.OrderByDescending(p => p.uniUserName).ToList();
-                ViewBag.staff = db.Staff.OrderByDescending(p => p.username).ToList();
+                if (tyt == "fullName")
+                {
+                    ViewBag.stdt = db.Students.OrderByDescending(p => p.uniUserName).ToList();
+                    ViewBag.staff = db.Staff.OrderByDescending(p => p.username).ToList();
+                }
+                if (tyt == "gpa")
+                {
+                    ViewBag.stdt = db.Students.OrderBy(p => p.gpa).ToList();
+                    ViewBag.staff = db.Staff.ToList();
+                }
+                if (tyt == "105295")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.CPP);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+                if (tyt == "105294")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.PF);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+                if (tyt == "156783")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.WEB);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+                if (tyt == "012540")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.IDIE);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+                if (tyt == "105284")
+                {
+
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.AgNET);
+                    ViewBag.staff = db.Staff.ToList();
+                }
+
+
             }
 
 
-            if (namedesc == "desc")
-            {
-                ViewBag.namedesc = "asc";
-                ViewBag.stdt = db.Students.OrderBy(p => p.gpa).ToList();
-            }
-            else
-            {
-                ViewBag.namedesc = "desc";
-                ViewBag.stdt = db.Students.OrderByDescending(p => p.gpa).ToList();
-            }
-
-
+        
 
 
 
@@ -155,7 +241,33 @@ namespace WebApplication4.Controllers
         // POST: ProjectPeopleAllocations/Create
         // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
         // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
-        [HttpPost]
+        private List<StudentInfo> GetStudents()
+        {
+            List<StudentInfo> StdInfom = new List<StudentInfo>();
+            foreach (var item in db.Students)
+            {
+                
+                StdInfom.Add(new StudentInfo
+                {
+                    ID = item.studentID,
+                    Name = item.uniUserName,
+                    Gpa = item.gpa,
+                    CPP = db.StudentCourses.FirstOrDefault(p => p.studentID == item.studentID && p.courseID == "105295").grade,
+                    PF = db.StudentCourses.FirstOrDefault(p => p.studentID == item.studentID && p.courseID == "105294").grade,
+                    WEB = db.StudentCourses.FirstOrDefault(p => p.studentID == item.studentID && p.courseID == "156783").grade,
+                    IDIE = db.StudentCourses.FirstOrDefault(p => p.studentID == item.studentID && p.courseID == "012540").grade,
+                    AgNET = db.StudentCourses.FirstOrDefault(p => p.studentID == item.studentID && p.courseID == "105284").grade
+                });
+
+
+               
+            }
+            return StdInfom;
+        }
+    
+ 
+
+    [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "projectID,personID,personRole,dateCreated,creatorID,creatorComment")] ProjectPeopleAllocations projectPeopleAllocations)
         {
@@ -192,8 +304,7 @@ namespace WebApplication4.Controllers
         }
 
         // POST: ProjectPeopleAllocations/Edit/5
-        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "projectID,personID,personRole,dateCreated,creatorID,creatorComment")] ProjectPeopleAllocations projectPeopleAllocations)
@@ -244,5 +355,18 @@ namespace WebApplication4.Controllers
             }
             base.Dispose(disposing);
         }
+    }
+    public class StudentInfo
+    {
+        public int ID { set; get; }
+        public string Name { set; get; }
+        public decimal? Gpa { set; get; }
+        public string CPP { set; get; }
+
+        public string PF { set; get; }
+        public string WEB { set; get; }
+        public string IDIE { set; get; }
+        public string AgNET { set; get; }
+
     }
 }
