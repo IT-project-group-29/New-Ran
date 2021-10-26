@@ -65,22 +65,22 @@ namespace WebApplication4.Controllers
             return View(projectPeopleAllocations.ToList());
         }
         [HttpPost]
-        public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop,string tyt , string StudyPlan)
+        public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop,string tyt )
         {
             List<StudentInfo> StdInfom = GetStudents();
-            
+            ViewBag.tyt = tyt;
             ViewBag.stcs = StdInfom;
             ViewBag.pop = pop;
             ViewBag.staff = db.Staff.ToList();
             if (pop != "student")
                 {
                     ViewBag.staffHidden = "";
-                    ViewBag.hidden = "hidden";
+                    ViewBag.studenthidden = "hidden";
                 }
                 else
                 {
                     ViewBag.staffHidden = "hidden";
-                    ViewBag.hidden = "";
+                    ViewBag.studenthidden = "";
                 }
             
             
@@ -105,7 +105,7 @@ namespace WebApplication4.Controllers
 
             if (namedesc == "asc" )
             {
-                if (tyt == "fullName")
+                if (tyt == "name")
                 {
 
                     ViewBag.stcs = StdInfom.OrderBy(p => p.Name);
@@ -115,37 +115,37 @@ namespace WebApplication4.Controllers
                 {
 
                     ViewBag.stcs = StdInfom.OrderByDescending(p => p.Gpa);
-                    ViewBag.staff = db.Staff.ToList();
+                    
                 }
                 if (tyt == "105295")
                 {
                     
                     ViewBag.stcs = StdInfom.OrderBy(p => p.CPP);
-                    ViewBag.staff = db.Staff.ToList();
+                    
                 }
                 if (tyt == "105294")
                 {
 
                     ViewBag.stcs = StdInfom.OrderBy(p => p.PF);
-                    ViewBag.staff = db.Staff.ToList();
+                    
                 }
                 if (tyt == "156783")
                 {
 
                     ViewBag.stcs = StdInfom.OrderBy(p => p.WEB);
-                    ViewBag.staff = db.Staff.ToList();
+                    
                 }
                 if (tyt == "012540")
                 {
 
                     ViewBag.stcs = StdInfom.OrderBy(p => p.IDIE);
-                    ViewBag.staff = db.Staff.ToList();
+                    
                 }
                 if (tyt == "105284")
                 {
 
                     ViewBag.stcs = StdInfom.OrderBy(p => p.AgNET);
-                    ViewBag.staff = db.Staff.ToList();
+                    
                 }
 
 
@@ -154,45 +154,45 @@ namespace WebApplication4.Controllers
             }
             if (namedesc == "desc")
             {
-                if (tyt == "fullName")
+                if (tyt == "name")
                 {
-                    ViewBag.stdt = db.Students.OrderByDescending(p => p.uniUserName).ToList();
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.Name);
                     ViewBag.staff = db.Staff.OrderByDescending(p => p.username).ToList();
                 }
                 if (tyt == "gpa")
                 {
-                    ViewBag.stdt = db.Students.OrderBy(p => p.gpa).ToList();
-                    ViewBag.staff = db.Staff.ToList();
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.Gpa);
+               
                 }
                 if (tyt == "105295")
                 {
 
                     ViewBag.stcs = StdInfom.OrderByDescending(p => p.CPP);
-                    ViewBag.staff = db.Staff.ToList();
+                    
                 }
                 if (tyt == "105294")
                 {
 
                     ViewBag.stcs = StdInfom.OrderByDescending(p => p.PF);
-                    ViewBag.staff = db.Staff.ToList();
+                  
                 }
                 if (tyt == "156783")
                 {
 
                     ViewBag.stcs = StdInfom.OrderByDescending(p => p.WEB);
-                    ViewBag.staff = db.Staff.ToList();
+                   
                 }
                 if (tyt == "012540")
                 {
 
                     ViewBag.stcs = StdInfom.OrderByDescending(p => p.IDIE);
-                    ViewBag.staff = db.Staff.ToList();
+                   
                 }
                 if (tyt == "105284")
                 {
 
                     ViewBag.stcs = StdInfom.OrderByDescending(p => p.AgNET);
-                    ViewBag.staff = db.Staff.ToList();
+                   
                 }
 
 
