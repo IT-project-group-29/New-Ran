@@ -34,6 +34,7 @@ namespace WebApplication4.Models
         [Required]
         public string projectTitle { get; set; } = "";
 
+        public string difficult { get; set; } = "no";
         public string projectScope { get; set; } = "";
 
         public string projectOutcomes { get; set; } = "";
@@ -70,7 +71,7 @@ namespace WebApplication4.Models
 
         public int projectCreatorID { get; set; } = 0;
 
-        public DateTime dateCreated { get; set; }=DateTime.Now;
+        public DateTime dateCreated { get; set; } = DateTime.Now;
 
         [StringLength(10)]
         public string projectEffortRequirements { get; set; } = "";
