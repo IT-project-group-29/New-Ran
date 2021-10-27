@@ -41,15 +41,16 @@
         <dd>
             @Html.DisplayFor(model => model.projectTitle)
         </dd>
-        <!--
+        
         <dt>
-            @Html.DisplayNameFor(model => model.projectScope)
+            @Html.LabelFor(model => model.projectScope, "Project Scope", htmlAttributes: new { @class = "control-label" })
+            @*@Html.DisplayNameFor(model => model.projectScope)*@
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.projectScope)
         </dd>
-
+        <!--
         <dt>
             @Html.DisplayNameFor(model => model.projectOutcomes)
         </dt>
@@ -134,7 +135,7 @@
         </dd>
             -->
         <dt>
-            @Html.LabelFor(model => model.projectYear, "Project Year", htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.honoursUndergrad, "Honours Undergraduate", htmlAttributes: new { @class = "control-label" })
             <!--@Html.DisplayNameFor(model => model.honoursUndergrad)-->
         </dt>
 
