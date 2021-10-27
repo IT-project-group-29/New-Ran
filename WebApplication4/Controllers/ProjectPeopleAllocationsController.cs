@@ -18,9 +18,9 @@ namespace WebApplication4.Controllers
         public ActionResult Index()
         {
             List<StudentInfo> StdInfom = GetStudents();
-        
 
 
+            ViewBag.stdt = db.Students.ToList();
     
             ViewBag.namedesc = "asc";
             //ViewBag.stcs = db.StudentCourses.ToList();
@@ -74,6 +74,7 @@ namespace WebApplication4.Controllers
         public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop,string tyt )
         {
             List<StudentInfo> StdInfom = GetStudents();
+            ViewBag.stdt = db.Students.ToList();
             ViewBag.tyt = tyt;
             ViewBag.stcs = StdInfom;
             ViewBag.pop = pop;
@@ -220,6 +221,97 @@ namespace WebApplication4.Controllers
 
             ViewBag.personID = db.AspNetUsers.ToList();
             return View(projectPeopleAllocations.ToList());
+        }
+
+
+        public void AddStudent(int studentId, int projectId)
+        {
+
+            var pro = new ProjectPeopleAllocations();
+            pro.projectID = projectId;
+            pro.personID = studentId;
+            pro.personRole = "student";
+            pro.dateCreated = DateTime.Now;
+
+            db.ProjectPeopleAllocations.Add(pro);
+
+            db.SaveChanges();
+        }
+
+        public void deletStudent(int studentId, int projectId)
+        {
+
+            var pro = new ProjectPeopleAllocations();
+            pro.projectID = projectId;
+            pro.personID = studentId;
+            pro.personRole = "student";
+
+            var dd = db.ProjectPeopleAllocations.SqlQuery($"delete  from ProjectPeopleAllocations where personID={studentId} and projectID={projectId}");
+            try
+            {
+                dd.Count();
+            }
+            catch (Exception)
+            {
+
+
+            }
+            //db.ProjectPeopleAllocations.Remove(pro);
+
+            //db.SaveChanges();
+        }
+
+        public void AddStaff(int staffId, int projectId)
+        {
+
+            var projinfos = db.Projects.FirstOrDefault(p => p.projectID == projectId);
+
+            var staff = db.Staff.FirstOrDefault(p => p.staffID == staffId);
+            staff.projnum += 1;
+            if (projinfos.difficult == "yes")
+            {
+                staff.diffnum += 1;
+            }
+
+            var pro = new ProjectPeopleAllocations();
+            pro.projectID = projectId;
+            pro.personID = staffId;
+            pro.personRole = "staff";
+            pro.dateCreated = DateTime.Now;
+
+            db.ProjectPeopleAllocations.Add(pro);
+
+            db.SaveChanges();
+        }
+
+        public void deletStaff(int staffId, int projectId)
+        {
+
+            var projinfos = db.Projects.FirstOrDefault(p => p.projectID == projectId);
+
+            var staff = db.Staff.FirstOrDefault(p => p.staffID == staffId);
+            staff.projnum -= 1;
+            if (projinfos.difficult == "yes")
+            {
+                staff.diffnum -= 1;
+            }
+            var pro = new ProjectPeopleAllocations();
+            pro.projectID = projectId;
+            pro.personID = staffId;
+            pro.personRole = "staff";
+
+            var dd = db.ProjectPeopleAllocations.SqlQuery($"delete  from ProjectPeopleAllocations where personID={staffId} and projectID={projectId}");
+            try
+            {
+                dd.Count();
+            }
+            catch (Exception)
+            {
+
+
+            }
+            db.SaveChanges();
+
         }
 
         // GET: ProjectPeopleAllocations/Details/5
