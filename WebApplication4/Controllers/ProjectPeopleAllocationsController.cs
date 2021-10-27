@@ -62,6 +62,12 @@ namespace WebApplication4.Controllers
             ViewBag.staffHidden = "hidden";
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
             ViewBag.personID = db.AspNetUsers.ToList();
+            ViewBag.pstatus = db.ProjectStatus.ToList();
+            var myeey = Convert.ToInt32(ddlyear[selectyear]);
+            var sem = DDLSemester[selectMonth];
+            ViewBag.project = db.Projects.Where(p => p.projectYear == myeey && p.projectSemester == sem).ToList();
+            ViewBag.planList = db.Plans.ToList();
+
             return View(projectPeopleAllocations.ToList());
         }
         [HttpPost]
@@ -72,6 +78,8 @@ namespace WebApplication4.Controllers
             ViewBag.stcs = StdInfom;
             ViewBag.pop = pop;
             ViewBag.staff = db.Staff.ToList();
+            ViewBag.pstatus = db.ProjectStatus.ToList();
+            ViewBag.project = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).ToList();
             if (pop != "student")
                 {
                     ViewBag.staffHidden = "";
