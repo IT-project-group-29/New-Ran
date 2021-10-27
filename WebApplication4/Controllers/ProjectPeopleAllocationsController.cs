@@ -55,6 +55,7 @@ namespace WebApplication4.Controllers
             {
                 selectMonth = 1;
             }
+            ViewBag.planid = 0;      
             ViewBag.pop = "student";
             ViewBag.ddlyear = new SelectList(ddlyear, ddlyear[selectyear]);
             ViewBag.DDLSemester = new SelectList(DDLSemester,DDLSemester[selectMonth]);
@@ -67,17 +68,21 @@ namespace WebApplication4.Controllers
             var sem = DDLSemester[selectMonth];
             ViewBag.project = db.Projects.Where(p => p.projectYear == myeey && p.projectSemester == sem).ToList();
             ViewBag.planList = db.Plans.ToList();
+            ViewBag.stdt = db.Students.ToList();
 
             return View(projectPeopleAllocations.ToList());
         }
         [HttpPost]
-        public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop,string tyt )
+        public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop, int plan, string tyt )
         {
-            List<StudentInfo> StdInfom = GetStudents();
-            ViewBag.stdt = db.Students.ToList();
+            List<StudentInfo> StdInfom = GetStudents();            
             ViewBag.tyt = tyt;
+            ViewBag.namedesc = namedesc;
+            ViewBag.planid = plan;
             ViewBag.stcs = StdInfom;
             ViewBag.pop = pop;
+            ViewBag.stdt = db.Students.ToList();
+            ViewBag.planList = db.Plans.ToList();
             ViewBag.staff = db.Staff.ToList();
             ViewBag.pstatus = db.ProjectStatus.ToList();
             ViewBag.project = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).ToList();
@@ -346,21 +351,81 @@ namespace WebApplication4.Controllers
             List<StudentInfo> StdInfom = new List<StudentInfo>();
             foreach (var item in db.Students)
             {
-                
-                StdInfom.Add(new StudentInfo
+                var CPP = "";
+                var PF = "";
+                var WEB = "";
+                var IDIE = "";
+                var AgNET = "";
+
+                foreach (var csgo in db.StudentCourses)
                 {
-                    ID = item.studentID,
-                    Name = item.uniUserName,
-                    Gpa = item.gpa,
-                    CPP = db.StudentCourses.FirstOrDefault(p => p.studentID == item.studentID && p.courseID == "105295").grade,
-                    PF = db.StudentCourses.FirstOrDefault(p => p.studentID == item.studentID && p.courseID == "105294").grade,
-                    WEB = db.StudentCourses.FirstOrDefault(p => p.studentID == item.studentID && p.courseID == "156783").grade,
-                    IDIE = db.StudentCourses.FirstOrDefault(p => p.studentID == item.studentID && p.courseID == "012540").grade,
-                    AgNET = db.StudentCourses.FirstOrDefault(p => p.studentID == item.studentID && p.courseID == "105284").grade
-                });
+                    if (csgo.studentID == item.studentID && csgo.courseID == "105295")
+                    {
+                        CPP = csgo.grade;
+                    }
+                }
+
+                foreach (var csgo in db.StudentCourses)
+                {
+                    if (csgo.studentID == item.studentID && csgo.courseID == "105294")
+                    {
+
+                        PF = csgo.grade;
+                    }
+                }
+
+                foreach (var csgo in db.StudentCourses)
+                {
+                    if (csgo.studentID == item.studentID && csgo.courseID == "156783")
+                    {
+
+                        WEB = csgo.grade;
+                    }
+                }
+                foreach (var csgo in db.StudentCourses)
+                {
+                    if (csgo.studentID == item.studentID && csgo.courseID == "012540")
+                    {
+
+                        IDIE = csgo.grade;
+                    }
+                }
+                foreach (var csgo in db.StudentCourses)
+                {
+                    if (csgo.studentID == item.studentID && csgo.courseID == "105284")
+                    {
+
+                        AgNET = csgo.grade;
+                    }
+                }
 
 
-               
+
+
+
+
+                    StdInfom.Add(new StudentInfo
+                    {
+                        ID = item.studentID,
+                        Planid = item.planId,
+                        Name = item.uniUserName,
+                        Gpa = item.gpa,
+
+
+                        CPP = CPP,
+                        PF = PF,
+                        WEB = WEB,
+                        IDIE = IDIE,
+                        AgNET = AgNET
+
+
+
+                    });
+
+
+
+                
+                
             }
             return StdInfom;
         }
@@ -459,6 +524,7 @@ namespace WebApplication4.Controllers
     public class StudentInfo
     {
         public int ID { set; get; }
+        public int Planid { set; get; }
         public string Name { set; get; }
         public decimal? Gpa { set; get; }
         public string CPP { set; get; }

@@ -9,7 +9,8 @@
     var projects = (List<WebApplication4.Models.Projects>)ViewBag.project;
     var pstatus = (List<WebApplication4.Models.ProjectStatus>)ViewBag.pstatus;
     var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
-
+    var plans = (List<WebApplication4.Models.Plans>)ViewBag.planList;
+    var planid = (int)ViewBag.planid;
 }
 
 <h2>Index</h2>
@@ -198,12 +199,39 @@
                     </select>
                 </div>
 
-                <div class="col-md-5 stud" @ViewBag.hidden>
-                    <select class=" form-control" name="StudyPlan">
-                        <option label="All Plans" value="-1" selected="selected">All Plans</option>
-                        <option label="planA" value="1">planA</option>
-                        <option label="planB" value="2">planB</option>
+                <div class="col-md-5 stud" @ViewBag.studenthidden>
+
+                    <select class=" form-control" name="plan">
+                        @if (planid == 0)
+                        {
+
+                            <option label="All Plans" value="0" name="plan" selected="selected">All Plans</option>
+                        }
+                        else
+                        {
+                            <option label="All Plans" value="0" name="plan" selected="">All Plans</option>
+                        }
+                        @foreach (var item in plans)
+                        {
+                            if (@item.planId == planid)
+                            {
+                                <option value="@item.planId" selected="selected">@item.planName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.planId">@item.planName</option>
+
+                            }
+
+                        }
+
                     </select>
+
+                    @*<select class=" form-control">
+            <option label="All Plans" value="-1" name="plan" selected="selected">All Plans</option>
+            ViewBag.planList
+        </select>*@
+                    @*@Html.DropDownList("planList", null, htmlAttributes: new { @class = "form-control" })*@
                 </div>
             </div>
             <br />
@@ -327,30 +355,78 @@
             <div style="height: 555px; overflow: auto;">
 
                 <table class="table table-hover stud" @ViewBag.studenthidden>
-                    <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
+                    <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">                      
                         <tr>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                SDC++
-                            </th>
-                            <th>
-                                PF
-                            </th>
+                            @if (planid == 0)
+                            {
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    SDC++
+                                </th>
+                                <th>
+                                    PF
+                               </th>
 
-                            <th>
-                                WEB
-                            </th>
-                            <th>
-                                IDIE
-                            </th>
-                            <th>
-                                AgNET
-                            </th>
-                            <th>
-                                GPA
-                            </th>
+                                <th>
+                                    WEB
+                                </th>
+                                <th>
+                                    IDIE
+                                </th>
+                                <th>
+                                    AgNET
+                                </th>
+                                <th>
+                                    GPA
+                                </th>
+                            }
+                            else if (planid == 1)
+                            {
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                </th>
+                                <th>
+                                </th>
+                                <th>
+                                </th>
+                                <th>
+                                    IDIE
+                                </th>
+                                <th>
+                                    AgNET
+                                </th>
+                                <th>
+                                    GPA
+                                </th>
+                            }
+                            else if (planid == 2)
+                            {
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    SDC++
+                                </th>
+                                <th>
+                                    PF
+                                </th>
+
+                                <th>
+                                    WEB
+                                </th>
+                                <th>
+                                </th>
+                                <th>
+                                </th>                      
+                                <th>
+                                    GPA
+                                </th>
+                            }
+
                         </tr>
 
                         @foreach (var item in stucourse)
@@ -374,33 +450,36 @@
 
 
                                         var gradeCPP = "";
-                                        if (Convert.ToInt32(a) == 1)
+                                        if (a != "") 
                                         {
-                                            gradeCPP = "HD";
-                                        }
-                                        else if (Convert.ToInt32(a) == 2)
-                                        {
-                                            gradeCPP = "D";
-                                        }
-                                        else if (Convert.ToInt32(a) == 3)
-                                        {
-                                            gradeCPP = "C";
-                                        }
-                                        else if (Convert.ToInt32(a) == 4)
-                                        {
-                                            gradeCPP = "P1";
-                                        }
-                                        else if (Convert.ToInt32(a) == 5)
-                                        {
-                                            gradeCPP = "P2";
-                                        }
-                                        else if (Convert.ToInt32(a) == 6)
-                                        {
-                                            gradeCPP = "F1";
-                                        }
-                                        else if (Convert.ToInt32(a) == 7)
-                                        {
-                                            gradeCPP = "F2";
+                                            if (Convert.ToInt32(a) == 1)
+                                            {
+                                                gradeCPP = "HD";
+                                            }
+                                            else if (Convert.ToInt32(a) == 2)
+                                            {
+                                                gradeCPP = "D";
+                                            }
+                                            else if (Convert.ToInt32(a) == 3)
+                                            {
+                                                gradeCPP = "C";
+                                            }
+                                            else if (Convert.ToInt32(a) == 4)
+                                            {
+                                                gradeCPP = "P1";
+                                            }
+                                            else if (Convert.ToInt32(a) == 5)
+                                            {
+                                                gradeCPP = "P2";
+                                            }
+                                            else if (Convert.ToInt32(a) == 6)
+                                            {
+                                                gradeCPP = "F1";
+                                            }
+                                            else if (Convert.ToInt32(a) == 7)
+                                            {
+                                                gradeCPP = "F2";
+                                            }
                                         }
                                         @gradeCPP
 
@@ -413,36 +492,38 @@
 
                                 <td>
                                     @{
-
-
                                         var gradePF = "";
-                                        if (Convert.ToInt32(@b) == 1)
+                                        if (b != "")
                                         {
-                                            gradePF = "HD";
-                                        }
-                                        else if (Convert.ToInt32(@b) == 2)
-                                        {
-                                            gradePF = "D";
-                                        }
-                                        else if (Convert.ToInt32(@b) == 3)
-                                        {
-                                            gradePF = "C";
-                                        }
-                                        else if (Convert.ToInt32(@b) == 4)
-                                        {
-                                            gradePF = "P1";
-                                        }
-                                        else if (Convert.ToInt32(@b) == 5)
-                                        {
-                                            gradePF = "P2";
-                                        }
-                                        else if (Convert.ToInt32(@b) == 6)
-                                        {
-                                            gradePF = "F1";
-                                        }
-                                        else if (Convert.ToInt32(@b) == 7)
-                                        {
-                                            gradePF = "F2";
+
+                                            if (Convert.ToInt32(@b) == 1)
+                                            {
+                                                gradePF = "HD";
+                                            }
+                                            else if (Convert.ToInt32(@b) == 2)
+                                            {
+                                                gradePF = "D";
+                                            }
+                                            else if (Convert.ToInt32(@b) == 3)
+                                            {
+                                                gradePF = "C";
+                                            }
+                                            else if (Convert.ToInt32(@b) == 4)
+                                            {
+                                                gradePF = "P1";
+                                            }
+                                            else if (Convert.ToInt32(@b) == 5)
+                                            {
+                                                gradePF = "P2";
+                                            }
+                                            else if (Convert.ToInt32(@b) == 6)
+                                            {
+                                                gradePF = "F1";
+                                            }
+                                            else if (Convert.ToInt32(@b) == 7)
+                                            {
+                                                gradePF = "F2";
+                                            }
                                         }
                                         @gradePF;
 
@@ -456,36 +537,38 @@
                                 <td>
 
                                     @{
-
-
                                         var gradeWEB = "";
-                                        if (Convert.ToInt32(c) == 1)
+                                        if (c != "")
                                         {
-                                            gradeWEB = "HD";
-                                        }
-                                        else if (Convert.ToInt32(c) == 2)
-                                        {
-                                            gradeWEB = "D";
-                                        }
-                                        else if (Convert.ToInt32(c) == 3)
-                                        {
-                                            gradeWEB = "C";
-                                        }
-                                        else if (Convert.ToInt32(c) == 4)
-                                        {
-                                            gradeWEB = "P1";
-                                        }
-                                        else if (Convert.ToInt32(c) == 5)
-                                        {
-                                            gradeWEB = "P2";
-                                        }
-                                        else if (Convert.ToInt32(c) == 6)
-                                        {
-                                            gradeWEB = "F1";
-                                        }
-                                        else if (Convert.ToInt32(c) == 7)
-                                        {
-                                            gradeWEB = "F2";
+
+                                            if (Convert.ToInt32(c) == 1)
+                                            {
+                                                gradeWEB = "HD";
+                                            }
+                                            else if (Convert.ToInt32(c) == 2)
+                                            {
+                                                gradeWEB = "D";
+                                            }
+                                            else if (Convert.ToInt32(c) == 3)
+                                            {
+                                                gradeWEB = "C";
+                                            }
+                                            else if (Convert.ToInt32(c) == 4)
+                                            {
+                                                gradeWEB = "P1";
+                                            }
+                                            else if (Convert.ToInt32(c) == 5)
+                                            {
+                                                gradeWEB = "P2";
+                                            }
+                                            else if (Convert.ToInt32(c) == 6)
+                                            {
+                                                gradeWEB = "F1";
+                                            }
+                                            else if (Convert.ToInt32(c) == 7)
+                                            {
+                                                gradeWEB = "F2";
+                                            }
                                         }
                                         @gradeWEB
                                     }
@@ -494,36 +577,38 @@
 
                                 <td>
                                     @{
-
-
                                         var gradeIDIE = "";
-                                        if (Convert.ToInt32(d) == 1)
+                                        if (d != "")
                                         {
-                                            gradeIDIE = "HD";
-                                        }
-                                        else if (Convert.ToInt32(d) == 2)
-                                        {
-                                            gradeIDIE = "D";
-                                        }
-                                        else if (Convert.ToInt32(d) == 3)
-                                        {
-                                            gradeIDIE = "C";
-                                        }
-                                        else if (Convert.ToInt32(d) == 4)
-                                        {
-                                            gradeIDIE = "P1";
-                                        }
-                                        else if (Convert.ToInt32(d) == 5)
-                                        {
-                                            gradeIDIE = "P2";
-                                        }
-                                        else if (Convert.ToInt32(d) == 6)
-                                        {
-                                            gradeIDIE = "F1";
-                                        }
-                                        else if (Convert.ToInt32(d) == 7)
-                                        {
-                                            gradeIDIE = "F2";
+
+                                            if (Convert.ToInt32(d) == 1)
+                                            {
+                                                gradeIDIE = "HD";
+                                            }
+                                            else if (Convert.ToInt32(d) == 2)
+                                            {
+                                                gradeIDIE = "D";
+                                            }
+                                            else if (Convert.ToInt32(d) == 3)
+                                            {
+                                                gradeIDIE = "C";
+                                            }
+                                            else if (Convert.ToInt32(d) == 4)
+                                            {
+                                                gradeIDIE = "P1";
+                                            }
+                                            else if (Convert.ToInt32(d) == 5)
+                                            {
+                                                gradeIDIE = "P2";
+                                            }
+                                            else if (Convert.ToInt32(d) == 6)
+                                            {
+                                                gradeIDIE = "F1";
+                                            }
+                                            else if (Convert.ToInt32(d) == 7)
+                                            {
+                                                gradeIDIE = "F2";
+                                            }
                                         }
                                         @gradeIDIE
                                     }
@@ -533,36 +618,38 @@
                                 <td>
 
                                     @{
-
-
                                         var gradeAgNET = "";
-                                        if (Convert.ToInt32(e) == 1)
+                                        if (e != "")
                                         {
-                                            gradeAgNET = "HD";
-                                        }
-                                        else if (Convert.ToInt32(e) == 2)
-                                        {
-                                            gradeAgNET = "D";
-                                        }
-                                        else if (Convert.ToInt32(e) == 3)
-                                        {
-                                            gradeAgNET = "C";
-                                        }
-                                        else if (Convert.ToInt32(e) == 4)
-                                        {
-                                            gradeAgNET = "P1";
-                                        }
-                                        else if (Convert.ToInt32(e) == 5)
-                                        {
-                                            gradeAgNET = "P2";
-                                        }
-                                        else if (Convert.ToInt32(e) == 6)
-                                        {
-                                            gradeAgNET = "F1";
-                                        }
-                                        else if (Convert.ToInt32(e) == 7)
-                                        {
-                                            gradeAgNET = "F2";
+
+                                            if (Convert.ToInt32(e) == 1)
+                                            {
+                                                gradeAgNET = "HD";
+                                            }
+                                            else if (Convert.ToInt32(e) == 2)
+                                            {
+                                                gradeAgNET = "D";
+                                            }
+                                            else if (Convert.ToInt32(e) == 3)
+                                            {
+                                                gradeAgNET = "C";
+                                            }
+                                            else if (Convert.ToInt32(e) == 4)
+                                            {
+                                                gradeAgNET = "P1";
+                                            }
+                                            else if (Convert.ToInt32(e) == 5)
+                                            {
+                                                gradeAgNET = "P2";
+                                            }
+                                            else if (Convert.ToInt32(e) == 6)
+                                            {
+                                                gradeAgNET = "F1";
+                                            }
+                                            else if (Convert.ToInt32(e) == 7)
+                                            {
+                                                gradeAgNET = "F2";
+                                            }
                                         }
                                         @gradeAgNET
                                     }
