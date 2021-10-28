@@ -8,14 +8,6 @@
     <h4>Projects</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.LabelFor(model => model.ProjectStatus1.StatusName, "Status Name", htmlAttributes: new { @class = "control-label" })
-            <!--@Html.DisplayNameFor(model => model.ProjectStatus1.StatusName)-->
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProjectStatus1.StatusName)
-        </dd>
         <!--
         <dt>
             @Html.DisplayNameFor(model => model.Id)
@@ -192,6 +184,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.studentsReq)
+        </dd>
+                <dt>
+            @Html.LabelFor(model => model.ProjectStatus1.StatusName, "Status Name", htmlAttributes: new { @class = "control-label" })
+            <!--@Html.DisplayNameFor(model => model.ProjectStatus1.StatusName)-->
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectStatus1.StatusName)
         </dd>
         <!--
         <dt>

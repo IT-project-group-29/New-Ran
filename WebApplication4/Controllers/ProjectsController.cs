@@ -26,14 +26,32 @@ namespace WebApplication4.Controllers
 
             }
             var DDLSemester = new List<string>();
-
+            int yearNow = DateTime.Now.Year;
+            int selectyear = 0;
+            for (int i = 0; i < ddlyear.Count - 1; i++)
+            {
+                if (Convert.ToInt32(ddlyear[i]) == yearNow)
+                {
+                    selectyear = i;
+                }
+            }
             DDLSemester.Add("SP2");
             DDLSemester.Add("SP5");
+            int selectMonth = 0;
+            if (DateTime.Now.Month < 6)
+            {
+                selectMonth = 0;
+            }
+            else
+            {
+                selectMonth = 1;
+            }
 
-
-            ViewBag.ddlyear = new SelectList(ddlyear, "");
-            ViewBag.DDLSemester = new SelectList(DDLSemester, "");
-
+            ViewBag.ddlyear = new SelectList(ddlyear, ddlyear[selectyear]);
+            ViewBag.DDLSemester = new SelectList(DDLSemester, DDLSemester[selectMonth]);
+            var myeey = Convert.ToInt32(ddlyear[selectyear]);
+            var sem = DDLSemester[selectMonth];
+            ViewBag.project = db.Projects.Where(p => p.projectYear == myeey && p.projectSemester == sem).ToList();
             var projects = db.Projects.Include(p => p.ProjectStatus1);
             return View(projects.ToList());
         }
@@ -43,17 +61,20 @@ namespace WebApplication4.Controllers
         [HttpPost]
         public ActionResult Index(int ddlyear,string DDLSemester)
         {
+            ViewBag.project = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).ToList();
 
             var ddlyearlist=new List<string>();
             var currentDate = System.DateTime.Now;
+
             for (int i = -2; i <= 2; i++)
             {
                 ddlyearlist.Add(currentDate.AddYears(i).Year.ToString());
                
             }
-            
             var DDLSemesterlist = new List< string>();
-          
+            List<SelectListItem> DDLSEM = new List<SelectListItem>();
+            DDLSEM.Add(new SelectListItem { Text = "SP2" });
+            DDLSEM.Add(new SelectListItem { Text = "SP5", Selected = true });
             DDLSemesterlist.Add("SP2");
             DDLSemesterlist.Add("SP5");
 
@@ -61,7 +82,7 @@ namespace WebApplication4.Controllers
 
             ViewBag.ddlyear = new SelectList(ddlyearlist, "");
             ViewBag.DDLSemester = new SelectList(DDLSemesterlist, "");
-
+            
             var projects = db.Projects.Where(p=> p.projectYear==ddlyear&&p.projectSemester==DDLSemester).Include(p => p.ProjectStatus1);
             return View(projects.ToList());
         }
