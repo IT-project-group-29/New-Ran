@@ -12,16 +12,11 @@ namespace WebApplication4.Controllers
 {
     public class ProjectPeopleAllocationsController : Controller
     {
-        
         private Model1 db = new Model1();
 
         // GET: ProjectPeopleAllocations
         public ActionResult Index()
         {
-            ViewBag.PlanAHidden = "";
-            ViewBag.PlanBHidden = "";
-            ViewBag.course = db.Course.ToList();
-            ViewBag.plancs = db.PlanCourses.ToList();
             List<StudentInfo> StdInfom = GetStudents();
 
 
@@ -80,9 +75,6 @@ namespace WebApplication4.Controllers
         [HttpPost]
         public ActionResult Index(int ddlyear, string DDLSemester, string namedesc, string pop, int plan, string tyt )
         {
-            
-            ViewBag.course = db.Course.ToList();
-            ViewBag.plancs = db.PlanCourses.ToList();
             List<StudentInfo> StdInfom = GetStudents();            
             ViewBag.tyt = tyt;
             ViewBag.namedesc = namedesc;
@@ -94,22 +86,6 @@ namespace WebApplication4.Controllers
             ViewBag.staff = db.Staff.ToList();
             ViewBag.pstatus = db.ProjectStatus.ToList();
             ViewBag.project = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).ToList();
-            if(plan == 0)
-            {
-                ViewBag.PlanAHidden = "";
-                ViewBag.PlanBHidden = "";
-
-            }
-            else if(plan == 1)
-            {
-                ViewBag.PlanAHidden = "";
-                ViewBag.PlanBHidden = "hidden";
-            }
-            else if (plan == 2)
-            {
-                ViewBag.PlanBHidden = "";
-                ViewBag.PlanAHidden = "hidden";
-            }
             if (pop != "student")
                 {
                     ViewBag.staffHidden = "";
@@ -437,19 +413,14 @@ namespace WebApplication4.Controllers
 
 
                         CPP = CPP,
-                        CPPtoStr = Gradetostring(CPP),
                         PF = PF,
-                        PFtoStr = Gradetostring(PF),
                         WEB = WEB,
-                        WEBtoStr = Gradetostring(WEB),
                         IDIE = IDIE,
-                        IDIEtoStr = Gradetostring(IDIE),
-                        AgNET = AgNET,
-                        AgNETtoStr = Gradetostring(AgNET)
+                        AgNET = AgNET
 
 
 
-                    });;
+                    });
 
 
 
@@ -459,40 +430,7 @@ namespace WebApplication4.Controllers
             return StdInfom;
         }
     
- public string Gradetostring(string grade)
-        {
-            string gradetoString = "";
-            if (grade != "") { 
-            if(Convert.ToInt32(grade)  == 1)
-            {
-                gradetoString = "HD";
-            }else if(Convert.ToInt32(grade) == 2)
-            {
-                gradetoString = "D";
-            }
-            else if (Convert.ToInt32(grade) == 3)
-            {
-                gradetoString = "C";
-            }
-            else if (Convert.ToInt32(grade) == 4)
-            {
-                gradetoString = "P1";
-            }
-            else if (Convert.ToInt32(grade) == 5)
-            {
-                gradetoString = "P2";
-            }
-            else if (Convert.ToInt32(grade) == 6)
-            {
-                gradetoString = "F1";
-            }
-            else if (Convert.ToInt32(grade) == 7)
-            {
-                gradetoString = "F2";
-            }
-            }
-            return gradetoString;
-        }
+ 
 
     [HttpPost]
         [ValidateAntiForgeryToken]
@@ -590,15 +528,11 @@ namespace WebApplication4.Controllers
         public string Name { set; get; }
         public decimal? Gpa { set; get; }
         public string CPP { set; get; }
-        public string CPPtoStr { get; set; }
 
         public string PF { set; get; }
-        public string PFtoStr { get; set; }
         public string WEB { set; get; }
-        public string WEBtoStr { get; set; }
         public string IDIE { set; get; }
-        public string IDIEtoStr { get; set; }
         public string AgNET { set; get; }
-        public string AgNETtoStr { get; set; }
+
     }
 }
