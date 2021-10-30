@@ -203,7 +203,7 @@
 
                 <div class="col-md-5 stud" @ViewBag.studenthidden>
 
-                    <select class=" form-control" name="plan">
+                    <select class=" form-control" name="plan" onchange="sbmt()">
                         @if (planid == 0)
                         {
 
@@ -711,6 +711,10 @@
     }
     function changeasc() {
         document.getElementById('namedc').value = "asc";
+        document.getElementById("formdd").submit();
+    }
+    function sbmt() {
+        
         document.getElementById("formdd").submit();
     }
 

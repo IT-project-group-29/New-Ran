@@ -158,31 +158,31 @@ namespace WebApplication4.Controllers
                 if (tyt == "105295")
                 {
                     
-                    ViewBag.stcs = StdInfom.OrderBy(p => p.CPP);
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.CPP);
                     
                 }
                 if (tyt == "105294")
                 {
 
-                    ViewBag.stcs = StdInfom.OrderBy(p => p.PF);
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.PF);
                     
                 }
                 if (tyt == "156783")
                 {
 
-                    ViewBag.stcs = StdInfom.OrderBy(p => p.WEB);
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.WEB);
                     
                 }
                 if (tyt == "012540")
                 {
 
-                    ViewBag.stcs = StdInfom.OrderBy(p => p.IDIE);
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.IDIE);
                     
                 }
                 if (tyt == "105284")
                 {
 
-                    ViewBag.stcs = StdInfom.OrderBy(p => p.AgNET);
+                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.AgNET);
                     
                 }
 
@@ -205,31 +205,31 @@ namespace WebApplication4.Controllers
                 if (tyt == "105295")
                 {
 
-                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.CPP);
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.CPP);
                     
                 }
                 if (tyt == "105294")
                 {
 
-                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.PF);
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.PF);
                   
                 }
                 if (tyt == "156783")
                 {
 
-                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.WEB);
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.WEB);
                    
                 }
                 if (tyt == "012540")
                 {
 
-                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.IDIE);
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.IDIE);
                    
                 }
                 if (tyt == "105284")
                 {
 
-                    ViewBag.stcs = StdInfom.OrderByDescending(p => p.AgNET);
+                    ViewBag.stcs = StdInfom.OrderBy(p => p.AgNET);
                    
                 }
 
@@ -463,30 +463,30 @@ namespace WebApplication4.Controllers
         {
             string gradetoString = "";
             if (grade != "") { 
-            if(Convert.ToInt32(grade)  == 1)
+            if(Convert.ToInt32(grade)  >= 90)
             {
                 gradetoString = "HD";
-            }else if(Convert.ToInt32(grade) == 2)
+            }else if(Convert.ToInt32(grade) >= 80 && Convert.ToInt32(grade) < 90)
             {
                 gradetoString = "D";
             }
-            else if (Convert.ToInt32(grade) == 3)
+            else if (Convert.ToInt32(grade) >= 70 && Convert.ToInt32(grade) < 80)
             {
                 gradetoString = "C";
             }
-            else if (Convert.ToInt32(grade) == 4)
+            else if (Convert.ToInt32(grade) >= 60 && Convert.ToInt32(grade) < 70)
             {
                 gradetoString = "P1";
             }
-            else if (Convert.ToInt32(grade) == 5)
+            else if (Convert.ToInt32(grade) >= 50 && Convert.ToInt32(grade) < 60)
             {
                 gradetoString = "P2";
             }
-            else if (Convert.ToInt32(grade) == 6)
+            else if (Convert.ToInt32(grade) >= 40 && Convert.ToInt32(grade) < 50)
             {
                 gradetoString = "F1";
             }
-            else if (Convert.ToInt32(grade) == 7)
+            else if (Convert.ToInt32(grade) <40 )
             {
                 gradetoString = "F2";
             }
