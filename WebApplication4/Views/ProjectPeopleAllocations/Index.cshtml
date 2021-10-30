@@ -436,11 +436,11 @@
 
                     <tr id="tdrag @item.ID">
                         <td hidden>
-                            <div id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)"> @item.Name</div>
+                            <div > @item.Name</div>
                         </td>
                         @if (planid == 0)
                         {
-                            <td>
+                            <td id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)">
                                 @item.Name
                             </td>
                             <td @ViewBag.planBHidden>
@@ -469,7 +469,7 @@
                         }
                         else if (item.Planid == planid)
                         {
-                            <td>
+                            <td id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)">
                                 @item.Name
                             </td>
                             <td @ViewBag.planBHidden>
@@ -696,7 +696,7 @@
 
             var projectID = idstr.split(" ")[1];
             var studentID = data.split(" ")[1];
-
+            sbmt();
             $.get("/ProjectPeopleAllocations/deletStudent", { projectId: projectID, studentId: studentID })
 
 
