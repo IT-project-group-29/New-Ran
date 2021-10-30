@@ -11,6 +11,8 @@
     var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
     var plans = (List<WebApplication4.Models.Plans>)ViewBag.planList;
     var planid = (int)ViewBag.planid;
+    var plancs = (List<WebApplication4.Models.PlanCourses>)ViewBag.plancs;
+    var course = (List<WebApplication4.Models.Course>)ViewBag.course;
 }
 
 <h2>Index</h2>
@@ -357,17 +359,18 @@
                 <table class="table table-hover stud" @ViewBag.studenthidden>
                     <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">                      
                         <tr>
+
+                            <th>
+                                Name
+                            </th>
                             @if (planid == 0)
                             {
                                 <th>
-                                    Name
+                                    PF
                                 </th>
                                 <th>
                                     SDC++
                                 </th>
-                                <th>
-                                    PF
-                               </th>
 
                                 <th>
                                     WEB
@@ -378,56 +381,42 @@
                                 <th>
                                     AgNET
                                 </th>
+                            }
+              
+                @foreach(var findcs in plancs)
+                {if(findcs.planId == planid)
+                    {
+                        var selecrcourse = course.FirstOrDefault(p => p.courseID == findcs.courseId).courseName;
+                        string simpleName = "";
+                        if(selecrcourse == "Software Development with C++")
+                        {
+                            simpleName = "SDC++";
+                        }else if(selecrcourse == "Programming Fundamentals")
+                        {
+                            simpleName = "PF";
+                        }else if(selecrcourse == "Web Development")
+                        {
+                            simpleName = "WEB";
+                        }else if(selecrcourse == "Interface Desgin, Interaction and Experience")
+                        {
+                            simpleName = "IDIE";
+                        }else if(selecrcourse == "Agile Development with .NET")
+                        {
+                            simpleName = "AgNet";
+                        }
+                        <th>
+                            @simpleName
+                        </th>
+                    }
+                }
+                
+            
                                 <th>
                                     GPA
-                                </th>
-                            }
-                            else if (planid == 1)
-                            {
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                </th>
-                                <th>
-                                </th>
-                                <th>
-                                </th>
-                                <th>
-                                    IDIE
-                                </th>
-                                <th>
-                                    AgNET
-                                </th>
-                                <th>
-                                    GPA
-                                </th>
-                            }
-                            else if (planid == 2)
-                            {
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    SDC++
-                                </th>
-                                <th>
-                                    PF
                                 </th>
 
-                                <th>
-                                    WEB
-                                </th>
-                                <th>
-                                </th>
-                                <th>
-                                </th>                      
-                                <th>
-                                    GPA
-                                </th>
-                            }
 
-                        </tr>
+                            </tr>
 
                         @foreach (var item in stucourse)
                         {
@@ -439,227 +428,75 @@
                             var d = cstu.IDIE;
                             var e = cstu.AgNET;
 
+                            var CPPtoStr = cstu.CPPtoStr;
+                            var PFtoStr = cstu.PFtoStr;
+                            var WEBtoStr = cstu.WEBtoStr;
+                            var IDIEtoStr = cstu.IDIEtoStr;
+                            var AgNETtoStr = cstu.AgNETtoStr;
 
-                            <tr id="tdrag @item.ID">
-                                <td>
-                                    <div id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)"> @item.Name</div>
-                                </td>
+                    <tr id="tdrag @item.ID">
+                        <td hidden>
+                            <div id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)"> @item.Name</div>
+                        </td>
+                        @if (planid == 0)
+                        {
+                            <td>
+                                @item.Name
+                            </td>
+                            <td @ViewBag.planBHidden>
+                                @PFtoStr
+                            </td>
 
-                                <td>
-                                    @{
+                            <td @ViewBag.planBHidden>
+                                @CPPtoStr
+                            </td>
 
+                            <td @ViewBag.planBHidden>
+                                @WEBtoStr
+                            </td>
 
-                                        var gradeCPP = "";
-                                        if (a != "") 
-                                        {
-                                            if (Convert.ToInt32(a) == 1)
-                                            {
-                                                gradeCPP = "HD";
-                                            }
-                                            else if (Convert.ToInt32(a) == 2)
-                                            {
-                                                gradeCPP = "D";
-                                            }
-                                            else if (Convert.ToInt32(a) == 3)
-                                            {
-                                                gradeCPP = "C";
-                                            }
-                                            else if (Convert.ToInt32(a) == 4)
-                                            {
-                                                gradeCPP = "P1";
-                                            }
-                                            else if (Convert.ToInt32(a) == 5)
-                                            {
-                                                gradeCPP = "P2";
-                                            }
-                                            else if (Convert.ToInt32(a) == 6)
-                                            {
-                                                gradeCPP = "F1";
-                                            }
-                                            else if (Convert.ToInt32(a) == 7)
-                                            {
-                                                gradeCPP = "F2";
-                                            }
-                                        }
-                                        @gradeCPP
+                            <td @ViewBag.planAHidden>
+                                @IDIEtoStr
+                            </td>
 
+                            <td @ViewBag.planAHidden>
+                                @AgNETtoStr
+                            </td>
 
+                            <td>
+                                @item.Gpa
+                            </td>
+                        }
+                        else if (item.Planid == planid)
+                        {
+                            <td>
+                                @item.Name
+                            </td>
+                            <td @ViewBag.planBHidden>
+                                @PFtoStr
+                            </td>
 
+                            <td @ViewBag.planBHidden>
+                                @CPPtoStr
+                            </td>
 
-                                    }
+                            <td @ViewBag.planBHidden>
+                                @WEBtoStr
+                            </td>
 
-                                </td>
+                            <td @ViewBag.planAHidden>
+                                @IDIEtoStr
+                            </td>
 
-                                <td>
-                                    @{
-                                        var gradePF = "";
-                                        if (b != "")
-                                        {
+                            <td @ViewBag.planAHidden>
+                                @AgNETtoStr
+                            </td>
 
-                                            if (Convert.ToInt32(@b) == 1)
-                                            {
-                                                gradePF = "HD";
-                                            }
-                                            else if (Convert.ToInt32(@b) == 2)
-                                            {
-                                                gradePF = "D";
-                                            }
-                                            else if (Convert.ToInt32(@b) == 3)
-                                            {
-                                                gradePF = "C";
-                                            }
-                                            else if (Convert.ToInt32(@b) == 4)
-                                            {
-                                                gradePF = "P1";
-                                            }
-                                            else if (Convert.ToInt32(@b) == 5)
-                                            {
-                                                gradePF = "P2";
-                                            }
-                                            else if (Convert.ToInt32(@b) == 6)
-                                            {
-                                                gradePF = "F1";
-                                            }
-                                            else if (Convert.ToInt32(@b) == 7)
-                                            {
-                                                gradePF = "F2";
-                                            }
-                                        }
-                                        @gradePF;
-
-
-
-
-                                    }
-
-                                </td>
-
-                                <td>
-
-                                    @{
-                                        var gradeWEB = "";
-                                        if (c != "")
-                                        {
-
-                                            if (Convert.ToInt32(c) == 1)
-                                            {
-                                                gradeWEB = "HD";
-                                            }
-                                            else if (Convert.ToInt32(c) == 2)
-                                            {
-                                                gradeWEB = "D";
-                                            }
-                                            else if (Convert.ToInt32(c) == 3)
-                                            {
-                                                gradeWEB = "C";
-                                            }
-                                            else if (Convert.ToInt32(c) == 4)
-                                            {
-                                                gradeWEB = "P1";
-                                            }
-                                            else if (Convert.ToInt32(c) == 5)
-                                            {
-                                                gradeWEB = "P2";
-                                            }
-                                            else if (Convert.ToInt32(c) == 6)
-                                            {
-                                                gradeWEB = "F1";
-                                            }
-                                            else if (Convert.ToInt32(c) == 7)
-                                            {
-                                                gradeWEB = "F2";
-                                            }
-                                        }
-                                        @gradeWEB
-                                    }
-
-                                </td>
-
-                                <td>
-                                    @{
-                                        var gradeIDIE = "";
-                                        if (d != "")
-                                        {
-
-                                            if (Convert.ToInt32(d) == 1)
-                                            {
-                                                gradeIDIE = "HD";
-                                            }
-                                            else if (Convert.ToInt32(d) == 2)
-                                            {
-                                                gradeIDIE = "D";
-                                            }
-                                            else if (Convert.ToInt32(d) == 3)
-                                            {
-                                                gradeIDIE = "C";
-                                            }
-                                            else if (Convert.ToInt32(d) == 4)
-                                            {
-                                                gradeIDIE = "P1";
-                                            }
-                                            else if (Convert.ToInt32(d) == 5)
-                                            {
-                                                gradeIDIE = "P2";
-                                            }
-                                            else if (Convert.ToInt32(d) == 6)
-                                            {
-                                                gradeIDIE = "F1";
-                                            }
-                                            else if (Convert.ToInt32(d) == 7)
-                                            {
-                                                gradeIDIE = "F2";
-                                            }
-                                        }
-                                        @gradeIDIE
-                                    }
-
-                                </td>
-
-                                <td>
-
-                                    @{
-                                        var gradeAgNET = "";
-                                        if (e != "")
-                                        {
-
-                                            if (Convert.ToInt32(e) == 1)
-                                            {
-                                                gradeAgNET = "HD";
-                                            }
-                                            else if (Convert.ToInt32(e) == 2)
-                                            {
-                                                gradeAgNET = "D";
-                                            }
-                                            else if (Convert.ToInt32(e) == 3)
-                                            {
-                                                gradeAgNET = "C";
-                                            }
-                                            else if (Convert.ToInt32(e) == 4)
-                                            {
-                                                gradeAgNET = "P1";
-                                            }
-                                            else if (Convert.ToInt32(e) == 5)
-                                            {
-                                                gradeAgNET = "P2";
-                                            }
-                                            else if (Convert.ToInt32(e) == 6)
-                                            {
-                                                gradeAgNET = "F1";
-                                            }
-                                            else if (Convert.ToInt32(e) == 7)
-                                            {
-                                                gradeAgNET = "F2";
-                                            }
-                                        }
-                                        @gradeAgNET
-                                    }
-
-                                </td>
-
-                                <td>
-                                    @item.Gpa
-                                </td>
-                            </tr>
+                            <td>
+                                @item.Gpa
+                            </td>
+                        }
+                    </tr>
 
 
 
