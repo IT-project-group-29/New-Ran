@@ -15,7 +15,7 @@
     var course = (List<WebApplication4.Models.Course>)ViewBag.course;
 }
 
-<h2>Index</h2>
+<h2>Project Allocation</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
@@ -179,9 +179,13 @@
                         </tr>
                     }
                 </table>
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="method5('tableExcel')">Export Project</button>
+                </div>
             </div>
-
+           
         </div>
+        
         <div class="col-md-6">
             <h3>Filter</h3>
             <div class="row">
@@ -230,9 +234,9 @@
                     </select>
 
                     @*<select class=" form-control">
-            <option label="All Plans" value="-1" name="plan" selected="selected">All Plans</option>
-            ViewBag.planList
-        </select>*@
+                        <option label="All Plans" value="-1" name="plan" selected="selected">All Plans</option>
+                        ViewBag.planList
+                    </select>*@
                     @*@Html.DropDownList("planList", null, htmlAttributes: new { @class = "form-control" })*@
                 </div>
             </div>
@@ -261,7 +265,7 @@
 
             </div>
             <br />
-            <input type="checkbox" name="name" value="" /> include allocated people
+            @*<input type="checkbox" name="name" value="" /> include allocated people*@
             <h3>Sort</h3>
             <div class="row">
 
@@ -357,7 +361,7 @@
             <div style="height: 555px; overflow: auto;">
 
                 <table class="table table-hover stud" @ViewBag.studenthidden>
-                    <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">                      
+                    <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
                         <tr>
 
                             <th>
@@ -382,41 +386,46 @@
                                     AgNET
                                 </th>
                             }
-              
-                @foreach(var findcs in plancs)
-                {if(findcs.planId == planid)
-                    {
-                        var selecrcourse = course.FirstOrDefault(p => p.courseID == findcs.courseId).courseName;
-                        string simpleName = "";
-                        if(selecrcourse == "Software Development with C++")
-                        {
-                            simpleName = "SDC++";
-                        }else if(selecrcourse == "Programming Fundamentals")
-                        {
-                            simpleName = "PF";
-                        }else if(selecrcourse == "Web Development")
-                        {
-                            simpleName = "WEB";
-                        }else if(selecrcourse == "Interface Desgin, Interaction and Experience")
-                        {
-                            simpleName = "IDIE";
-                        }else if(selecrcourse == "Agile Development with .NET")
-                        {
-                            simpleName = "AgNet";
-                        }
-                        <th>
-                            @simpleName
-                        </th>
-                    }
-                }
-                
-            
-                                <th>
-                                    GPA
-                                </th>
+
+                            @foreach (var findcs in plancs)
+                            {
+                                if (findcs.planId == planid)
+                                {
+                                    var selecrcourse = course.FirstOrDefault(p => p.courseID == findcs.courseId).courseName;
+                                    string simpleName = "";
+                                    if (selecrcourse == "Software Development with C++")
+                                    {
+                                        simpleName = "SDC++";
+                                    }
+                                    else if (selecrcourse == "Programming Fundamentals")
+                                    {
+                                        simpleName = "PF";
+                                    }
+                                    else if (selecrcourse == "Web Development")
+                                    {
+                                        simpleName = "WEB";
+                                    }
+                                    else if (selecrcourse == "Interface Desgin, Interaction and Experience")
+                                    {
+                                        simpleName = "IDIE";
+                                    }
+                                    else if (selecrcourse == "Agile Development with .NET")
+                                    {
+                                        simpleName = "AgNet";
+                                    }
+                                    <th>
+                                        @simpleName
+                                    </th>
+                                }
+                            }
 
 
-                            </tr>
+                            <th>
+                                GPA
+                            </th>
+
+
+                        </tr>
 
                         @foreach (var item in stucourse)
                         {
@@ -434,74 +443,74 @@
                             var IDIEtoStr = cstu.IDIEtoStr;
                             var AgNETtoStr = cstu.AgNETtoStr;
 
-                    <tr id="tdrag @item.ID">
-                        <td hidden>
-                            <div > @item.Name</div>
-                        </td>
-                        @if (planid == 0)
-                        {
-                            <td id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)">
-                                @item.Name
-                            </td>
-                            <td @ViewBag.planBHidden>
-                                @PFtoStr
-                            </td>
+                            <tr id="tdrag @item.ID">
+                                <td hidden>
+                                    <div> @item.Name</div>
+                                </td>
+                                @if (planid == 0)
+                                {
+                                    <td id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)">
+                                        @item.Name
+                                    </td>
+                                    <td @ViewBag.planBHidden>
+                                        @PFtoStr
+                                    </td>
 
-                            <td @ViewBag.planBHidden>
-                                @CPPtoStr
-                            </td>
+                                    <td @ViewBag.planBHidden>
+                                        @CPPtoStr
+                                    </td>
 
-                            <td @ViewBag.planBHidden>
-                                @WEBtoStr
-                            </td>
+                                    <td @ViewBag.planBHidden>
+                                        @WEBtoStr
+                                    </td>
 
-                            <td @ViewBag.planAHidden>
-                                @IDIEtoStr
-                            </td>
+                                    <td @ViewBag.planAHidden>
+                                        @IDIEtoStr
+                                    </td>
 
-                            <td @ViewBag.planAHidden>
-                                @AgNETtoStr
-                            </td>
+                                    <td @ViewBag.planAHidden>
+                                        @AgNETtoStr
+                                    </td>
 
-                            <td>
-                                @item.Gpa
-                            </td>
+                                    <td>
+                                        @item.Gpa
+                                    </td>
+                                }
+                                else if (item.Planid == planid)
+                                {
+                                    <td id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)">
+                                        @item.Name
+                                    </td>
+                                    <td @ViewBag.planBHidden>
+                                        @PFtoStr
+                                    </td>
+
+                                    <td @ViewBag.planBHidden>
+                                        @CPPtoStr
+                                    </td>
+
+                                    <td @ViewBag.planBHidden>
+                                        @WEBtoStr
+                                    </td>
+
+                                    <td @ViewBag.planAHidden>
+                                        @IDIEtoStr
+                                    </td>
+
+                                    <td @ViewBag.planAHidden>
+                                        @AgNETtoStr
+                                    </td>
+
+                                    <td>
+                                        @item.Gpa
+                                    </td>
+                                }
+                            </tr>
+
+
+
                         }
-                        else if (item.Planid == planid)
-                        {
-                            <td id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)">
-                                @item.Name
-                            </td>
-                            <td @ViewBag.planBHidden>
-                                @PFtoStr
-                            </td>
-
-                            <td @ViewBag.planBHidden>
-                                @CPPtoStr
-                            </td>
-
-                            <td @ViewBag.planBHidden>
-                                @WEBtoStr
-                            </td>
-
-                            <td @ViewBag.planAHidden>
-                                @IDIEtoStr
-                            </td>
-
-                            <td @ViewBag.planAHidden>
-                                @AgNETtoStr
-                            </td>
-
-                            <td>
-                                @item.Gpa
-                            </td>
-                        }
-                    </tr>
-
-
-
-                        }
-                     </tbody>
+                    </tbody>
 
                 </table>
 
@@ -548,9 +557,6 @@
 
 </form>
 
-<div>
-    <button type="button" class="btn btn-primary" onclick="method5('tableExcel')">Export Project</button>
-</div>
 
 <script>
     function allowDrop(ev) {
