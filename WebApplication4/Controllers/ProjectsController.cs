@@ -26,14 +26,32 @@ namespace WebApplication4.Controllers
 
             }
             var DDLSemester = new List<string>();
-
+            int yearNow = DateTime.Now.Year;
+            int selectyear = 0;
+            for (int i = 0; i < ddlyear.Count - 1; i++)
+            {
+                if (Convert.ToInt32(ddlyear[i]) == yearNow)
+                {
+                    selectyear = i;
+                }
+            }
             DDLSemester.Add("SP2");
             DDLSemester.Add("SP5");
+            int selectMonth = 0;
+            if (DateTime.Now.Month < 6)
+            {
+                selectMonth = 0;
+            }
+            else
+            {
+                selectMonth = 1;
+            }
 
-
-            ViewBag.ddlyear = new SelectList(ddlyear, "");
-            ViewBag.DDLSemester = new SelectList(DDLSemester, "");
-
+            ViewBag.ddlyear = new SelectList(ddlyear, ddlyear[selectyear]);
+            ViewBag.DDLSemester = new SelectList(DDLSemester, DDLSemester[selectMonth]);
+            var myeey = Convert.ToInt32(ddlyear[selectyear]);
+            var sem = DDLSemester[selectMonth];
+            ViewBag.project = db.Projects.Where(p => p.projectYear == myeey && p.projectSemester == sem).ToList();
             var projects = db.Projects.Include(p => p.ProjectStatus1);
             return View(projects.ToList());
         }
@@ -41,19 +59,22 @@ namespace WebApplication4.Controllers
 
         // GET: Projects
         [HttpPost]
-        public ActionResult Index(int ddlyear,string DDLSemester)
+        public ActionResult Index(int ddlyear, string DDLSemester)
         {
+            ViewBag.project = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).ToList();
 
-            var ddlyearlist=new List<string>();
+            var ddlyearlist = new List<string>();
             var currentDate = System.DateTime.Now;
+
             for (int i = -2; i <= 2; i++)
             {
                 ddlyearlist.Add(currentDate.AddYears(i).Year.ToString());
-               
+
             }
-            
-            var DDLSemesterlist = new List< string>();
-          
+            var DDLSemesterlist = new List<string>();
+            List<SelectListItem> DDLSEM = new List<SelectListItem>();
+            DDLSEM.Add(new SelectListItem { Text = "SP2" });
+            DDLSEM.Add(new SelectListItem { Text = "SP5", Selected = true });
             DDLSemesterlist.Add("SP2");
             DDLSemesterlist.Add("SP5");
 
@@ -62,7 +83,7 @@ namespace WebApplication4.Controllers
             ViewBag.ddlyear = new SelectList(ddlyearlist, "");
             ViewBag.DDLSemester = new SelectList(DDLSemesterlist, "");
 
-            var projects = db.Projects.Where(p=> p.projectYear==ddlyear&&p.projectSemester==DDLSemester).Include(p => p.ProjectStatus1);
+            var projects = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).Include(p => p.ProjectStatus1);
             return View(projects.ToList());
         }
 
@@ -96,7 +117,7 @@ namespace WebApplication4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "projectID,Id,projectCode,projectTitle,projectScope,projectOutcomes,projectDuration,projectPlacementRequirements,projectSponsorAgreement,projectStatus,projectStatusComment,projectStatusChangeDate,projectSemester,projectSemesterCode,projectYear,projectSequenceNo,honoursUndergrad,requirementsMet,projectCreatorID,dateCreated,projectEffortRequirements,austCitizenOnly,studentsReq,scholarshipAmt,scholarshipDetail,staffEmailSentDate,clientEmailSentDate,studentEmailSentDate")] Projects projects)
         {
-         
+
 
 
             if (ModelState.IsValid)
@@ -112,11 +133,11 @@ namespace WebApplication4.Controllers
                         var item = Request.Files[i];
 
 
-                        if (item.ContentLength>0)
+                        if (item.ContentLength > 0)
                         {
                             var fjf = $"{Guid.NewGuid().ToString()}.{item.FileName.Split('.').Last().ToString()}";
                             var filename = $"{Server.MapPath("/")}upload/{fjf}";
-                          
+
                             item.SaveAs($"{filename}");
                             Random rd = new Random();
 
@@ -131,7 +152,7 @@ namespace WebApplication4.Controllers
                             };
                             db.ProjectDocuments.Add(fil);
                         }
-                     
+
                     }
                 }
 
@@ -140,7 +161,7 @@ namespace WebApplication4.Controllers
                 return RedirectToAction("Index");
             }
 
-          
+
             ViewBag.projectCreatorID = new SelectList(db.AspNetUsers, "personID", "UserName");
             ViewBag.projectStatus = new SelectList(db.ProjectStatus, "ProjectStatusId", "StatusName", projects.projectStatus);
             return View(projects);
@@ -235,10 +256,10 @@ namespace WebApplication4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-                Projects projects = db.Projects.Find(id);
-                db.Projects.Remove(projects);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            Projects projects = db.Projects.Find(id);
+            db.Projects.Remove(projects);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
