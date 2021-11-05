@@ -20,26 +20,35 @@ namespace WebApplication4.Controllers
         {
             ViewBag.PlanAHidden = "";
             ViewBag.PlanBHidden = "";
+            //both PlanAHidden and PlanBHidden's default is "",so the defualt display student grade list will
+            //hidden no thing, it will display whole list
             ViewBag.course = db.Course.ToList();
             ViewBag.plancs = db.PlanCourses.ToList();
             List<StudentInfo> StdInfom = GetStudents();
-
+            ViewBag.stcs = StdInfom;
+            //this is a list to store students information form different table
 
             ViewBag.stdt = db.Students.ToList();
     
             ViewBag.namedesc = "asc";
-            //ViewBag.stcs = db.StudentCourses.ToList();
-            ViewBag.stcs = StdInfom;
-            var ddlyear = new List<string>();
-            var currentDate = System.DateTime.Now;
+            //the namedesc is to make sure which button has be clicked
 
+            
+            
+            var ddlyear = new List<string>();
+            var DDLSemester = new List<string>();
+            //create lists to put semester in.
+            var currentDate = System.DateTime.Now;
+            //create lists to put years in.
 
             for (int i = -2; i <= 2; i++)
             {
                 ddlyear.Add(currentDate.AddYears(i).Year.ToString());
+                //add years, Based on the current time
 
             }
-            var DDLSemester = new List<string>();
+            
+            
             int yearNow = DateTime.Now.Year;
             int selectyear = 0;
             for (int i = 0; i < ddlyear.Count - 1; i++)
@@ -49,8 +58,10 @@ namespace WebApplication4.Controllers
                     selectyear = i;
                 }
             }
+            //Find the location in the list where the current time is stored.
             DDLSemester.Add("SP2");
             DDLSemester.Add("SP5");
+
             int selectMonth = 0;
             if (DateTime.Now.Month < 6)
             {
@@ -60,21 +71,29 @@ namespace WebApplication4.Controllers
             {
                 selectMonth = 1;
             }
-            ViewBag.planid = 0;      
-            ViewBag.pop = "student";
+            //to judge which semester users are in now
             ViewBag.ddlyear = new SelectList(ddlyear, ddlyear[selectyear]);
-            ViewBag.DDLSemester = new SelectList(DDLSemester,DDLSemester[selectMonth]);
-            ViewBag.staff = db.Staff.ToList();
-            ViewBag.staffHidden = "hidden";
-            var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
-            ViewBag.personID = db.AspNetUsers.ToList();
-            ViewBag.pstatus = db.ProjectStatus.ToList();
+            ViewBag.DDLSemester = new SelectList(DDLSemester, DDLSemester[selectMonth]);
+            //Pass the time for the view, and the default is the current time
             var myeey = Convert.ToInt32(ddlyear[selectyear]);
             var sem = DDLSemester[selectMonth];
             ViewBag.project = db.Projects.Where(p => p.projectYear == myeey && p.projectSemester == sem).ToList();
+            //In the view's project table, let it be automatically displayed as the project of the current time
+
+            ViewBag.planid = 0;
+            //The initial value is 0, which makes it display all by default.
+            ViewBag.pop = "student";
+            //pop is used to let the student or staff selection's defualt option is student.
+            ViewBag.staffHidden = "hidden";
+            //so , the staff list should be hidden, the staffHidden is as an attribute in staff's tag
+            
+            ViewBag.staff = db.Staff.ToList();           
+            ViewBag.personID = db.AspNetUsers.ToList();
+            ViewBag.pstatus = db.ProjectStatus.ToList();         
             ViewBag.planList = db.Plans.ToList();
             ViewBag.stdt = db.Students.ToList();
 
+            var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
             return View(projectPeopleAllocations.ToList());
         }
         [HttpPost]
@@ -83,17 +102,27 @@ namespace WebApplication4.Controllers
             
             ViewBag.course = db.Course.ToList();
             ViewBag.plancs = db.PlanCourses.ToList();
-            List<StudentInfo> StdInfom = GetStudents();            
-            ViewBag.tyt = tyt;
-            ViewBag.namedesc = namedesc;
-            ViewBag.planid = plan;
+
+            List<StudentInfo> StdInfom = GetStudents();
             ViewBag.stcs = StdInfom;
+
+            ViewBag.tyt = tyt;
+            //tyt is the sort selection's option's value
+            ViewBag.namedesc = namedesc;
+            //namedesc is to determine which button was pressed ,"asc" or "desc"
+            ViewBag.planid = plan;     
+            //planid is to find the selected plan's id 
             ViewBag.pop = pop;
+            //pop is to find the students or staff selection's option's value.
+            //These four viewbags(tyt namedesc planid pop) can also tell the view which option is selected,
+            //instead of returning the first value or the default value when submitting the form.
+
             ViewBag.stdt = db.Students.ToList();
             ViewBag.planList = db.Plans.ToList();
             ViewBag.staff = db.Staff.ToList();
             ViewBag.pstatus = db.ProjectStatus.ToList();
-            ViewBag.project = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).ToList();
+
+            
             if(plan == 0)
             {
                 ViewBag.PlanAHidden = "";
@@ -122,20 +151,7 @@ namespace WebApplication4.Controllers
                 }
             
             
-            var ddlyearlist = new List<string>();
-            var currentDate = System.DateTime.Now;
-            for (int i = -2; i <= 2; i++)
-            {
-                ddlyearlist.Add(currentDate.AddYears(i).Year.ToString());
-
-            }
-            var DDLSemesterlist = new List<string>();
-
-            List<SelectListItem> DDLSEM = new List<SelectListItem>();
-            DDLSEM.Add(new SelectListItem { Text = "SP2" });
-            DDLSEM.Add(new SelectListItem { Text = "SP5" ,Selected = true});
-            DDLSemesterlist.Add("SP2");
-            DDLSemesterlist.Add("SP5");
+            
 
 
            
@@ -143,6 +159,7 @@ namespace WebApplication4.Controllers
 
             if (namedesc == "asc" )
             {
+                
                 if (tyt == "name")
                 {
 
@@ -233,21 +250,32 @@ namespace WebApplication4.Controllers
                    
                 }
 
-
+                //Determine which button is pressed and sort it with the selected option.
             }
 
 
-        
 
+            var ddlyearlist = new List<string>();
+            var currentDate = System.DateTime.Now;
+            for (int i = -2; i <= 2; i++)
+            {
+                ddlyearlist.Add(currentDate.AddYears(i).Year.ToString());
 
-
+            }
+            var DDLSemesterlist = new List<string>();
+            List<SelectListItem> DDLSEM = new List<SelectListItem>();
+            DDLSEM.Add(new SelectListItem { Text = "SP2" });
+            DDLSEM.Add(new SelectListItem { Text = "SP5", Selected = true });
+            DDLSemesterlist.Add("SP2");
+            DDLSemesterlist.Add("SP5");
             ViewBag.ddlyear = new SelectList(ddlyearlist, "");
             ViewBag.DDLSemester = new SelectList(DDLSemesterlist, "");
-
+            ViewBag.project = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).ToList();
             var projects = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).Select(p => p.projectID).ToList();
+            //Select the project of the corresponding time again.
+            //The value of the selected time comes from the year and semeter drop-down boxes in view.
 
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Where(p => projects.Contains(p.projectID)).Include(p => p.Projects);
-
             ViewBag.personID = db.AspNetUsers.ToList();
             return View(projectPeopleAllocations.ToList());
         }
@@ -367,11 +395,12 @@ namespace WebApplication4.Controllers
             return View();
         }
 
-        // POST: ProjectPeopleAllocations/Create
-        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+
         private List<StudentInfo> GetStudents()
-        {
+        {//this is a funcation to create a list include students information
+         //and the "StudentInfo" is a new class what is written at the end of these controller
+         //It is mainly used to extract data from different tables and bind them together
+         
             List<StudentInfo> StdInfom = new List<StudentInfo>();
             foreach (var item in db.Students)
             {
@@ -460,7 +489,10 @@ namespace WebApplication4.Controllers
         }
     
  public string Gradetostring(string grade)
-        {
+        {//this funcation is used to convert the numerical form of grades into string form
+         //Greater than or equal to 90 is HD
+         //Greater than or equal to 80, but less than 90 is D
+         //.......
             string gradetoString = "";
             if (grade != "") { 
             if(Convert.ToInt32(grade)  >= 90)
@@ -585,6 +617,9 @@ namespace WebApplication4.Controllers
     }
     public class StudentInfo
     {
+        //create a class to get data from different table
+        //Each data type is the same as the data type what will be got
+        //It has no meaning in itself. 
         public int ID { set; get; }
         public int Planid { set; get; }
         public string Name { set; get; }
