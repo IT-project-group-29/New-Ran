@@ -17,17 +17,22 @@ namespace WebApplication4.Controllers
         // GET: Projects
         public ActionResult Index()
         {
-
+            //create an empty List for ddlyear and currentDate is used to get the current date now
             var ddlyear = new List<string>();
             var currentDate = System.DateTime.Now;
+
+            //because we will show 5 years, so we'll get first and second two years of this year, 
+            //so use i = -2 to i <=2
             for (int i = -2; i <= 2; i++)
             {
                 ddlyear.Add(currentDate.AddYears(i).Year.ToString());
-
             }
+
+            //create an empty list for DDLSemester and get the year now stored in yearNow
             var DDLSemester = new List<string>();
             int yearNow = DateTime.Now.Year;
             int selectyear = 0;
+            //check if the ddlyear is equal to yearNow
             for (int i = 0; i < ddlyear.Count - 1; i++)
             {
                 if (Convert.ToInt32(ddlyear[i]) == yearNow)
@@ -35,8 +40,10 @@ namespace WebApplication4.Controllers
                     selectyear = i;
                 }
             }
+            //add SP2 and SP5 to DDLSemester list
             DDLSemester.Add("SP2");
             DDLSemester.Add("SP5");
+            //check if now.Month<6 the semester is SP2 else it is SP5
             int selectMonth = 0;
             if (DateTime.Now.Month < 6)
             {
@@ -47,11 +54,14 @@ namespace WebApplication4.Controllers
                 selectMonth = 1;
             }
 
+            //store the year and semester now in the ViewBage of ddlyear and semester
             ViewBag.ddlyear = new SelectList(ddlyear, ddlyear[selectyear]);
             ViewBag.DDLSemester = new SelectList(DDLSemester, DDLSemester[selectMonth]);
+            //put the year and semester to ViewBag.project if they are equal to the true year or semester
             var myeey = Convert.ToInt32(ddlyear[selectyear]);
             var sem = DDLSemester[selectMonth];
             ViewBag.project = db.Projects.Where(p => p.projectYear == myeey && p.projectSemester == sem).ToList();
+
             var projects = db.Projects.Include(p => p.ProjectStatus1);
             return View(projects.ToList());
         }
@@ -65,20 +75,18 @@ namespace WebApplication4.Controllers
 
             var ddlyearlist = new List<string>();
             var currentDate = System.DateTime.Now;
-
+            //add five year to ddlyearlist
             for (int i = -2; i <= 2; i++)
             {
                 ddlyearlist.Add(currentDate.AddYears(i).Year.ToString());
-
             }
+
             var DDLSemesterlist = new List<string>();
-            List<SelectListItem> DDLSEM = new List<SelectListItem>();
-            DDLSEM.Add(new SelectListItem { Text = "SP2" });
-            DDLSEM.Add(new SelectListItem { Text = "SP5", Selected = true });
+            //List<SelectListItem> DDLSEM = new List<SelectListItem>();
+            //DDLSEM.Add(new SelectListItem { Text = "SP2" });
+            //DDLSEM.Add(new SelectListItem { Text = "SP5", Selected = true });
             DDLSemesterlist.Add("SP2");
             DDLSemesterlist.Add("SP5");
-
-
 
             ViewBag.ddlyear = new SelectList(ddlyearlist, "");
             ViewBag.DDLSemester = new SelectList(DDLSemesterlist, "");
@@ -90,6 +98,7 @@ namespace WebApplication4.Controllers
         // GET: Projects/Details/5
         public ActionResult Details(int? id)
         {
+            //if id or projects is null, mark http response status as 404
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -105,21 +114,18 @@ namespace WebApplication4.Controllers
         // GET: Projects/Create
         public ActionResult Create()
         {
+            //the function for create page
             ViewBag.projectStatus = new SelectList(db.ProjectStatus, "ProjectStatusId", "StatusName");
             ViewBag.projectCreatorID = new SelectList(db.AspNetUsers, "personID", "UserName");
             return View();
         }
 
         // POST: Projects/Create
-        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "projectID,Id,projectCode,projectTitle,projectScope,projectOutcomes,projectDuration,projectPlacementRequirements,projectSponsorAgreement,projectStatus,projectStatusComment,projectStatusChangeDate,projectSemester,projectSemesterCode,projectYear,projectSequenceNo,honoursUndergrad,requirementsMet,projectCreatorID,dateCreated,projectEffortRequirements,austCitizenOnly,studentsReq,scholarshipAmt,scholarshipDetail,staffEmailSentDate,clientEmailSentDate,studentEmailSentDate")] Projects projects)
         {
-
-
-
+            //select all the information the need to input when create
             if (ModelState.IsValid)
             {
                 db.Projects.Add(projects);
@@ -131,16 +137,16 @@ namespace WebApplication4.Controllers
                     for (int i = 0; i < Request.Files.Count; i++)
                     {
                         var item = Request.Files[i];
-
-
+                        //this is the uplod file function
                         if (item.ContentLength > 0)
                         {
+                            //get the path and the name of the file
                             var fjf = $"{Guid.NewGuid().ToString()}.{item.FileName.Split('.').Last().ToString()}";
                             var filename = $"{Server.MapPath("/")}upload/{fjf}";
 
                             item.SaveAs($"{filename}");
                             Random rd = new Random();
-
+                            //as the file which uploaded, add the information to database from the file
                             var fil = new ProjectDocuments()
                             {
                                 projectDocumentID = rd.Next(1, int.MaxValue),
@@ -169,7 +175,8 @@ namespace WebApplication4.Controllers
 
         // GET: Projects/Edit/5
         public ActionResult Edit(int? id)
-        {
+        { 
+            //if id or projects is null, mark http response status as 404
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -186,9 +193,7 @@ namespace WebApplication4.Controllers
             return View(projects);
         }
 
-        // POST: Projects/Edit/5
-        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "projectID,Id,projectCode,projectTitle,projectScope,projectOutcomes,projectDuration,projectPlacementRequirements,projectSponsorAgreement,projectStatus,projectStatusComment,projectStatusChangeDate,projectSemester,projectSemesterCode,projectYear,projectSequenceNo,honoursUndergrad,requirementsMet,projectCreatorID,dateCreated,projectEffortRequirements,austCitizenOnly,studentsReq,scholarshipAmt,scholarshipDetail,staffEmailSentDate,clientEmailSentDate,studentEmailSentDate")] Projects projects)
@@ -207,12 +212,13 @@ namespace WebApplication4.Controllers
 
                         if (item.ContentLength > 0)
                         {
+                            //get the path and the name of the file
                             var fjf = $"{Guid.NewGuid().ToString()}.{item.FileName.Split('.').Last().ToString()}";
                             var filename = $"{Server.MapPath("/")}upload/{fjf}";
 
                             item.SaveAs($"{filename}");
                             Random rd = new Random();
-
+                            //as the file which uploaded, add the information to database from the file
                             var fil = new ProjectDocuments()
                             {
                                 projectDocumentID = rd.Next(1, int.MaxValue),
@@ -239,6 +245,7 @@ namespace WebApplication4.Controllers
         // GET: Projects/Delete/5
         public ActionResult Delete(int? id)
         {
+            //if id or projects is null, mark http response status as 404
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

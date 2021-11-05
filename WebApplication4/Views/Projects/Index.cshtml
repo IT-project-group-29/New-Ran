@@ -6,30 +6,33 @@
 
 <h2>Projects Management</h2>
 
+@*The Create New button is used to link to the Create page*@
 <p>
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
 </p>
 
+@*These two drop down box is used to select the year and the semester*@
 <form action="/Projects/Index" method="post">
     <div class="row">
         <div class="col-md-4">
             @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control" })
+            @*ddlyear is in controller to show the year according to the current date*@
         </div>
         <div class="col-md-4">
             @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control" })
+            @*DDLSemester is in controller to show the semester according to the current date*@
         </div>
         <div class="col-md-4">
             <input type="submit" class="btn btn-primary" value="Search" />
         </div>
     </div>
 </form>
-  <br>
+<br>
 
-
+@*Create a table has three column:Project Title, Status Name and Date Created*@
+@*Another colomn with empty title to show three buttons*@
 <table class="table table-hover">
     <tr>
-
-
         <th>
             @*@Html.DisplayNameFor(model => model.projectTitle)*@
             Project Title
@@ -49,23 +52,26 @@
         <th></th>
     </tr>
 
+    @*Set an item value in Model.Projects to froeach to show the detail of all the projects*@
     @foreach (var item in Model)
     {
         <tr>
-
+            @*Show all the project title from Model.Peojects*@
             <td>
                 @Html.DisplayFor(modelItem => item.projectTitle)
             </td>
 
-
+            @*Show all the status name from Model.Peojects*@
             <td>
                 @Html.DisplayFor(modelItem => item.ProjectStatus1.StatusName)
             </td>
 
+            @*Show all the date created from Model.Peojects*@
             <td>
                 @Html.DisplayFor(modelItem => item.dateCreated)
             </td>
 
+            @*Three link button to link to three pages:Edit, Details and Delete*@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.projectID }, new { @class = "btn btn-primary" }) |
                 @Html.ActionLink("Details", "Details", new { id = item.projectID }, new { @class = "btn btn-primary" }) |

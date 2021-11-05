@@ -11,16 +11,16 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Name)@*displaynamefor is an alias for the "field" in the model*@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Name)@*Render a displaytemplate that matches the property type.*@
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" }) |@*Display the text: Edit of the connection with the controller Edit of the current page, and pass parameters to action*@
+    @Html.ActionLink("Back to List", "Index")@*Display the text: Back to List of the connection with the controller index of the current page*@
 </p>
