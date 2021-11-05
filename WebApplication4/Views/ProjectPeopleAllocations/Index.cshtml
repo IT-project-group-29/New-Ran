@@ -802,19 +802,27 @@
         }
     }
 
+    
     function method5(tableid) {
         if (getExplorer() == 'ie') {
             var curTbl = document.getElementById(tableid);
+            //first we need get tableid of the table that we need to export
             var oXL = new ActiveXObject("Excel.Application");
+            //create the object excel for AX
             var oWB = oXL.Workbooks.Add();
+            //Get the workbook's object  
             var xlsheet = oWB.Worksheets(1);
             var sel = document.body.createTextRange();
             sel.moveToElementText(curTbl);
+            //move the contents of the table into the TextRange  
             sel.select();
+            //select all the contents of the TextRange
             sel.execCommand("Copy");
+            //copy the contents of TextRange
             xlsheet.Paste();
+            //paste to the excel
             oXL.Visible = true;
-
+            // Set the excel visible property
             try {
                 var fname = oXL.Application.GetSaveAsFilename("Excel.xls", "Excel Spreadsheets (*.xls), *.xls");
             } catch (e) {
@@ -826,13 +834,15 @@
                 oXL = null;
                 idTmr = window.setInterval("Cleanup();", 1);
             }
-
         }
+        //if the explorer is not IE we use tableToExcel function
         else {
             tableToExcel(tableid)
         }
     }
+    
     var tableToExcel = (function () {
+        //construct a base64 string path to the jump address download
         var uri = 'data:application/vnd.ms-excel;base64,',
             template = '<html><head><meta charset="UTF-8"></head><body><table>{table}</table></body></html>',
             base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) },
