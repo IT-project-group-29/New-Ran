@@ -26,16 +26,31 @@ namespace WebApplication4.Controllers
                 ddlyearlist.Add(currentDate.AddYears(i).Year.ToString());
 
             }
+            var DDLSemester = new List<string>();
+            int yearNow = DateTime.Now.Year;
+            int selectyear = 0;
+            for (int i = 0; i < ddlyearlist.Count - 1; i++)
+            {
+                if (Convert.ToInt32(ddlyearlist[i]) == yearNow)
+                {
+                    selectyear = i;
+                }
+            }
+            DDLSemester.Add("SP2");
+            DDLSemester.Add("SP5");
+            int selectMonth = 0;
+            if (DateTime.Now.Month < 6)
+            {
+                selectMonth = 0;
+            }
+            else
+            {
+                selectMonth = 1;
+            }
 
-            var DDLSemesterlist = new List<string>();
 
-            DDLSemesterlist.Add("SP2");
-            DDLSemesterlist.Add("SP5");
-
-
-
-            ViewBag.ddlyear = new SelectList(ddlyearlist, "");
-            ViewBag.DDLSemester = new SelectList(DDLSemesterlist, "");
+            ViewBag.ddlyear = new SelectList(ddlyearlist, ddlyearlist[selectyear]);
+            ViewBag.DDLSemester = new SelectList(DDLSemester, DDLSemester[selectMonth]);
 
 
 
