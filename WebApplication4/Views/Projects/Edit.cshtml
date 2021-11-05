@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-
+@*This page is like Create page, can change the infomation of the project*@
 @using (Html.BeginForm("Edit", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
@@ -61,7 +61,7 @@
         @Html.LabelFor(model => model.projectDuration, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <select name="projectDuration" class="form-control">
-
+                @*Check the project duration, the selected is used to show what it is in the drop down box*@
                 @if (Model.projectDuration == 4)
                 {
                     <option value="4" selected>4 Month</option>
@@ -134,7 +134,7 @@
         @Html.LabelFor(model => model.projectSemester, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <select name="projectSemester" class="form-control">
-
+                @*Check the project semester, the selected is used to show what it is in the drop down box*@
                 @if (Model.projectSemester == "SP2")
                 {
                     <option value="SP2" selected>SP2</option>
@@ -146,15 +146,15 @@
                 }
                 @if (Model.projectSemester == "SP5")
                 {
-                <option value="SP5" selected>SP5</option>
+                    <option value="SP5" selected>SP5</option>
 
                 }
                 else
                 {
-                 <option value="SP5">SP5</option>
+                    <option value="SP5">SP5</option>
                 }
 
-                
+
             </select>
         </div>
     </div>
@@ -172,7 +172,7 @@
         <div class="col-md-10">
 
             <select name="projectYear" class="form-control">
-
+                @*Check the project year, the selected is used to show what it is in the drop down box*@
                 @if (Model.projectYear == 2019)
                 {
                     <option value="2019">2019</option>
@@ -222,7 +222,7 @@
                     <option value="2023">2023</option>
                 }
 
-            
+
             </select>
         </div>
     </div>
@@ -238,24 +238,26 @@
     <div class="form-group">
         @Html.LabelFor(model => model.honoursUndergrad, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-
+            @*Check the honours undergrad, the selected is used to show what it is in the drop down box*@
             <select name="honoursUndergrad">
                 @if (Model.honoursUndergrad == "u")
                 {
                     <option value="u" selected>YES</option>
 
-                }else
+                }
+                else
                 {
-                <option value="u">YES</option>
+                    <option value="u">YES</option>
                 }
 
                 @if (Model.honoursUndergrad == "w")
                 {
                     <option value="w" selected>NO</option>
 
-                }else
+                }
+                else
                 {
-                <option value="w">NO</option>
+                    <option value="w">NO</option>
                 }
 
             </select>

@@ -1,4 +1,5 @@
 ﻿@model WebApplication4.Models.Projects
+@*First use the Projects Model to use the information*@
 
 @{
     ViewBag.Title = "Create";
@@ -6,6 +7,8 @@
 
 <h2>Create</h2>
 
+@*This is the create project page*@
+@*In this page we need to input the information of projects and store them in database*@
 @using (Html.BeginForm("Create", "Projects",FormMethod.Post,new { enctype= "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
@@ -15,14 +18,16 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div  class="form-group" >
-        @Html.LabelFor(model => model.projectCode, "Project Code" ,htmlAttributes: new { @class = "control-label col-md-2" })
+    @*The Project Code frame, input the code of the project this will store in the database*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectCode, "Project Code", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.projectCode, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.projectCode, "", new { @class = "text-danger" })
         </div>
     </div>
 
+    @*The Project Title frame, input the title of the project this will store in the database*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectTitle, "Project Title", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -30,7 +35,8 @@
             @Html.ValidationMessageFor(model => model.projectTitle, "", new { @class = "text-danger" })
         </div>
     </div>
-   
+
+    @*The Project Scope frame, input the scope of the project this will store in the database*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectScope, "Project Scope", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -38,16 +44,18 @@
             @Html.ValidationMessageFor(model => model.projectScope, "", new { @class = "text-danger" })
         </div>
     </div>
-     
-    
-        <div class="form-group">
-            @Html.LabelFor(model => model.projectOutcomes, "Project Outcomes", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.projectOutcomes, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.projectOutcomes, "", new { @class = "text-danger" })
-            </div>
+
+    @*The Project Outcomes frame, input the outcomes of the project this will store in the database*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectOutcomes, "Project Outcomes", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectOutcomes, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectOutcomes, "", new { @class = "text-danger" })
         </div>
-         
+    </div>
+
+    @*The Project Duration frame, input the duration of the project this will store in the database*@
+    @*Show time in drop down box, 4 Month or 9 Month*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectDuration, "Project Duration", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -55,12 +63,10 @@
                 <option value="4">4 Month</option>
                 <option value="9">9 Month</option>
             </select>
-
-
-
         </div>
     </div>
-    
+
+    @*The Project Placement Requirements frame, input the Placement Requirements of the project this will store in the database*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectPlacementRequirements, "Project Placement Requirements", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -69,6 +75,7 @@
         </div>
     </div>
 
+    @*The Project Sponsor Agreement, Tick in the box and we'll store the message in database*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectSponsorAgreement, "Project Sponsor Agreement", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -79,6 +86,7 @@
         </div>
     </div>
 
+    @*Show all the status from model.projectStatus in drop down box for chosen*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectStatus, "Project Status", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -87,6 +95,7 @@
         </div>
     </div>
 
+    @*The Project Status Comment, input the Status Comment of the project this will store in the database*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectStatusComment, "Project Status Comment", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -95,6 +104,7 @@
         </div>
     </div>
 
+    @*The Project Status Change Date, input the Status Change Date of the project this will store in the database*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectStatusChangeDate, "Project Status Change Date", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -102,12 +112,12 @@
             @Html.ValidationMessageFor(model => model.projectStatusChangeDate, "", new { @class = "text-danger" })
         </div>
     </div>
-        
+
+    @*Choose the Project Semester in the drop down box, SP2 or SP5*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectSemester, "Project Semester", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-
-            <select name="projectSemester"  class="form-control">
+            <select name="projectSemester" class="form-control">
                 <option value="SP2">SP2</option>
                 <option value="SP5">SP5</option>
             </select>
@@ -115,6 +125,7 @@
         </div>
     </div>
 
+    @*The Project Semester Code, input the Semester Code of the project this will store in the database*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectSemesterCode, "Project Semester Code", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -123,6 +134,7 @@
         </div>
     </div>
 
+    @*Choose the Project Year in the drop down box*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectYear, "Project Year", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -135,7 +147,8 @@
             </select>
         </div>
     </div>
-    
+
+    @*The Project Sequence No, input the Sequence No of the project this will store in the database*@
     <div class="form-group">
         @Html.LabelFor(model => model.projectSequenceNo, "Project Sequence No", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -143,7 +156,8 @@
             @Html.ValidationMessageFor(model => model.projectSequenceNo, "", new { @class = "text-danger" })
         </div>
     </div>
-        
+
+    @*Choose Yes or No in the drop down box for Honours Undergrad*@
     <div class="form-group">
         @Html.LabelFor(model => model.honoursUndergrad, "Honours Undergrad", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -153,79 +167,74 @@
             </select>
         </div>
     </div>
-    
-        <div class="form-group">
-            @Html.LabelFor(model => model.requirementsMet, "Requirements Met", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.requirementsMet)
-                    @Html.ValidationMessageFor(model => model.requirementsMet, "", new { @class = "text-danger" })
-                </div>
+
+    @*The Project Requirements Met, Tick in the box and we'll store the information in database*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.requirementsMet, "Requirements Met", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.requirementsMet)
+                @Html.ValidationMessageFor(model => model.requirementsMet, "", new { @class = "text-danger" })
             </div>
         </div>
-       
+    </div>
+
     @* User *@
-    
-        <div class="form-group">
-            @Html.LabelFor(model => model.projectCreatorID, "Project Creator ID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("projectCreatorID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.projectCreatorID, "", new { @class = "text-danger" })
+    @*Show the Project Creator ID, we get all the User's ID form the model.projectCreatorID and show it in drop down box*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectCreatorID, "Project Creator ID", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("projectCreatorID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.projectCreatorID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*The Project Effort Requirements, input the Effort Requirements of the project this will store in the database*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.projectEffortRequirements, "Project Effort Requirements", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.projectEffortRequirements, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.projectEffortRequirements, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*The Aust Citizen Only, Tick in the box and we'll store the information in database*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.austCitizenOnly, "Aust Citizen Only", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.austCitizenOnly)
+                @Html.ValidationMessageFor(model => model.austCitizenOnly, "", new { @class = "text-danger" })
             </div>
         </div>
+    </div>
 
-
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.projectEffortRequirements, "Project Effort Requirements", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.projectEffortRequirements, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.projectEffortRequirements, "", new { @class = "text-danger" })
-            </div>
+    @*Choose the Students Req in the drop down box*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.studentsReq, "Students Req", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="studentsReq" class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </select>
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.austCitizenOnly, "Aust Citizen Only", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.austCitizenOnly)
-                    @Html.ValidationMessageFor(model => model.austCitizenOnly, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.studentsReq, "Students Req", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <select name="studentsReq" class="form-control">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </select>
-            </div>
-        </div>
-       
+    @*Upload file*@
     <div class="form-group">
         <label class="control-label col-md-2">Staff/Client Files</label>
-
         <div class="col-md-10">
-
-
             <input type="file" name="name" multiple value="" />
-
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-md-2">Additional Files</label>
-
         <div class="col-md-10">
-
-
             <input type="file" name="add" value="" />
-
         </div>
     </div>
 
