@@ -253,27 +253,27 @@ namespace WebApplication4.Controllers
         }
 
 
-        public void AddStudent(int studentId, int projectId)
+        public void AddStudent(int studentId, int projectId)   //Enter the student's id and project id as parameters for retrieval
         {
 
-            var pro = new ProjectPeopleAllocations();
-            pro.projectID = projectId;
+            var pro = new ProjectPeopleAllocations();     //Create a projectPeopleAllocations instance object named Pro
+            pro.projectID = projectId;               //Assign values to the parameters in the instance object in turn.
             pro.personID = studentId;
-            pro.personRole = "student";
-            pro.dateCreated = DateTime.Now;
+            pro.personRole = "student";            //Name the role student.
+            pro.dateCreated = DateTime.Now;        
 
-            db.ProjectPeopleAllocations.Add(pro);
+            db.ProjectPeopleAllocations.Add(pro);          //Add instance objects with assigned values to the table.
 
-            db.SaveChanges();
+            db.SaveChanges();        //Save changes
         }
 
-        public void deletStudent(int studentId, int projectId)
+        public void deletStudent(int studentId, int projectId)        //Enter the student's id and project id as parameters for retrieval
         {
 
-            var pro = new ProjectPeopleAllocations();
-            pro.projectID = projectId;
+            var pro = new ProjectPeopleAllocations();    //Create a projectPeopleAllocations instance object named Pro.
+            pro.projectID = projectId;           //Assign values to the parameters in the instance object in turn.
             pro.personID = studentId;
-            pro.personRole = "student";
+            pro.personRole = "student";       //Name the role student.
 
             var dd = db.ProjectPeopleAllocations.SqlQuery($"delete  from ProjectPeopleAllocations where personID={studentId} and projectID={projectId}");
             try
@@ -284,50 +284,50 @@ namespace WebApplication4.Controllers
             {
 
 
-            }
+            }      //Create an original SQL query, the query returns the entities in this set, and then do a try catch exception handling to count the number of deleted students.
             //db.ProjectPeopleAllocations.Remove(pro);
 
             //db.SaveChanges();
         }
 
-        public void AddStaff(int staffId, int projectId)
+        public void AddStaff(int staffId, int projectId)   //Enter the staff's id and project id as parameters for retrieval
         {
 
-            var projinfos = db.Projects.FirstOrDefault(p => p.projectID == projectId);
+            var projinfos = db.Projects.FirstOrDefault(p => p.projectID == projectId);   ///Create an initial database named projinfos.
 
-            var staff = db.Staff.FirstOrDefault(p => p.staffID == staffId);
-            staff.projnum += 1;
-            if (projinfos.difficult == "yes")
+            var staff = db.Staff.FirstOrDefault(p => p.staffID == staffId);  //Create an initial database named staff.
+            staff.projnum += 1;         //Add one to the number of project in staff.
+            if (projinfos.difficult == "yes") 
             {
                 staff.diffnum += 1;
-            }
+            }     //Judge the Difficulty parameter of the item in the database, and if it is equal to yes, add one to the Difficulty quantity.
 
-            var pro = new ProjectPeopleAllocations();
-            pro.projectID = projectId;
+            var pro = new ProjectPeopleAllocations();  //Create a projectPeopleAllocations instance object named Pro.
+            pro.projectID = projectId;       //Assign values to the parameters in the instance object in turn
             pro.personID = staffId;
-            pro.personRole = "staff";
+            pro.personRole = "staff";   //Name the role staff
             pro.dateCreated = DateTime.Now;
 
-            db.ProjectPeopleAllocations.Add(pro);
+            db.ProjectPeopleAllocations.Add(pro);  //Add instance objects with assigned values to the table.
 
-            db.SaveChanges();
+            db.SaveChanges();  //Save changes.
         }
 
-        public void deletStaff(int staffId, int projectId)
+        public void deletStaff(int staffId, int projectId)  ////Enter the staff's id and project id as parameters for retrieval
         {
 
-            var projinfos = db.Projects.FirstOrDefault(p => p.projectID == projectId);
+            var projinfos = db.Projects.FirstOrDefault(p => p.projectID == projectId);  //Create an initial database named projinfos.
 
-            var staff = db.Staff.FirstOrDefault(p => p.staffID == staffId);
-            staff.projnum -= 1;
+            var staff = db.Staff.FirstOrDefault(p => p.staffID == staffId);  //Create an initial database named staff.
+            staff.projnum -= 1;    //Reduce the number of items of staff by one.
             if (projinfos.difficult == "yes")
             {
                 staff.diffnum -= 1;
-            }
-            var pro = new ProjectPeopleAllocations();
-            pro.projectID = projectId;
+            }   //Judge the Difficulty parameter of the project in the database, and if it is equal to yes, reduce the number of Difficulty by one.
+            var pro = new ProjectPeopleAllocations();   // Create a projectPeopleAllocations instance object named Pro.
+            pro.projectID = projectId;   //Assign values to the parameters in the instance object in turn.
             pro.personID = staffId;
-            pro.personRole = "staff";
+            pro.personRole = "staff";    //Name the role staff
 
             var dd = db.ProjectPeopleAllocations.SqlQuery($"delete  from ProjectPeopleAllocations where personID={staffId} and projectID={projectId}");
             try
@@ -338,8 +338,8 @@ namespace WebApplication4.Controllers
             {
 
 
-            }
-            db.SaveChanges();
+            }  //Create an original SQL query, the query returns the entities in this set, and then do a try catch exception handling to count the number of deleted staff.
+            db.SaveChanges();   //Save changes
 
         }
 
