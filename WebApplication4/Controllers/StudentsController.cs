@@ -66,14 +66,14 @@ namespace WebApplication4.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//An error request is returned. The ID cannot be empty
             }
-            Students students = db.Students.Find(id);
+            Students students = db.Students.Find(id);//Create a database
             if (students == null)
             {
-                return HttpNotFound();
+                return HttpNotFound();//If the ID is not found, a web page error is returned
             }
-            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", students.planId);
+            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", students.planId);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(students);
         }
 
@@ -90,7 +90,7 @@ namespace WebApplication4.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", students.planId);
+            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", students.planId);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(students);
         }
 

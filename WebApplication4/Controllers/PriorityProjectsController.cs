@@ -153,14 +153,14 @@ namespace WebApplication4.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//An error request is returned. The ID cannot be empty
             }
-            PriorityProjects priorityProjects = db.PriorityProjects.FirstOrDefault(p=>p.projectID==id.Value);
+            PriorityProjects priorityProjects = db.PriorityProjects.FirstOrDefault(p=>p.projectID==id.Value);//Create an initial database
             if (priorityProjects == null)
             {
-                return HttpNotFound();
+                return HttpNotFound();//If the ID is not found, a web page error is returned
             }
-            ViewBag.projectID = new SelectList(db.Projects, "projectID", "Id", priorityProjects.projectID);
+            ViewBag.projectID = new SelectList(db.Projects, "projectID", "Id", priorityProjects.projectID);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(priorityProjects);
         }
 
@@ -173,14 +173,14 @@ namespace WebApplication4.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data= db.PriorityProjects.FirstOrDefault(p => p.projectID == priorityProjects.projectID);
+                var data= db.PriorityProjects.FirstOrDefault(p => p.projectID == priorityProjects.projectID);//Create an initial database
                 data.priorityLevel = priorityProjects.priorityLevel;
                 data.priorityReason= priorityProjects.priorityReason;
                 db.Entry(data).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.projectID = new SelectList(db.Projects, "projectID", "Id", priorityProjects.projectID);
+            ViewBag.projectID = new SelectList(db.Projects, "projectID", "Id", priorityProjects.projectID); //Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(priorityProjects);
         }
 

@@ -142,7 +142,7 @@ namespace WebApplication4.Controllers
                 //An error request is returned. The ID cannot be empty
             }
             //Show all the values of the found ID
-            AspNetRoles aspNetRoles = db.AspNetRoles.Find(id);
+            AspNetRoles aspNetRoles = db.AspNetRoles.Find(id);//Create a database
             if (aspNetRoles == null)
             {
                 return HttpNotFound();
@@ -153,7 +153,7 @@ namespace WebApplication4.Controllers
 
 
         [HttpPost]//Secure parameter transfer method
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]//Prevent cross-site request forgery
         public ActionResult Edit([Bind(Include = "Id,Name")] AspNetRoles aspNetRoles)
         //Only name and id authentication is allowed
         {

@@ -555,10 +555,10 @@ namespace WebApplication4.Controllers
             ProjectPeopleAllocations projectPeopleAllocations = db.ProjectPeopleAllocations.FirstOrDefault(p => p.projectID == projectID && p.personID == personID);
             if (projectPeopleAllocations == null)
             {
-                return HttpNotFound();
+                return HttpNotFound();//If the ID is not found, a web page error is returned
             }
-            ViewBag.projectID = new SelectList(db.Projects, "projectID", "Id", projectPeopleAllocations.projectID);
-            ViewBag.personID = new SelectList(db.AspNetUsers, "personID", "UserName", projectPeopleAllocations.personID);
+            ViewBag.projectID = new SelectList(db.Projects, "projectID", "Id", projectPeopleAllocations.projectID);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
+            ViewBag.personID = new SelectList(db.AspNetUsers, "personID", "UserName", projectPeopleAllocations.personID);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(projectPeopleAllocations);
         }
 
@@ -570,12 +570,12 @@ namespace WebApplication4.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(projectPeopleAllocations).State = EntityState.Modified;
+                db.Entry(projectPeopleAllocations).State = EntityState.Modified;//If the status of the entity is equal to the changed value
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.projectID = new SelectList(db.Projects, "projectID", "Id", projectPeopleAllocations.projectID);
-            ViewBag.personID = new SelectList(db.AspNetUsers, "personID", "UserName", projectPeopleAllocations.personID);
+            ViewBag.projectID = new SelectList(db.Projects, "projectID", "Id", projectPeopleAllocations.projectID);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
+            ViewBag.personID = new SelectList(db.AspNetUsers, "personID", "UserName", projectPeopleAllocations.personID);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(projectPeopleAllocations);
         }
 

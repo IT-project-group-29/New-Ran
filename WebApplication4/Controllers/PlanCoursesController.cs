@@ -77,15 +77,15 @@ namespace WebApplication4.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//An error request is returned. The ID cannot be empty
             }
-            PlanCourses planCourses = db.PlanCourses.Find(id);
+            PlanCourses planCourses = db.PlanCourses.Find(id);//Create a database
             if (planCourses == null)
             {
-                return HttpNotFound();
+                return HttpNotFound();//If the ID is not found, a web page error is returned
             }
-            ViewBag.courseId = new SelectList(db.Course, "courseID", "courseName", planCourses.courseId);
-            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", planCourses.planId);
+            ViewBag.courseId = new SelectList(db.Course, "courseID", "courseName", planCourses.courseId);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
+            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", planCourses.planId);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(planCourses);
         }
 
@@ -98,12 +98,12 @@ namespace WebApplication4.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(planCourses).State = EntityState.Modified;
+                db.Entry(planCourses).State = EntityState.Modified;//If the status of the entity is equal to the changed value
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.courseId = new SelectList(db.Course, "courseID", "courseName", planCourses.courseId);
-            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", planCourses.planId);
+            ViewBag.courseId = new SelectList(db.Course, "courseID", "courseName", planCourses.courseId);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
+             ViewBag.planId = new SelectList(db.Plans, "planId", "planName", planCourses.planId);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(planCourses);
         }
 

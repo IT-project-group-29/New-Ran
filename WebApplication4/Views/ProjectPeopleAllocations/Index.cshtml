@@ -114,7 +114,7 @@
                                     <div id="projstaff @item.projectID" ondrop="dropStaff(event)" style="min-height:10px" ondragover="allowDrop(event)">
                                         @*define this tag's id, it will be used in javascript to get this tag*@
                                         @{
-                                            var staffs = Model.Where(p => p.projectID == item.projectID && p.personRole == "staff").ToList();
+                                            var staffs = Model.Where(p => p.projectID == item.projectID && p.personRole == "staff").ToList();//Get the model property of the associated object.
 
                                         }
                                         @foreach (var pstaff in staffs)
