@@ -345,6 +345,15 @@
     <Content Include="Views\PlanCourses\Delete.cshtml" />
     <Content Include="Views\PlanCourses\Details.cshtml" />
     <Content Include="Views\PlanCourses\Edit.cshtml" />
+    <Content Include="Views\Manage\StaffManagement.cshtml" />
+    <Content Include="Views\Manage\Edit.cshtml" />
+    <Content Include="Views\Manage\Details.cshtml" />
+    <Content Include="Views\Manage\Delete.cshtml" />
+    <Content Include="Views\Manage\ClientManagement.cshtml" />
+    <Content Include="Views\Manage\Create.cshtml" />
+    <Content Include="Views\Manage\ClientEdit.cshtml" />
+    <Content Include="Views\Manage\ClientDelete.cshtml" />
+    <Content Include="Views\Manage\ClientDetails.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<WebApplication4.Models.Clients>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Client Management</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table table-hover">
+    <tr>
+        <td>
+            Client ID
+        </td>
+        <td>
+            Company Name
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.clientID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.companyName)
+        </td>
+        <td style="white-space:nowrap;">
+            @Html.ActionLink("Edit", "ClientEdit", new { id = item.clientID }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Details", "ClientDetails", new { id = item.clientID }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Delete", "ClientDelete", new { id = item.clientID }, new { @class = "btn btn-primary" })
+        </td>
+    </tr>
+        
+    }
+    
+
+</table>

@@ -1,0 +1,50 @@
+﻿@model WebApplication4.Models.Staff
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Staffs</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Uni Staff ID
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.uniStaffID)
+        </dd>
+        <dt>
+            User Name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.username)
+        </dd>
+        <dt>
+            Date Ended
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.dateEnded)
+        </dd>
+        <dt>
+            Project Number
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.projnum)
+        </dd>
+        <dt>
+            Diffculty Number
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.diffnum)
+        </dd>
+    </dl>
+</div>
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.staffID }) |
+    @Html.ActionLink("Back to List", "StaffManagement")
+</p>

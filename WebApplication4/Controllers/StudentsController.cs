@@ -77,9 +77,7 @@ namespace WebApplication4.Controllers
             return View(students);
         }
 
-        // POST: Students/Edit/5
-        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "studentID,planId,uniUserName,uniStudentID,gpa,genderCode,international,externalStudent,studentEmail,year,semester,dateEnded")] Students students)
