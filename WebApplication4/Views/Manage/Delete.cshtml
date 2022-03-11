@@ -1,0 +1,55 @@
+﻿@model WebApplication4.Models.Staff
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>Staff</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Uni Staff ID
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.uniStaffID)
+            </dd>
+            <dt>
+                User Name
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.username)
+            </dd>
+            <dt>
+                Date Ended
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.dateEnded)
+            </dd>
+            <dt>
+                Project Number
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.projnum)
+            </dd>
+            <dt>
+                Diffculty Number
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.diffnum)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "StaffManagement")
+            </div>
+        }
+    </div>

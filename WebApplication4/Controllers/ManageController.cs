@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -16,9 +18,186 @@ namespace WebApplication4.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        private Model1 db = new Model1();
         public ManageController()
         {
         }
+
+        #region StaffManagement And Function(Create,Edit,Delate,Detail)
+
+        
+        public ActionResult StaffManagement()
+        {
+            var staff = db.Staff;
+            return View(staff.ToList());
+        }
+
+        public ActionResult Edit(int? id) //Staff Management page Edit page
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//An error request is returned. The ID cannot be empty
+            }
+            Staff staff = db.Staff.Find(id);
+            if (staff == null)
+            {
+                return HttpNotFound();//If the ID is not found, a web page error is returned
+            }
+            return View(staff);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "staffID,uniStaffID,username,dateEnded,projnum,diffnum")] Staff staff)
+        {
+            if (ModelState.IsValid)  
+            {
+                db.Entry(staff).State = EntityState.Modified;
+                db.SaveChanges();   //this is used to save change to database when user click the save button in the edit page
+                return RedirectToAction("StaffManagement");    //back to the staffmanagement page after click the save button
+            }
+            return View(staff);
+        }
+
+        public ActionResult Details(int? id)    //the detail page when click the detail page in the staff mangement page
+        {
+            if (id == null) 
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest); 
+            }
+            Staff staff= db.Staff.Find(id); //give the staff staffid from the database
+            if (staff == null)  //check if the staff is null
+            {
+                return HttpNotFound();  
+            }
+            return View(staff); //show the staff detail of search by id
+        }
+
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Staff staff = db.Staff.Find(id);
+            if (staff == null)
+            {
+                return HttpNotFound();
+            }
+            return View(staff);
+        }
+
+        // POST: Staff/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Staff staff = db.Staff.Find(id);
+            db.Staff.Remove(staff);
+            db.SaveChanges();
+            return RedirectToAction("StaffManagement");
+        }
+
+        public ActionResult Create(int? id) //Staff Management page Create page
+        {
+            return View();
+        }
+
+        // POST: Students/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "staffID,uniStaffID,username,dateEnded,projnum,diffnum")] Staff staff)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Staff.Add(staff);
+                db.SaveChanges();
+                return RedirectToAction("StaffManagement");
+            }
+            return View(staff);
+        }
+        #endregion  
+
+        #region ClientManagement
+
+        public ActionResult ClientManagement()
+        {
+            var client = db.Clients;
+            return View(client.ToList());
+        }
+
+        public ActionResult ClientEdit(int? id) //Staff Management page Edit page
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//An error request is returned. The ID cannot be empty
+            }
+            Clients client = db.Clients.Find(id);
+            if (client == null)
+            {
+                return HttpNotFound();//If the ID is not found, a web page error is returned
+            }
+            return View(client);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ClientEdit([Bind(Include = "clientID,companyName")] Clients client)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(client).State = EntityState.Modified;
+                db.SaveChanges();   //this is used to save change to database when user click the save button in the edit page
+                return RedirectToAction("ClientManagement");    //back to the clientmanagement page after click the save button
+            }
+            return View(client);
+        }
+
+        public ActionResult ClientDelete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Clients client = db.Clients.Find(id);
+            if (client == null)
+            {
+                return HttpNotFound();
+            }
+            return View(client);
+        }
+
+        // POST: Staff/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ClientDeleteConfirmed(int id)
+        {
+            Clients client = db.Clients.Find(id);
+            db.Clients.Remove(client);
+            db.SaveChanges();
+            return RedirectToAction("StaffManagement");
+        }
+
+        public ActionResult ClientDetails(int? id)    //the detail page when click the detail page in the client mangement page
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Clients client = db.Clients.Find(id); //give the client staffid from the database
+            if (client == null)  //check if the client is null
+            {
+                return HttpNotFound();
+            }
+            return View(client); //show the client detail of search by id
+        }
+
+
+
+        #endregion
+
+
+
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
@@ -105,6 +284,9 @@ namespace WebApplication4.Controllers
         {
             return View();
         }
+
+        //GET: /Manage/PeopleManagement
+       
 
         //
         // POST: /Manage/AddPhoneNumber

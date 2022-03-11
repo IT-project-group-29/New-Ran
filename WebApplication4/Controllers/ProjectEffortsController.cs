@@ -63,12 +63,12 @@ namespace WebApplication4.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//An error request is returned. The ID cannot be empty
             }
-            ProjectEfforts projectEfforts = db.ProjectEfforts.Find(id);
+            ProjectEfforts projectEfforts = db.ProjectEfforts.Find(id);//Create a database
             if (projectEfforts == null)
             {
-                return HttpNotFound();
+                return HttpNotFound();//If the ID is not found, a web page error is returned
             }
             return View(projectEfforts);
         }
@@ -81,7 +81,7 @@ namespace WebApplication4.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(projectEfforts).State = EntityState.Modified;
+                db.Entry(projectEfforts).State = EntityState.Modified;//If the status of the entity is equal to the changed value
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

@@ -238,12 +238,12 @@ namespace WebApplication4.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//An error request is returned. The ID cannot be empty
             }
-            StudentCourses studentCourses = db.StudentCourses.Find(id);
+            StudentCourses studentCourses = db.StudentCourses.Find(id);//Create a database
             if (studentCourses == null)
             {
-                return HttpNotFound();
+                return HttpNotFound();//If the ID is not found, a web page error is returned
             }
             ViewBag.courseID = new SelectList(db.Course, "courseID", "courseName", studentCourses.courseID);
             ViewBag.studentID = new SelectList(db.Students, "studentID", "uniUserName", studentCourses.studentID);
@@ -263,8 +263,8 @@ namespace WebApplication4.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.courseID = new SelectList(db.Course, "courseID", "courseName", studentCourses.courseID);
-            ViewBag.studentID = new SelectList(db.Students, "studentID", "uniUserName", studentCourses.studentID);
+            ViewBag.courseID = new SelectList(db.Course, "courseID", "courseName", studentCourses.courseID);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
+            ViewBag.studentID = new SelectList(db.Students, "studentID", "uniUserName", studentCourses.studentID);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(studentCourses);
         }
 

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<WebApplication4.Models.Staff>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Staff Management</h2>
+
+<p>
+    @*@Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })*@
+</p>
+<table class="table table-hover">
+    <tr>
+        <td>
+            Uni Staff ID
+        </td>
+        <td>
+            User Name
+        </td>
+        <td>
+            Date Ended
+        </td>
+        <td>
+            Project Number
+        </td>
+        <td>
+            Diffculty Number
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+@foreach(var item in Model){
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.uniStaffID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateEnded)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.projnum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.diffnum)
+        </td>
+        <td style="white-space:nowrap;">
+            @Html.ActionLink("Edit", "Edit", new { id = item.staffID }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Details", "Details", new { id = item.staffID }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.staffID }, new { @class = "btn btn-primary" })
+        </td>
+    </tr>
+}   
+
+
+</table>

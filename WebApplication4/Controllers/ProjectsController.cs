@@ -179,17 +179,17 @@ namespace WebApplication4.Controllers
             //if id or projects is null, mark http response status as 404
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//An error request is returned. The ID cannot be empty
             }
-            Projects projects = db.Projects.Find(id);
+            Projects projects = db.Projects.Find(id);//Create a database
             if (projects == null)
             {
-                return HttpNotFound();
+                return HttpNotFound();//If the ID is not found, a web page error is returned
             }
 
-            ViewBag.projectCreatorID = new SelectList(db.AspNetUsers, "personID", "UserName");
+            ViewBag.projectCreatorID = new SelectList(db.AspNetUsers, "personID", "UserName");//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
 
-            ViewBag.projectStatus = new SelectList(db.ProjectStatus, "ProjectStatusId", "StatusName", projects.projectStatus);
+            ViewBag.projectStatus = new SelectList(db.ProjectStatus, "ProjectStatusId", "StatusName", projects.projectStatus);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(projects);
         }
 
@@ -200,12 +200,12 @@ namespace WebApplication4.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(projects).State = EntityState.Modified;
+                db.Entry(projects).State = EntityState.Modified;//If the status of the entity is equal to the changed value
                 db.SaveChanges();
 
                 if (Request.Files.Count > 0)
                 {
-                    for (int i = 0; i < Request.Files.Count; i++)
+                    for (int i = 0; i < Request.Files.Count; i++) //Make a loop.
                     {
                         var item = Request.Files[i];
 
@@ -236,9 +236,9 @@ namespace WebApplication4.Controllers
 
                 return RedirectToAction("Index");
             }
-            ViewBag.projectStatus = new SelectList(db.ProjectStatus, "ProjectStatusId", "StatusName", projects.projectStatus);
+            ViewBag.projectStatus = new SelectList(db.ProjectStatus, "ProjectStatusId", "StatusName", projects.projectStatus);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
 
-            ViewBag.projectCreatorID = new SelectList(db.AspNetUsers, "personID", "UserName");
+            ViewBag.projectCreatorID = new SelectList(db.AspNetUsers, "personID", "UserName");//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(projects);
         }
 

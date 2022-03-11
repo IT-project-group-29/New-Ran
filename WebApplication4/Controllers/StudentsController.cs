@@ -66,20 +66,18 @@ namespace WebApplication4.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//An error request is returned. The ID cannot be empty
             }
-            Students students = db.Students.Find(id);
+            Students students = db.Students.Find(id);//Create a database
             if (students == null)
             {
-                return HttpNotFound();
+                return HttpNotFound();//If the ID is not found, a web page error is returned
             }
-            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", students.planId);
+            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", students.planId);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(students);
         }
 
-        // POST: Students/Edit/5
-        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
-        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "studentID,planId,uniUserName,uniStudentID,gpa,genderCode,international,externalStudent,studentEmail,year,semester,dateEnded")] Students students)
@@ -90,7 +88,7 @@ namespace WebApplication4.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", students.planId);
+            ViewBag.planId = new SelectList(db.Plans, "planId", "planName", students.planId);//Initializes a new instance of the SelectList class with the specified item and selected value of the list.
             return View(students);
         }
 
