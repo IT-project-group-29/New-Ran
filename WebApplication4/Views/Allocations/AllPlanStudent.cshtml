@@ -1,0 +1,22 @@
+﻿@{ 
+    var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
+}
+<table class="table table-hover stud">
+    <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
+        <tr>
+            <th>Name</th>
+            <th>GPA</th>
+        </tr>
+        @foreach (var item in students)
+        {
+            <tr id="stddrag @item.studentID">
+                <td>
+                    @item.uniUserName
+                </td>
+                <td>
+                    @item.gpa
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,94 @@
+﻿@model IEnumerable<WebApplication4.Models.ProjectPeopleAllocations>
+@{
+    var projects = (List<WebApplication4.Models.Projects>)ViewBag.project;
+    var pstatus = (List<WebApplication4.Models.ProjectStatus>)ViewBag.pstatus;
+    var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
+    var staff = (List<WebApplication4.Models.Staff>)ViewBag.staff;
+}
+
+<table class="table table-hover" id="tableExcel">
+    <tr>
+        <th>
+            Project No.
+        </th>
+        <th>
+            Project Title
+        </th>
+        <th>
+            Staff
+        </th>
+        <th>
+            Students
+        </th>
+    </tr>
+    @foreach (var pjt in projects)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(pid => pjt.projectID)
+                @{var prodiff = "difficulty" + pjt.projectID;}
+                <span id="@prodiff" data-diff="@pjt.difficult">
+                    @if (pjt.difficult == "yes")
+                    {
+                        <span>⭐</span>
+                    }
+                    @*A star near by the project No. to Mark important items. Note: difficult items are newly added to the database*@
+                </span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => pjt.projectTitle)
+                <div>
+                    @foreach (var psta in pstatus)
+                    {
+                        if (psta.ProjectStatusId == pjt.projectStatus)
+                        {
+                            <div style="border:1px solid #000;width:150px;">@psta.StatusName</div>
+                        }
+                    }
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div id="projstaff @pjt.projectID" ondrop="dropStaff(event)" style="min-height:10px" ondragover="allowDrop(event)">
+                        @*define this tag's id, it will be used in javascript to get this tag*@
+                        @{
+                            var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
+                        }
+                        @foreach (var pstaff in staffs)
+                        {
+                            var staffdd = staff.FirstOrDefault(p => p.staffID == pstaff.personID);
+                            if (staffdd != null)
+                            {
+                                <div id="staff @staffdd.staffID-projstaff @pjt.projectID" draggable="true" ondragstart="drag(event)"> @staffdd.username</div>
+                                @*tell this tag to use the funcation "drag" which created in the JS part*@
+                            }
+                        }
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div id="div @pjt.projectID" ondrop="dropStuProject(event)" ondragover="allowDrop(event)" style="min-height:10px">
+
+                        @{
+                            var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
+                            @*Looking for a collection of students,*@
+                        }
+                        @foreach (var pstudent in prostudents)
+                        {
+                            var stuinfo = students.FirstOrDefault(p => p.studentID == pstudent.personID);
+                            if (stuinfo != null)
+                            {
+
+
+                                <div id="drag @stuinfo.studentID" draggable="true" ondragstart="drag(event)"> @stuinfo.uniUserName</div>
+                                @*Data A-E are the results of the five courses of the selected students,they will be used in JS code*@
+                            }
+                        }
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>

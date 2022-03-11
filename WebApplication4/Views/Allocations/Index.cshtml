@@ -1,0 +1,305 @@
+﻿@model IEnumerable<WebApplication4.Models.ProjectPeopleAllocations>
+@{
+    ViewBag.Title = "Index";
+    var projects = (List<WebApplication4.Models.Projects>)ViewBag.project;
+    var pstatus = (List<WebApplication4.Models.ProjectStatus>)ViewBag.pstatus;
+    var staff = (List<WebApplication4.Models.Staff>)ViewBag.staff;
+    var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
+    var plans = (List<WebApplication4.Models.Plans>)ViewBag.plans;
+    var plansID = ViewBag.plansID;
+    
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <title></title>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script type="text/javascript">
+
+    </script>
+    <style type="text/css">
+        #LeftTop{
+            position:absolute;
+            top:10%;
+            bottom:75%;
+            left:5%;
+            right:53%;
+
+        }
+        #RightTop1 {
+            position: absolute;
+            top: 10%;
+            bottom: 10%;
+            left: 53%;
+            right: 20px;
+           @* background-color:aqua;*@
+        }
+        #RightTop2 {
+           @* position: absolute;
+            top: 25%;
+            bottom: 60%;
+            left: 53%;
+            right: 20px;*@
+           @* background-color:blue;*@
+        }
+        #LeftBottom {
+            position: absolute;
+            top: 27%;
+            bottom: 5%;
+            left: 5%;
+            right: 53%;
+            overflow: auto;
+            @*background-color:greenyellow;*@
+        }
+        #RightBottom {
+            position: absolute;
+            top: 42%;
+            bottom: 5%;
+            left: 53%;
+            right: 20px;
+            margin-top:10px;
+            overflow:auto;
+            @* background-color:lightpink;*@
+        }
+    </style>
+</head>
+<body>
+    <div id="LeftTop">
+        @using (Ajax.BeginForm("ChangeDate", "Allocations", ("ddlyear", "DDLSemester"), new AjaxOptions()
+        {
+            
+            HttpMethod = "post",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "LeftBottom"
+        }))
+        {
+            <div style="position:absolute;bottom:30%; top:30%;right:35%;left:5%;">
+
+                <div style="position:absolute;right:55%; left:1px;">
+                    @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control" })
+                    @*a drop-down list to show the year, the value was defined in controller*@
+                </div>
+                <div style="position:absolute;left:55%; right:1px;">
+                    @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control" })
+                    @*a drop-down list to show the semester, the value was defined in controller*@
+                </div>
+
+
+            </div>
+            <div style="position: absolute; bottom: 30%; top: 30%; right: 10%; left: 67%;" class="col-md-4">
+
+                <input type="submit" class="btn btn-primary" value="search" />
+                
+            </div>}
+        </div>
+
+
+
+
+    <div id="LeftBottom">
+        <table class="table table-hover" id="tableExcel">
+            <tr>
+                <th>
+                    Project No.
+                </th>
+                <th>
+                    Project Title
+                </th>
+                <th>
+                    Staff
+                </th>
+                <th>
+                    Students
+                </th>
+            </tr>
+            @foreach (var pjt in projects)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(pid => pjt.projectID)
+                        @{var prodiff = "difficulty" + pjt.projectID;}
+                        <span id="@prodiff" data-diff="@pjt.difficult">
+                            @if (pjt.difficult == "yes")
+                            {
+                                <span>⭐</span>
+                            }
+                            @*A star near by the project No. to Mark important items. Note: difficult items are newly added to the database*@
+                        </span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => pjt.projectTitle)
+                        <div>
+                            @foreach (var psta in pstatus)
+                            {
+                                if (psta.ProjectStatusId == pjt.projectStatus)
+                                {
+                                    <div style="border:1px solid #000;width:150px;">@psta.StatusName</div>
+                                }
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div id="projstaff @pjt.projectID" ondrop="dropStaff(event)" style="min-height:10px" ondragover="allowDrop(event)">
+                                @*define this tag's id, it will be used in javascript to get this tag*@
+                                @{
+                                    var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
+                                }
+                                @foreach (var pstaff in staffs)
+                                {
+                                    var staffdd = staff.FirstOrDefault(p => p.staffID == pstaff.personID);
+                                    if (staffdd != null)
+                                    {
+                                        <div id="staff @staffdd.staffID-projstaff @pjt.projectID" draggable="true" ondragstart="drag(event)"> @staffdd.username</div>
+                                        @*tell this tag to use the funcation "drag" which created in the JS part*@
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div id="div @pjt.projectID" ondrop="dropStuProject(event)" ondragover="allowDrop(event)" style="min-height:10px">
+
+                                @{
+                                    var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
+                                    @*Looking for a collection of students,*@
+                                }
+                                @foreach (var pstudent in prostudents)
+                                {
+                                    var stuinfo = students.FirstOrDefault(p => p.studentID == pstudent.personID);
+                                    if (stuinfo != null)
+                                    {
+
+
+                                        <div id="drag @stuinfo.studentID" draggable="true" ondragstart="drag(event)"> @stuinfo.uniUserName</div>
+                                        @*Data A-E are the results of the five courses of the selected students,they will be used in JS code*@
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+
+    <div id="RightTop1">
+        <h3>Filter</h3>
+        <div class="row">
+            <div class="col-md-5">
+                @using (Ajax.BeginForm("Change", "Allocations", "pop", new AjaxOptions()
+                {
+
+                    HttpMethod = "post",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "RightBottom"
+                }))
+                {
+                    <select class="form-control" id="selopt" name="pop" onchange="sbmt('StudentOrStaff'), hiddenPlanTag('planSelect')">
+
+                        @*studenthidden is a String value, it's default value is ""(no thing), so the select  will default to show students *@
+                        @*selpt funcation can to show or hidden the student list and supervisors list*@
+                        <option id="selstd" value="student" selected="selected">Students</option>
+                        <option id="selstf" value="staff">Supervisors</option>
+
+
+                    </select>
+                    <input id="StudentOrStaff" type="submit" hidden="hidden" />
+                }
+            </div>
+
+            <div class="col-md-5 stud" @ViewBag.studenthidden>
+                @*Another function of studenthidden is to keep the options of the original student and supervisor drop-down boxes when submitting the page.*@
+
+                <select id="planSelect" class=" form-control" name="plan" hidden="">
+
+                    @*the planid's default value is 0, so it will default show "All plans" in this drop down box *@
+                    <option label="All Plans" value="0" name="plan" selected="selected">All Plans</option>
+
+
+                    @foreach (var item in plans)
+                    {
+
+                        @*Find the corresponding planid to output its plan name*@
+                        <option value="@item.planId">@item.planName</option>
+
+
+
+                    }
+
+                </select>
+
+
+            </div>
+        </div>
+
+
+        <h3>Sort</h3>
+        <div class="row">
+            <div id="sort" class="col-md-5">
+                <select class=" form-control" name="SortSelection">
+                    <option label="Name" value="name">Name</option>
+                    <option label="GPA" value="GPA">GPA</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="RightBottom">
+        <table class="table table-hover stud" >
+            <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
+                <tr>
+                    <th>Name</th>
+                    <th>GPA</th>
+                </tr>
+                @foreach(var item in students)
+            {
+                <tr id="stddrag @item.studentID">
+                    <td>
+                    @item.uniUserName
+                    </td>
+                    <td>
+                        @item.gpa
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
+<script>
+    function al() {
+        
+        
+    }
+    function sbmt(ID) {
+        // a funcation to submit the ajax form, this may be used by many place.
+        document.getElementById(ID).click();
+    }
+    function hiddenPlanTag(ID) {
+        //this function is used to hidden or show the plan selection.
+        var selstf = document.getElementById("selstf");
+        var selstd = document.getElementById("selstd");
+        if (selstf.getAttribute("selected") == "selected") {
+            
+            selstd.setAttribute("selected", "selected");
+            selstf.removeAttribute("selected");
+            document.getElementById(ID).style.display = "inline";
+        } else {
+            selstd.removeAttribute("selected");
+            selstf.setAttribute("selected", "selected");
+            
+            document.getElementById(ID).style.display = "none";
+        }
+     
+    }
+</script>

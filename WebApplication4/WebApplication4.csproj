@@ -174,8 +174,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AllocationsController.cs" />
     <Compile Include="Controllers\AspNetUsersController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\NewPlanCourseController.cs" />
     <Compile Include="Controllers\PlanCoursesController.cs" />
     <Compile Include="Controllers\PriorityProjectsController.cs" />
     <Compile Include="Controllers\ProjectEffortsController.cs" />
@@ -257,6 +259,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -345,6 +349,11 @@
     <Content Include="Views\PlanCourses\Delete.cshtml" />
     <Content Include="Views\PlanCourses\Details.cshtml" />
     <Content Include="Views\PlanCourses\Edit.cshtml" />
+    <Content Include="Views\Allocations\Index.cshtml" />
+    <Content Include="Views\Allocations\staffTable.cshtml" />
+    <Content Include="Views\Allocations\AllPlanStudent.cshtml" />
+    <Content Include="Views\Allocations\ProjectAllocation.cshtml" />
+    <Content Include="Views\NewPlanCourse\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

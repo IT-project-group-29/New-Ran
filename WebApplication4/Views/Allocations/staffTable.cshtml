@@ -1,0 +1,43 @@
+﻿    @{ 
+        var staff = (List<WebApplication4.Models.Staff>)ViewBag.staff;
+
+    }
+
+<div>
+    <table class="table table-hover staff" @ViewBag.staffHidden>
+        <tbody id="stafftable" ondrop="dropTablestaff(event)" ondragover="allowDrop(event)">
+            @*to display staff's list*@
+            <tr>
+                <th>
+                    Name
+                </th>
+
+                <th>
+                    Allocated projects
+                </th>
+
+                <th>
+                    Difficulty
+                </th>
+            </tr>
+
+            @foreach (var item in staff)
+            {
+                <tr id="istaff @item.staffID">
+                    <td>
+                        <div id="staff @item.staffID" draggable="true" ondragstart="drag(event)"> @item.username</div>
+                    </td>
+                    <td>
+                        @{var tutssdas = "pro" + item.staffID;}
+                        <div id="@tutssdas">@item.projnum</div>
+                    </td>
+                    <td>
+                        @{var tutss = "diff" + item.staffID;}
+                        <div id="@tutss">@item.diffnum</div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

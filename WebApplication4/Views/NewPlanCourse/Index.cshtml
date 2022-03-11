@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style>
+        #Left {
+            position: absolute;
+            left: 5%;
+            right: 52%;
+            bottom: 10%;
+            top: 70px;
+            overflow:auto;
+            background-color:greenyellow;
+        }
+        #Right {
+            position: absolute;
+            right: 5%;
+            left: 52%;
+            bottom: 10%;
+            top: 70px;
+            overflow: auto;
+            background-color:aqua;
+        }
+    </style>
+</head>
+<body>
+    <div id="Left">
+        <table class="table table-hover stud">
+            <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
+                <tr>
+                    <th>Name</th>
+                    <th>GPA</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="Right">
+        <table class="table table-hover stud">
+            <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
+                <tr>
+                    <th>Name</th>
+                    <th>GPA</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
