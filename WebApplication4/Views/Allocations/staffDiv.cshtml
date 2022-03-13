@@ -1,0 +1,43 @@
+﻿
+@{
+    var stff = ViewBag.stff;
+}
+<table class="table table-hover" id="tableExcel">
+    
+    <tr>
+        <td>
+            Staff ID:
+        </td>
+        <td>
+            @stff.staffID
+        </td>
+    </tr>
+    <tr>
+        <td>
+            UniStaff ID:
+        </td>
+        <td>
+            @stff.uniStaffID
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Staff Name:
+        </td>
+        <td>
+            @stff.username
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Project Num:
+        </td>
+        <td>
+            @stff.projnum
+        </td>
+    </tr>
+    <tr>
+        <td></td><td></td>
+    </tr>
+</table>

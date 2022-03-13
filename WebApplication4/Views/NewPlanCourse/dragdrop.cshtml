@@ -1,0 +1,79 @@
+﻿@model IEnumerable<WebApplication4.Models.PlanCourses>
+@{
+
+    var plans = (List<WebApplication4.Models.Plans>)ViewBag.plans;
+    var course = (List<WebApplication4.Models.Course>)ViewBag.course;
+}
+
+<div id="Left">
+
+    <table class="table table-hover stud">
+        <tbody id="Lefttable">
+            <tr>
+                <th>Plan</th>
+                <th>Course in this Plan</th>
+            </tr>
+            @foreach (var PItem in plans)
+            {
+                <tr id=@PItem.planId
+                    draggable="true"
+                    ondragstart="dropElement(event)"
+                    ondrop="eleOndrop(event,this)"
+                    ondragover="dragOver(event)">
+                    <th class="LeftBoxPlan">@PItem.planName</th>
+                    @{ var L = Model.Where(m => m.planId == PItem.planId).ToList();}
+                    <th>
+                        @foreach (var C in L)
+                        {
+                            <span id="box @C.courseId"
+                                  style="border: 1px solid #000;margin-top:5px; margin-bottom:5px;"
+                                  class="LeftBoxCourse"
+                                  ondragstart="spanDrag(event,this)"
+                                  ondragend="spandragOver(event)"
+                                  draggable="true">
+                                @course.FirstOrDefault(a => a.courseID == C.courseId).courseName<br />
+                            </span>
+
+
+                        }
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div id="Right">
+    <table class="table table-hover stud">
+        <tbody id="Righttable">
+            <tr>
+                <th>Course</th>
+                <th>Having this course's Plan</th>
+            </tr>
+            @foreach (var CItem in course)
+            {
+                <tr id=@CItem.courseID
+                    draggable="true"
+                    ondragstart="dropElement(event)"
+                    ondrop="eleOndrop(event,this)"
+                    ondragover="dragOver(event)">
+
+                    <th class="RightBoxCourse">@CItem.courseName</th>
+                    @{var P = Model.Where(a => a.courseId == CItem.courseID).ToList();}
+                    <th>
+                        @foreach (var PL in P)
+                        {
+                            <span id="box @PL.planId"
+                                  style="border: 1px solid #000;margin-top:5px;margin-bottom:5px;"
+                                  class="RightBoxPlan"
+                                  ondragstart="spanDrag(event,this)"
+                                  ondragend="spandragOver(event)"
+                                  draggable="true">
+                                @plans.FirstOrDefault(a => a.planId == PL.planId).planName<br />
+                            </span>
+                        }
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

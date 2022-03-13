@@ -7,7 +7,19 @@
     var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
     var plans = (List<WebApplication4.Models.Plans>)ViewBag.plans;
     var plansID = ViewBag.plansID;
-    
+
+    using (Ajax.BeginForm("EditStaff", "Allocations", "STID", new AjaxOptions()
+    {
+
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "edtText"
+    }))
+    {
+        <input id="STID" name="STID" value="" hidden="hidden" />        
+        <input id="EDTsbmt" type="submit" hidden="hidden" />
+    }
+
 }
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -15,13 +27,29 @@
 
     <title></title>
     <script src="~/Scripts/jquery-3.4.1.js"></script>
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script type="text/javascript">
 
     </script>
     <style type="text/css">
+        #edtDiv {
+            position: fixed;
+            border: 1px solid #000;
+            top:25%;
+            bottom:25%;
+            right:30%;
+            left:30%;
+            background-color:white;
+            z-index:999;
+        }
+        #Edt {
+            color: #0c5fc4;
+            background-color: #FFFFFF;
+            border: 0px none;
+
+
+            font-size: 15px;
+        }
         #LeftTop{
             position:absolute;
             top:10%;
@@ -71,7 +99,7 @@
     <div id="LeftTop">
         @using (Ajax.BeginForm("ChangeDate", "Allocations", ("ddlyear", "DDLSemester"), new AjaxOptions()
         {
-            
+
             HttpMethod = "post",
             InsertionMode = InsertionMode.Replace,
             UpdateTargetId = "LeftBottom"
@@ -93,9 +121,9 @@
             <div style="position: absolute; bottom: 30%; top: 30%; right: 10%; left: 67%;" class="col-md-4">
 
                 <input type="submit" class="btn btn-primary" value="search" />
-                
+
             </div>}
-        </div>
+    </div>
 
 
 
@@ -253,34 +281,36 @@
     </div>
 
     <div id="RightBottom">
-        <table class="table table-hover stud" >
+        <table class="table table-hover stud">
             <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
                 <tr>
                     <th>Name</th>
                     <th>GPA</th>
                 </tr>
-                @foreach(var item in students)
-            {
-                <tr id="stddrag @item.studentID">
-                    <td>
-                    @item.uniUserName
-                    </td>
-                    <td>
-                        @item.gpa
-                    </td>
-                </tr>
-            }
+                @foreach (var item in students)
+                {
+                    <tr id="stddrag @item.studentID">
+                        <td>
+                            @item.uniUserName
+                        </td>
+                        <td>
+                            @item.gpa
+
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
+    </div>
+    <div id="edtDiv" style="display:none" >
+        <input onclick="canceldiv()" class="btn btn-danger" type="button" style="position:absolute; width:10px; height:10px; right:5px; top:5px;" />
+        <div id="edtText" style="position:absolute;left:20%;right:20%;top:15px; bottom:15px;"></div>
     </div>
 </body>
 
 </html>
 <script>
-    function al() {
-        
-        
-    }
+
     function sbmt(ID) {
         // a funcation to submit the ajax form, this may be used by many place.
         document.getElementById(ID).click();
@@ -290,16 +320,27 @@
         var selstf = document.getElementById("selstf");
         var selstd = document.getElementById("selstd");
         if (selstf.getAttribute("selected") == "selected") {
-            
+
             selstd.setAttribute("selected", "selected");
             selstf.removeAttribute("selected");
             document.getElementById(ID).style.display = "inline";
         } else {
             selstd.removeAttribute("selected");
             selstf.setAttribute("selected", "selected");
-            
+
             document.getElementById(ID).style.display = "none";
         }
-     
+
+    }
+  
+
+    function sbmtEdit(stffid) {
+        document.getElementById("STID").value = (stffid);
+        sbmt("EDTsbmt");
+        document.getElementById("edtDiv").style.display = "initial";
+    }
+
+    function canceldiv() {
+        document.getElementById("edtDiv").style.display = "none";
     }
 </script>

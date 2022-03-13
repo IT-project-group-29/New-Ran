@@ -139,5 +139,12 @@ namespace WebApplication4.Controllers
             ViewBag.stdt = db.Students.ToList();
             return PartialView("ProjectAllocation", projectPeopleAllocations.ToList());
         }
+
+        public ActionResult EditStaff(int STID)
+        {
+            var a = db.Staff.FirstOrDefault(c => c.staffID == STID);
+            ViewBag.stff = a;
+            return PartialView("staffDiv");
+        }
     }
 }

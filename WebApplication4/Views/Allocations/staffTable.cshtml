@@ -19,6 +19,9 @@
                 <th>
                     Difficulty
                 </th>
+                <th>
+
+                </th>
             </tr>
 
             @foreach (var item in staff)
@@ -34,6 +37,9 @@
                     <td>
                         @{var tutss = "diff" + item.staffID;}
                         <div id="@tutss">@item.diffnum</div>
+                    </td>
+                    <td>
+                       <a onclick="sbmtEdit(@item.staffID)">Edit</a>
                     </td>
                 </tr>
             }

@@ -1,13 +1,46 @@
 ﻿
+@model IEnumerable<WebApplication4.Models.PlanCourses>
 @{
     ViewBag.Title = "Index";
+    var plans = (List<WebApplication4.Models.Plans>)ViewBag.plans;
+    var course = (List<WebApplication4.Models.Course>)ViewBag.course;
+
+    using (Ajax.BeginForm("ChangeTable", "NewPlanCourse", ("plID", "csID", "PorC"), new AjaxOptions()
+    {
+
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "whole"
+    }))
+    {
+        <input id="PorC" name="PorC" value="" hidden="hidden" />
+        <input id="csID" name="csID" value="" hidden="hidden" />
+        <input id="plID" name="plID" value="" hidden="hidden" />
+        <input id="sbmt" type="submit" hidden="hidden" />
+    }
+    
+    
+    using (Ajax.BeginForm("DeleteSpan", "NewPlanCourse", ("SpanplID", "SpancsID", "SpanPorC"), new AjaxOptions()
+    {
+
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "whole"
+    }))
+    {
+        <input id="SpanPorC" name="SpanPorC" value="" hidden="hidden" />
+        <input id="SpancsID" name="SpancsID" value="" hidden="hidden" />
+        <input id="SpanplID" name="SpanplID" value="" hidden="hidden" />
+        <input id="Spansbmt" type="submit" hidden="hidden" />
+    }
+
+
+
+
 }
 
 
 
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<!DOCTYPE html>
 
 <html>
 <head>
@@ -20,9 +53,9 @@
             right: 52%;
             bottom: 10%;
             top: 70px;
-            overflow:auto;
-            background-color:greenyellow;
+            overflow: auto;
         }
+
         #Right {
             position: absolute;
             right: 5%;
@@ -30,30 +63,172 @@
             bottom: 10%;
             top: 70px;
             overflow: auto;
-            background-color:aqua;
+        }
+
+        #delete {
+            position: fixed;
+            right: 0px;
+            bottom: 0px;
+            width: 130px;
+            height: 120px;
+            z-index:999;
+            background-color: red;
         }
     </style>
 </head>
 <body>
-    <div id="Left">
-        <table class="table table-hover stud">
-            <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
-                <tr>
-                    <th>Name</th>
-                    <th>GPA</th>
-                </tr>
-            </tbody>
-        </table>
+
+    <div id="whole">
+        <div id="Left">
+
+            <table class="table table-hover stud">
+                <tbody id="Lefttable">
+                    <tr>
+                        <th>Plan</th>
+                        <th>Course in this Plan</th>
+                    </tr>
+                    @foreach (var PItem in plans)
+                    {
+                        <tr id=@PItem.planId
+                            draggable="true"
+                            ondragstart="dropElement(event)"
+                            ondrop="eleOndrop(event,this)"
+                            ondragover="dragOver(event)">
+                            <th class="LeftBoxPlan">@PItem.planName</th>
+                            @{ var L = Model.Where(m => m.planId == PItem.planId).ToList();}
+                            <th>
+                                @foreach (var C in L)
+                                {
+                                    <span id="box @C.courseId"
+                                          style="border: 1px solid #000;margin-top:5px; margin-bottom:5px;"
+                                          class="LeftBoxCourse"
+                                          ondragstart="spanDrag(event,this)"
+                                          ondragend="spandragOver(event)"
+                                          draggable="true">
+                                        @course.FirstOrDefault(a => a.courseID == C.courseId).courseName<br />
+                                    </span>
+
+
+                                }
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div id="Right">
+            <table class="table table-hover stud">
+                <tbody id="Righttable">
+                    <tr>
+                        <th>Course</th>
+                        <th>Having this course's Plan</th>
+                    </tr>
+                    @foreach (var CItem in course)
+                    {
+                        <tr id=@CItem.courseID
+                            draggable="true"
+                            ondragstart="dropElement(event)"
+                            ondrop="eleOndrop(event,this)"
+                            ondragover="dragOver(event)">
+
+                            <th class="RightBoxCourse">@CItem.courseName</th>
+                            @{var P = Model.Where(a => a.courseId == CItem.courseID).ToList();}
+                            <th>
+                                @foreach (var PL in P)
+                                {
+                                    <span id="box @PL.planId" 
+                                          style="border: 1px solid #000;margin-top:5px;margin-bottom:5px;"
+                                          class="RightBoxPlan"
+                                          ondragstart="spanDrag(event,this)"
+                                          ondragend="spandragOver(event)"
+                                          draggable="true">
+                                        @plans.FirstOrDefault(a => a.planId == PL.planId).planName<br />
+                                    </span>
+                                }
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div id="Right">
-        <table class="table table-hover stud">
-            <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
-                <tr>
-                    <th>Name</th>
-                    <th>GPA</th>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <div id="delete"
+         hidden="hidden"
+         ondragover="dragOver(event)"
+         ondrop="spanOndrag(event)"></div>
 </body>
 </html>
+
+
+
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+    <script>
+        function spanDrag(e, t) {
+            document.getElementById("delete").style.display = "inherit";
+            e.dataTransfer.setData('delID', t.id);
+            e.dataTransfer.setData('PPid', t.parentElement.parentElement.id);
+            e.dataTransfer.setData('PPPiD', t.parentElement.parentElement.parentElement.id);
+        }
+
+        function spanOndrag(e) {
+            var deldata = e.dataTransfer.getData("delID");
+            var pppid = e.dataTransfer.getData("PPPid");
+            var ppid = e.dataTransfer.getData("PPid");
+            console.log(pppid);
+            console.log(deldata);
+            if (pppid == "Lefttable") {
+                document.getElementById("SpancsID").value = deldata;
+                document.getElementById("SpanplID").value = ppid;
+                document.getElementById("Spansbmt").click();
+
+            } else if (pppid == "Righttable") {
+                document.getElementById("SpancsID").value = ppid;
+                document.getElementById("SpanplID").value = deldata;
+                document.getElementById("Spansbmt").click();
+            }
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        function spandragOver() {
+            document.getElementById("delete").style.display = "none";
+
+
+        }
+        function dropElement(e) {
+            e.dataTransfer.setData('text', e.target.id);
+            e.dataTransfer.setData('Pid', e.target.parentElement.id);
+            console.log(e.target.parentElement.id);
+        }
+
+        function eleOndrop(e, t) {
+
+            var someID = e.dataTransfer.getData('text');
+            var Pid = e.dataTransfer.getData('Pid');
+            if (Pid == "Lefttable" && t.parentElement.id == "Righttable") {
+
+                document.getElementById("csID").value = t.id;
+                document.getElementById("plID").value = someID
+                document.getElementById("PorC").value = 0;
+                console.log("a");
+                document.getElementById("sbmt").click();
+
+            }
+            if (Pid == "Righttable" && t.parentElement.id == "Lefttable") {
+                document.getElementById("csID").value = someID;
+                document.getElementById("plID").value = t.id;
+                document.getElementById("PorC").value = 1;
+                console.log("b");
+                document.getElementById("sbmt").click();
+            }
+        }
+
+    </script>
+
+}
