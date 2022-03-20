@@ -15,14 +15,17 @@ namespace WebApplication4.Models
             PlanCourses = new HashSet<PlanCourses>();
             StudentCourses = new HashSet<StudentCourses>();
         }
-
-        [StringLength(10)]
+        [Display(Name ="Course ID")]
+        [Required]
+        [StringLength(10,ErrorMessage ="Course ID should no longer than 10")]
         public string courseID { get; set; }
-
-        [StringLength(150)]
+        [Display(Name = "Course Name")]
+        [Required]
+        [StringLength(150,ErrorMessage = "Course Name should no longer than 150")]
         public string courseName { get; set; }
-
-        [StringLength(10)]
+        [Display(Name = "Course Code")]
+        [Required]
+        [StringLength(10,ErrorMessage ="Course Code should no longer than 10")]
         public string courseCode { get; set; }
 
         [StringLength(6)]
