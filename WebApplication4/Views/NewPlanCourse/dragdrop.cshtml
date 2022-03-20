@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebApplication4.Models.PlanCourses>
+@{
+
+    var plans = (List<WebApplication4.Models.Plans>)ViewBag.plans;
+    var course = (List<WebApplication4.Models.Course>)ViewBag.course;
+}
+
+<table class="table table-hover stud">
+
+    <thead style="display:block">
+        <tr style="display: table; width: 100%; table-layout: fixed;">
+            <th>Plan</th>
+            <th>Course in this Plan</th>
+        </tr>
+    </thead>
+    <tbody id="Lefttable"
+           style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll; overflow-x: hidden;">
+
+        @foreach (var PItem in plans)
+        {
+            <tr id=@PItem.planId
+                style="display: table; width: 100%; table-layout: fixed;"
+                draggable="true"
+                ondragstart="dropElement(event)"
+                ondrop="eleOndrop(event,this)"
+                ondragover="dragOver(event)">
+                <td class="LeftBoxPlan">@PItem.planName</td>
+
+                <td id="LeftSpan @PItem.planId">
+                    @{ var L = Model.Where(m => m.planId == PItem.planId).ToList();}
+                    @foreach (var C in L)
+                    {
+                        <span id="@PItem.planId bind @C.courseId"
+                              style="border: 1px solid #000;margin-top:5px; margin-bottom:5px;"
+                              ondragstart="spanDrag(event)"
+                              ondragend="spandragOver(event)"
+                              draggable="true">
+                            @course.FirstOrDefault(a => a.courseID == C.courseId).courseName<br />
+                        </span>
+
+
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

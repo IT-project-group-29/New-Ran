@@ -1,0 +1,36 @@
+﻿@model IEnumerable<WebApplication4.Models.PlanCourses>
+@{
+    var plans = (List<WebApplication4.Models.Plans>)ViewBag.plans;
+    var course = (List<WebApplication4.Models.Course>)ViewBag.course;
+}
+
+<table class="table table-hover stud">
+    <thead style="display:block">
+        <tr style="display: table; width: 100%; table-layout: fixed;">
+            <th>
+                Course <a style="color:green; text-decoration: none"
+                          href="javascript:void(0)"
+                          onclick="AddNewCourseHref()"><font size="3">+</font></a>
+            </th>
+            @* <th>Having this course's Plan</th>*@
+        </tr>
+    </thead>
+    <tbody id="Righttable"
+           style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll; overflow-x: hidden;">
+        @foreach (var CItem in course)
+        {
+            <tr id=@CItem.courseID name="@CItem.courseName"
+                style="display: table; width: 100%; table-layout: fixed;"
+                draggable="true"
+                ondragstart="dropElement(event)"
+                ondragend="spandragOver(event)"
+                ondragover="dragOver(event)">
+
+                <td class="RightBoxCourse">@CItem.courseName</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
