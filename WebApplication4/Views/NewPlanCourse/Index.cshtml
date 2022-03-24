@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
     var plans = (List<WebApplication4.Models.Plans>)ViewBag.plans;
     var course = (List<WebApplication4.Models.Course>)ViewBag.course;
-   
+
 }
 
 
@@ -52,29 +52,40 @@
             background-color: white;
             z-index: 999;
         }
+        #AddNewPlan {
+            position: fixed;
+            border: 1px solid #000;
+            top: 25%;
+            bottom: 25%;
+            right: 30%;
+            left: 30%;
+            background-color: white;
+            z-index: 999;
+        }
     </style>
     <script></script>
 </head>
 <body>
-    @using (Ajax.BeginForm("AddCourse", "NewPlanCourse", ("CId", "CName", "CCode"), new AjaxOptions()
-    {
-
+    @using (Ajax.BeginForm("AddPlan", "NewPlanCourse", ("PName", "PCode", "PDur"), new AjaxOptions()
+        {
+            
         HttpMethod = "post",
         InsertionMode = InsertionMode.Replace,
-        UpdateTargetId = "Right"
+        UpdateTargetId = "Left"
     }))
     {
-        <input id="CId" name="CId" value="" hidden="hidden" />
-        <input id="CName" name="CName" value="" hidden="hidden" />
-        <input id="CCode" name="CCode" value="" hidden="hidden" />
-        <input id="AddCoursesbmt" type="submit" hidden="hidden" />
+
+        <input id="PName" name="PName" value="" hidden="hidden" />
+        <input id="PCode" name="PCode" value="" hidden="hidden" />
+        <input id="PDur" name="PDur" value="" hidden="hidden" />
+        <input id="AddPlansbmt" type="submit" hidden="hidden" />
     }
 
-    
-    
+
+
     @using (Ajax.BeginForm("DeleteCourse", "NewPlanCourse", "DelcsID", new AjaxOptions()
     {
-        Confirm="are you sure to delete this course?",
+        Confirm = "are you sure to delete this course?",
         HttpMethod = "post",
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "Left"
@@ -82,7 +93,7 @@
     {
 
         <input id="DelcsID" name="DelcsID" value="" hidden="hidden" />
-        
+
         <input id="DelCssbmt" type="submit" hidden="hidden" />
     }
     <div id="whole">
@@ -92,7 +103,13 @@
 
                 <thead style="display:block">
                     <tr style="display: table; width: 100%; table-layout: fixed;">
-                        <th>Plan</th>
+                        <th>
+                            Plan <a style="color:green; text-decoration: none"
+                                    href="javascript:void(0)"
+                                    onclick="AddNewPlanHref()">
+                                <font size="3">+</font>
+                            </a>
+                        </th>
                         <th>Course in this Plan</th>
                     </tr>
                 </thead>
@@ -105,20 +122,20 @@
                             style="display: table; width: 100%; table-layout: fixed;"
                             draggable="true"
                             ondragstart="dropElement(event)"
+                             ondragend="spandragOver()"
                             ondrop="eleOndrop(event,this)"
-                            ondragover="dragOver(event)">
+                            ondragover="dragOver(event)"
+                           >
                             <td class="LeftBoxPlan">@PItem.planName</td>
-                           
+
                             <td id="LeftSpan @PItem.planId">
-                                @{ var L = Model.Where(m => m.planId == PItem.planId).ToList();}
+                                @{ var L = Model.Where(a => a.planId == PItem.planId).ToList();}
                                 @foreach (var C in L)
                                 {
                                     <span id="@PItem.planId bind @C.courseId"
                                           style="border: 1px solid #000;margin-top:5px; margin-bottom:5px;"
-                                          
                                           ondragstart="spanDrag(event)"
-                                          
-                                          ondragend="spandragOver(event)"
+                                          ondragend="spandragOver()"
                                           draggable="true">
                                         @course.FirstOrDefault(a => a.courseID == C.courseId).courseName<br />
                                     </span>
@@ -135,9 +152,9 @@
             <table class="table table-hover stud">
                 <thead style="display:block">
                     <tr style="display: table; width: 100%; table-layout: fixed;">
-                        <th>Course <a 
-                                      style="color:green; text-decoration: none" 
-                                      href="javascript:void(0)" 
+                        <th>
+                            Course <a style="color:green; text-decoration: none"
+                                      href="javascript:void(0)"
                                       onclick="AddNewCourseHref()"><font size="3">+</font></a>
                         </th>
                         @* <th>Having this course's Plan</th>*@
@@ -147,14 +164,13 @@
                        style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll; overflow-x: hidden;">
                     @foreach (var CItem in course)
                     {
-                        <tr id=@CItem.courseID 
-                            
+                        <tr id=@CItem.courseID
                             style="display: table; width: 100%; table-layout: fixed;"
                             draggable="true"
                             ondragstart="dropElement(event)"
-                            ondragend="spandragOver(event)"
-                            ondragover="dragOver(event)">
                             
+                            ondragover="dragOver(event)">
+
                             <td>@CItem.courseName</td>
 
                         </tr>
@@ -169,33 +185,31 @@
          ondrop="spanOndrag(event)"></div>
     <div id="AddNewCourse"
          hidden="hidden">
-        <input onclick="canceldiv()" 
-               class="btn btn-danger" 
-               type="button" 
-               style="position:absolute; width:10px; height:10px; right:5px; top:5px;"
-               
-               />
+        <input onclick="canceldiv()"
+               class="btn btn-danger"
+               type="button"
+               style="position:absolute; width:10px; height:10px; right:5px; top:5px;" />
         <div id="edtText" style="position:absolute;left:30%;right:30%;top:35px; bottom:15px;">
             <div class="table table-hover" id="tableExcel">
                 <div style="margin-bottom:20px;">
-                    <input
-                           type="text"
+                    <input type="text"
+                            class="form-control col-md-10" 
                            id="AddNewCourseId"
                            placeholder="New Course ID"
                            onblur="AddNewCourseCidOnBlur(this)" />
                     <br /><span id="addCidSpan"></span><br />
                 </div>
                 <div style="margin-bottom:20px;">
-                    <input 
-                           type="text"
+                    <input type="text"
+                            class="form-control col-md-10" 
                            id="AddNewCourseName"
                            placeholder="New Course Name"
                            onblur="AddNewCourseCnameOnBlur(this)" />
                     <br /> <span id="addCnameSpan"></span><br />
                 </div>
                 <div style="margin-bottom:20px;">
-                    <input 
-                           type="text"
+                    <input type="text"
+                            class="form-control col-md-10" 
                            id="AddNewCourseCode"
                            placeholder="New Course Code"
                            onblur="AddNewCourseCcodeOnBlur(this)" />
@@ -203,14 +217,57 @@
                 </div>
 
             </div>
-            <input 
-                   onclick="addCourse()"
+            <input onclick="addCourse()"
                    class="btn btn-primary"
                    type="button"
-                   value="Add"
-                   />
+                   value="Add" />
         </div>
     </div>
+    <div id="AddNewPlan"
+         hidden="hidden">
+        <input onclick="cancelPlandiv()"
+               class="btn btn-danger"
+               type="button"
+               style="position:absolute; width:10px; height:10px; right:5px; top:5px;" />
+        <div id="edtText" style="position:absolute;left:30%;right:30%;top:35px; bottom:15px;">
+            <div class="table table-hover" id="tableExcel">
+                <div style="margin-bottom:20px;">
+                    <input type="text"
+                            class="form-control col-md-10" 
+                           id="AddNewPlanName"
+                           placeholder="New Plan Name"
+                           onblur="AddNewPlanNameOnBlur(this)" />
+                    <br /><span id="addPnameSpan"></span><br />
+                </div>
+                <div style="margin-bottom:20px;">
+                    <input type="text"
+                            class="form-control col-md-10" 
+                           id="AddNewPlanCode"
+                           placeholder="New Plan Code"
+                           onblur="AddNewPlanCodeOnBlur(this)" />
+                    <br /> <span id="addPcodeSpan"></span><br />
+                </div>
+                <div style="margin-bottom:20px;">
+                    <input type="number"
+                           class="form-control col-md-10" 
+                           maxlength="1"
+                           min="1"
+                           max="5"
+                           value="1"
+                           id="AddNewPlanDuration"
+                           placeholder="New Plan Duration"
+                           onkeyup="AddNewPlanDurationOnKeyPress(this)" />
+                    <br /><span id="addCcodeSpan"></span><br />
+                </div>
+
+            </div>
+            <input onclick="addPlan()"
+                   class="btn btn-primary"
+                   type="button"
+                   value="Add" />
+        </div>
+    </div>
+
 </body>
 </html>
 
@@ -294,7 +351,8 @@
         }
 
         function spandragOver() {
-            //when stop drag, let the Rubbish bins(left bottom) be invisible
+            //when stop drag, let the Rubbish bins(Right bottom) be invisible
+            console.log("aasdasdasdasdasd");
             document.getElementById("delete").style.display = "none";
 
 
@@ -333,6 +391,21 @@
                 console.log(delcourse+"will be deleted");
                 document.getElementById("DelCssbmt").click();
                 document.getElementById(delcourse).remove();
+            }
+            if (pid == "Lefttable") {
+                $.ajax({
+                    type: "POST",
+                    url: "/NewPlanCourse/DelPlan",
+                    data: { thisid: delcourse },
+                    success: function (data) {
+                        if (data == "removed") {
+                            console.log(deldata + "be removed")
+                            document.getElementById(delcourse).remove();
+                            spandragOver();
+                        }
+                    },
+
+                })
             }
         }
 
@@ -429,6 +502,119 @@
             document.getElementById("addCcodeSpan").innerHTML = "";
             document.getElementById("AddNewCourse").style.display = "none";
         }
+        function AddNewPlanHref() {
+            document.getElementById("AddNewPlan").style.display = "initial";
+
+        }
+        function AddNewPlanNameOnBlur(t) {
+            $.ajax({
+                type: "POST",
+                url: "/NewPlanCourse/IsPlanNameRepeated",
+                data: { planName: t.value },
+                success: function (data) {
+                    if (data == "repeated") {
+                        document.getElementById("addPnameSpan").style.color = "red";
+                        document.getElementById("addPnameSpan").innerHTML = "This Name is already in use";
+                        var Pname = document.getElementById(t.id);
+                        Cname.value = "";
+                    }
+                    if (data == "OK") {
+                        document.getElementById("addPnameSpan").style.color = "green";
+                        document.getElementById("addPnameSpan").innerHTML = "OK";
+                    }
+                    if (data == "null") {
+                        document.getElementById("addPnameSpan").style.color = "red";
+                        document.getElementById("addPnameSpan").innerHTML = "Name can not be empty";
+                    }
+                },
+
+            })
+        }
+
+        function AddNewPlanCodeOnBlur(t) {
+            $.ajax({
+                type: "POST",
+                url: "/NewPlanCourse/IsPlanCodeRepeated",
+                data: { planCode: t.value },
+                success: function (data) {
+                    console.log(data);
+                    if (data == "repeated") {
+                        document.getElementById("addPcodeSpan").style.color = "red";
+                        document.getElementById("addPcodeSpan").innerHTML = "This Code is already in use";
+                        var Pname = document.getElementById(t.id);
+                        Cname.value = "";
+                    }
+                    if (data == "OK") {
+                        document.getElementById("addPcodeSpan").style.color = "green";
+                        document.getElementById("addPcodeSpan").innerHTML = "OK";
+                    }
+                    if (data == "null") {
+                        document.getElementById("addPcodeSpan").style.color = "red";
+                        document.getElementById("addPcodeSpan").innerHTML = "Code can not be empty";
+                    }
+                },
+
+            })
+        }
+        function AddNewPlanDurationOnKeyPress(t) {
+            var durInput = document.getElementById(t.id);
+            if (durInput.value > 5) {
+                durInput.value = 5;
+            }
+            else if (durInput.value < 0) {
+                durInput.value = 1;
+            } else if (durInput.value > 0 && durInput.value < 1) {
+                durInput.value = 1;
+            } else if (durInput.value > 1 && durInput.value < 2) {
+                durInput.value = 2;
+            } else if (durInput.value > 2 && durInput.value < 3) {
+                durInput.value = 3;
+            } else if (durInput.value > 3 && durInput.value < 4) {
+                durInput.value = 4;
+            } else if (durInput.value > 4 && durInput.value < 5) {
+                durInput.value = 5;
+            }
+                
+           
+        }
+
+
+        function addPlan() {
+            var Pname = document.getElementById("AddNewPlanName");
+            var Pcode = document.getElementById("AddNewPlanCode");
+            var PDur = document.getElementById("AddNewPlanDuration");
+            var AddPN = document.getElementById("PName");
+            var AddPC = document.getElementById("PCode");
+            var AddPD = document.getElementById("PDur");
+            if (Pname.value == "" | Pcode.value == "" | PDur.value == "") {
+                alert("please input information");
+            } else {
+                console.log("add");
+               
+                document.getElementById("PName").value = Pname.value;
+                document.getElementById("PCode").value = Pcode.value;
+                document.getElementById("PDur").value = PDur.value;
+                document.getElementById("AddPlansbmt").click();
+                Pname.value = "";
+                Pcode.value = "";
+                PDur.value = 1;
+                document.getElementById("addPnameSpan").innerHTML = "";
+                document.getElementById("addPcodeSpan").innerHTML = "";
+            }
+        }
+        function cancelPlandiv() {
+            var Pname = document.getElementById("AddNewPlanName");
+            var Pcode = document.getElementById("AddNewPlanCode");
+            var PDur = document.getElementById("AddNewPlanDuration");
+            Pname.value = "";
+            Pcode.value = "";
+            PDur.value = 1;
+            document.getElementById("addPnameSpan").innerHTML = "";
+            document.getElementById("addPcodeSpan").innerHTML = "";
+            
+            document.getElementById("AddNewPlan").style.display = "none";
+        }
+
         function addCourse() {
             var Cid = document.getElementById("AddNewCourseId");
             var Cname = document.getElementById("AddNewCourseName");
@@ -460,7 +646,7 @@
                             Cid.value = "";
                             Cname.value = "";
                             Ccode.value = "";
-                        } 
+                        }
                     },
 
                 })

@@ -366,6 +366,7 @@
     <Content Include="Views\NewPlanCourse\Index.cshtml" />
     <Content Include="Views\Allocations\staffDiv.cshtml" />
     <Content Include="Views\NewPlanCourse\AddNew.cshtml" />
+    <Content Include="Views\NewPlanCourse\newPlanPage.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
