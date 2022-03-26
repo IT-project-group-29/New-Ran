@@ -80,6 +80,8 @@ namespace WebApplication4.Models
        
         public string UserName { get; set; }
 
+        public string Role { get; set; }
+
         public int PhoneNumber { get; set; }
 
         [Required]
