@@ -79,6 +79,8 @@ namespace WebApplication4.Controllers
         // GET: AspNetUsers/Create
         public ActionResult Create()
         {
+
+            ViewBag.Role = new SelectList(db.AspNetRoles, "Id", "Name");
             return View();
         }
 
@@ -94,20 +96,34 @@ namespace WebApplication4.Controllers
             {
 
                 var user = new ApplicationUser { UserName = aspNetUsers.UserName, firstName = aspNetUsers.firstName, lastName = aspNetUsers.lastName, title = aspNetUsers.title, Email = aspNetUsers.Email };
-                var result =  UserManager.CreateAsync(user, "asdQWE123!@#");
+                var result = UserManager.CreateAsync(user, "asdQWE123!@#");
 
-                var huh=result.Result;
+                var huh = result.Result;
                 if (huh.Succeeded)
                 {
                     //db.AspNetUsers.Add(aspNetUsers);
                     //db.SaveChanges();
+                    using (var context = new Model1())
+                    {
+                        var ssss = db.AspNetUserRoles.SqlQuery("select * from AspNetUserRoles");
+                        //Displays all information in the aspnetuserroles table
+                        var ur = ssss.FirstOrDefault(p => p.UserId == user.Id && p.RoleId == aspNetUsers.Role);
+                        //Returns the first element in the sequence; If the sequence does not contain any elements, the default value is returned.
+                        if (ur == null)
+                        {
+
+                            var posts = context.Database.ExecuteSqlCommand($"insert into AspNetUserRoles(UserId,RoleId) values('{user.Id}','{aspNetUsers.Role}') ");
+                            //Add SQL statements to the database: add the values of Uesr and role to userid and roleid
+                        }
+                    }
+
                     return RedirectToAction("Index");
                 }
 
                 AddErrors(result.Result);
 
             }
-           
+
             // If we get to this point with an error somewhere, redisplay the form
             return View(aspNetUsers);
         }
