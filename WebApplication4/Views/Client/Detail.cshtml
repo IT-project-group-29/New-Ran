@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        .divchange {
+            margin-left: 80px;
+            margin-top: 80px;
+        }
+        p {
+            position: relative;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+@{
+    var userDetail = ViewBag.getPersonID;
+}
+
+<body>
+    <h2>Client Detail</h2>
+    <hr style="width=400px" />
+    <div class="divchange">
+        <dl class="dl-horizontal">
+            <dt>
+                Client Name:
+            </dt>
+            <dd>
+                @userDetail.UserName
+            </dd>
+            <dt>
+                Client Title:
+            </dt>
+            <dd>
+                @userDetail.title
+            </dd>
+            <dt>
+                Client E-mail:
+            </dt>
+            <dd>
+                @userDetail.Email
+            </dd>
+            <dt>
+                Client Phone Number:
+            </dt>
+            <dd>
+                @userDetail.PhoneNumber
+            </dd>
+            <dt>
+                Company Name:
+            </dt>
+            <dd>
+                @ViewBag.companyName
+            </dd>
+        </dl>
+        <p>
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>
+</body>
+</html>
+
