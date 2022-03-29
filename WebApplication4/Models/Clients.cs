@@ -14,5 +14,7 @@ namespace WebApplication4.Models
 
         [StringLength(100)]
         public string companyName { get; set; }
+
+
     }
 }

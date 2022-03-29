@@ -367,6 +367,10 @@
     <Content Include="Views\Allocations\staffDiv.cshtml" />
     <Content Include="Views\NewPlanCourse\AddNew.cshtml" />
     <Content Include="Views\NewPlanCourse\newPlanPage.cshtml" />
+    <Content Include="Views\Allocations\SelectPlan.cshtml" />
+    <Content Include="Views\Allocations\AllPlanSort.cshtml" />
+    <Content Include="Views\Allocations\SelectedSort.cshtml" />
+    <Content Include="Views\Allocations\StudentOrderByCourseGrade.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

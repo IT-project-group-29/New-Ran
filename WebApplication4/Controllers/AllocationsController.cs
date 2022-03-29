@@ -130,6 +130,22 @@ namespace WebApplication4.Controllers
             }
            
         }
+
+        public ActionResult SelectPlan(string planSelecter)
+        {
+            if(planSelecter == "AllPlan")
+            {             
+                ViewBag.stdt = db.Students.OrderBy(a => a.uniUserName).ToList();
+                return PartialView("AllPlanStudent");
+            }
+            else
+            {
+                var planSel = Convert.ToInt32(planSelecter);
+                ViewBag.stdt = db.Students.Where(a => a.planId == planSel).ToList();
+                ViewBag.stdtplanId = planSel;
+                return PartialView("Selectplan");
+            }
+        }
         public ActionResult ChangeDate(int ddlyear, string DDLSemester)
         {
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
@@ -146,5 +162,131 @@ namespace WebApplication4.Controllers
             ViewBag.stff = a;
             return PartialView("staffDiv");
         }
+        public ActionResult ChangeSortPlan(string SelecedPlan)
+        {
+            if(SelecedPlan == "AllPlan")
+            {
+                
+
+                return PartialView("AllPlanSort");
+            }
+            else
+            {
+                int SelPlan = Convert.ToInt32(SelecedPlan);
+                ViewBag.CourseID = db.PlanCourses.Where(a => a.planId == SelPlan).ToList();
+                ViewBag.Course = db.Course.ToList();
+                return PartialView("SelectedSort");
+            }
+        }
+
+        public ActionResult OrderByFunc(string OrderBySort,string OrderByPlanId, string OrderBySortCourseId)
+        {
+            if(OrderByPlanId != "AllPlan")
+            {
+                int planid = Convert.ToInt32(OrderByPlanId.Substring(5));
+                var studentslist = db.Students.Where(a => a.planId == planid).ToList();
+                List<StudentCourses> studentcoureselist = new List<StudentCourses>();
+               
+            
+           
+            if (OrderBySort == "Positive")
+            {
+                if (OrderBySortCourseId == "Name")
+                {
+                    ViewBag.stdt = db.Students.Where(a => a.planId == planid).OrderBy(a => a.uniUserName).ToList();
+                    return PartialView("AllPlanStudent");
+                }
+                else if (OrderBySortCourseId == "GPA")
+                {
+                    ViewBag.stdt = db.Students.Where(a => a.planId == planid).OrderByDescending(a => a.gpa).ToList();
+                    return PartialView("AllPlanStudent");
+                }
+                else
+                {
+                        foreach (var item in studentslist)
+                        {
+                            StudentCourses studentcourses = db.StudentCourses.Where(x => x.studentID == item.studentID && x.courseID == OrderBySortCourseId).FirstOrDefault();
+                            studentcoureselist.Add(studentcourses);
+                        }
+
+                        ViewBag.stdtCs = studentcoureselist.OrderByDescending(a => a.grade).ToList();
+                        ViewBag.stdt = db.Students.Where(a => a.planId == planid).ToList();
+                        return PartialView("StudentOrderByCourseGrade");
+
+                    }
+            }if(OrderBySort == "Negative")
+            {
+                if (OrderBySortCourseId == "Name")
+                {
+                    ViewBag.stdt = db.Students.Where(a => a.planId == planid).OrderByDescending(a => a.uniUserName).ToList();
+                    return PartialView("AllPlanStudent");
+                }
+                else if (OrderBySortCourseId == "GPA")
+                {
+                    ViewBag.stdt = db.Students.Where(a => a.planId == planid).OrderBy(a => a.gpa).ToList();
+                    return PartialView("AllPlanStudent");
+                }
+                else
+                {
+                        foreach (var item in studentslist)
+                        {
+                            StudentCourses studentcourses = db.StudentCourses.Where(x => x.studentID == item.studentID && x.courseID == OrderBySortCourseId).FirstOrDefault();
+                            studentcoureselist.Add(studentcourses);
+                        }
+
+                        ViewBag.stdtCs = studentcoureselist.OrderBy(a => a.grade).ToList();
+                        ViewBag.stdt = db.Students.Where(a => a.planId == planid).ToList();
+                        return PartialView("StudentOrderByCourseGrade");
+                    }
+            }
+            }
+            if (OrderByPlanId == "AllPlan")
+            {
+               /* int planid = Convert.ToInt32(OrderByPlanId);
+                var studentslist = db.Students.Where(a => a.planId == planid).ToList();
+                List<StudentCourses> studentcoureselist = new List<StudentCourses>();
+                foreach (var item in studentslist)
+                {
+                    StudentCourses studentcourses = db.StudentCourses.Where(x => x.studentID == item.studentID).FirstOrDefault();
+                    studentcoureselist.Add(studentcourses);
+                }*/
+
+
+
+                if (OrderBySort == "Positive")
+                {
+                    if (OrderBySortCourseId == "Name")
+                    {
+                        ViewBag.stdt = db.Students.OrderBy(a => a.uniUserName).ToList();
+                        return PartialView("AllPlanStudent");
+                    }
+                    else if (OrderBySortCourseId == "GPA")
+                    {
+                        ViewBag.stdt = db.Students.OrderByDescending(a => a.gpa).ToList();
+                        return PartialView("AllPlanStudent");
+                    }
+                    
+                }
+                if (OrderBySort == "Negative")
+                {
+                    if (OrderBySortCourseId == "Name")
+                    {
+                        ViewBag.stdt = db.Students.OrderByDescending(a => a.uniUserName).ToList();
+                        return PartialView("AllPlanStudent");
+                    }
+                    else if (OrderBySortCourseId == "GPA")
+                    {
+                        ViewBag.stdt = db.Students.OrderBy(a => a.gpa).ToList();
+                        return PartialView("AllPlanStudent");
+                    }
+                   
+                }
+            }
+
+            return PartialView();
+        }
+
+
+
     }
 }
