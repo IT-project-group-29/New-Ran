@@ -1,11 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace WebApplication4.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
     public partial class Clients
     {
         [Key]
@@ -14,7 +13,12 @@ namespace WebApplication4.Models
 
         [StringLength(100)]
         public string companyName { get; set; }
+<<<<<<< HEAD
 
 
+=======
+        //public virtual AspNetUsers AspNetUsers { get; set; }
+>>>>>>> b38892805380562e0a77e6f4729f5c6c48670588
     }
+
 }

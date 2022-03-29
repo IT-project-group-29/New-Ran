@@ -19,10 +19,14 @@ namespace WebApplication4.Models
         public string username { get; set; }
 
         [Column(TypeName = "date")]
+        [Required]
         public DateTime? dateEnded { get; set; }
 
         public int projnum { get; set; }
 
         public int diffnum { get; set; }
+
+        [NotMapped]
+        public virtual AspNetUsers AspNetUsers { get; set;}
     }
 }
