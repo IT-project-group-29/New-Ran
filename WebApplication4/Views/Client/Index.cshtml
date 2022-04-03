@@ -1,0 +1,62 @@
+﻿@model IEnumerable<WebApplication4.Models.Clients>
+@{
+    ViewBag.Title = "Index";
+    var users = (IEnumerable<WebApplication4.Models.AspNetUsers>)ViewBag.user;
+    }
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+
+<body>
+    <h2>Client Management</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Client Name
+                </th>
+                <th>
+                    Clinent Title
+                </th>
+                <th>
+                    E-mail
+                </th>
+                <th>
+                    Phone Number
+                </th>
+                <th>
+                    Company Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var db in Model)
+            {
+                <tr>
+                    <td>
+                        @users.FirstOrDefault(a => a.personID == db.clientID).UserName
+                    </td>
+                    <td>
+                        @users.FirstOrDefault(a => a.personID == db.clientID).title
+                    </td>
+                    <td>
+                        @users.FirstOrDefault(a => a.personID == db.clientID).Email
+                    </td>
+                    <td>
+                        @users.FirstOrDefault(a => a.personID == db.clientID).PhoneNumber
+                    </td>
+                    <td>
+                        @db.companyName
+                    </td>
+                    <td style="white-space:nowrap;">
+                        @Html.ActionLink("Edit", "Edit", new { id = db.clientID }, new { @class = "btn btn-primary" }) |
+                        @Html.ActionLink("Detail", "Detail", new { id = db.clientID }, new { @class = "btn btn-primary" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = db.clientID }, new { @class = "btn btn-primary" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

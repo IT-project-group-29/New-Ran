@@ -1,0 +1,33 @@
+﻿@{
+    var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
+    var studentCourse = (List<WebApplication4.Models.StudentCourses>)ViewBag.stdtCs;
+}
+<table class="table table-hover stud">
+    <thead style="display:block">
+        <tr style="display: table; width: 100%; table-layout: fixed;">
+            <th>Name</th>
+            <th>GPA</th>
+            <th>Grade</th>
+        </tr>
+    </thead>
+    <tbody style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll;"
+           id="studenttable"
+           ondrop="dropstu(event)"
+           ondragover="allowDrop(event)">
+        @foreach (var item in studentCourse)
+        {
+            <tr id="stddrag @item.studentID"
+                style="display: table; width: 100%; table-layout: fixed;">
+                <td>
+                    @students.FirstOrDefault(a => a.studentID == item.studentID).uniUserName
+                </td>
+                <td>
+                    @students.FirstOrDefault(a => a.studentID == item.studentID).gpa
+                </td>
+                <td>
+                    @item.grade
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

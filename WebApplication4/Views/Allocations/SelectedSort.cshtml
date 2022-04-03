@@ -1,0 +1,19 @@
+﻿@{
+    var courseID = (List<WebApplication4.Models.PlanCourses>)ViewBag.CourseID;
+    var course = (List<WebApplication4.Models.Course>)ViewBag.Course;
+}
+
+<select id="sortSelecter" class=" form-control" name="SortSelection">
+    <option id="SortName" label="Name" value="name">Name</option>
+    <option id="SortGPA" label="GPA" value="GPA">GPA</option>
+
+    @foreach (var item in courseID)
+    {
+        var CourseInfo = course.FirstOrDefault(a => a.courseID == item.courseId);
+<option id=@item.courseId  value="Sort @item.courseId">@CourseInfo.courseName</option>
+     }       
+
+
+
+
+    </select>
