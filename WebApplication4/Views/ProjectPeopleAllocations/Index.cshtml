@@ -1,6 +1,6 @@
 ﻿
 @model IEnumerable<WebApplication4.Models.ProjectPeopleAllocations>
-
+@using WebApplication4.Models
 @{
     ViewBag.Title = "Index";
     var users = (List<WebApplication4.Models.AspNetUsers>)ViewBag.personID;
@@ -15,6 +15,8 @@
     //get the plan id, In the controller, its default value is 0, is used to control the plan drop-down.
     var plancs = (List<WebApplication4.Models.PlanCourses>)ViewBag.plancs;
     var course = (List<WebApplication4.Models.Course>)ViewBag.course;
+    var test = (List<string>)ViewBag.Test;
+    var studentsCourses = (List<MyViewModel>)ViewBag.MyList;
 }
 @*Introduce some values defined in the controller and tables in the database.*@
 <h2>Project Allocation</h2>
@@ -128,7 +130,7 @@
 
                                         }
 
-                                        
+
                                     </div>
 
                                 </div>
@@ -218,26 +220,32 @@
                 <div class="col-md-5 stud" @ViewBag.studenthidden>
                     @*Another function of studenthidden is to keep the options of the original student and supervisor drop-down boxes when submitting the page.*@
 
-                    <select class=" form-control" name="plan" onchange="sbmt()">
+                    <select id="yyjsb" class="form-control" name="plan" onchange="sbmt()">
                         @if (planid == 0)
                         {
                             @*the planid's default value is 0, so it will default show "All plans" in this drop down box *@
-                            <option label="All Plans" value="0" name="plan" selected="selected">All Plans</option>
+
+                            <option label="All Plans" value="0" name="plan" selected="selected">
+                                All Plans
+                            </option>
                         }
                         else
                         {
-                            <option label="All Plans" value="0" name="plan" selected="">All Plans</option>
+                            @*<option href="/ProjectPeopleAllocations?index=0" label="All Plans" value="0" name="plan" selected="">All Plans</option>*@
+                            <option label="All Plans" value="0" name="plan" selected="">
+                                All Plans
+                            </option>
                         }
                         @foreach (var item in plans)
                         {
                             if (@item.planId == planid)
                             {
                                 @*Find the corresponding planid to output its plan name*@
-                                <option value="@item.planId" selected="selected">@item.planName</option>
+                                <option href="/ProjectPeopleAllocations?index=@item.planId" value="@item.planId" selected="selected">@item.planName</option>
                             }
                             else
                             {
-                                <option value="@item.planId">@item.planName</option>
+                                <option href="/ProjectPeopleAllocations?index=@item.planId" value="@item.planId">@item.planName</option>
 
                             }
 
@@ -245,7 +253,7 @@
 
                     </select>
 
-                    
+
                 </div>
             </div>
             <br />
@@ -273,87 +281,19 @@
 
             </div>
             <br />
-            
+
             <h3>Sort</h3>
             <div class="row">
 
                 <div class="col-md-5">
                     <select class=" form-control" name="tyt">
-                        @if (ViewBag.tyt == "name")
+                        @if (test?.Count > 0)
                         {
-                            @*tyt is used to after pressing the button again, the current option is still maintained instead of becoming the first option.*@
-
-                            <option label="Name" value="name" selected="selected">Name</option>
-
+                            foreach (var n in test)
+                            {
+                                <option label="@n" value="@n" selected="selected">@n</option>
+                            }
                         }
-                        else
-                        {
-                            <option label="Name" value="name">Name</option>
-                        }
-
-
-                        @if (ViewBag.tyt != "gpa")
-                        {
-
-                            <option label="GPA" value="gpa">GPA</option>
-
-                        }
-                        else
-                        {
-                            <option label="GPA" value="gpa" selected="selected">GPA</option>
-                        }
-                        @if (ViewBag.tyt != "105295")
-                        {
-
-                            <option label="Software Development with C++" value="105295">Software Development with C++</option>
-
-                        }
-                        else
-                        {
-                            <option label="Software Development with C++" value="105295" selected="selected">Software Development with C++</option>
-                        }
-                        @if (ViewBag.tyt != "105294")
-                        {
-
-                            <option label="Programming Fundamentals" value="105294">Programming Fundamentals</option>
-
-                        }
-                        else
-                        {
-                            <option label="Programming Fundamentals" value="105294" selected="selected">Programming Fundamentals</option>
-                        }
-                        @if (ViewBag.tyt != "156783")
-                        {
-
-                            <option label="Web Development" value="156783">Web Development</option>
-
-                        }
-                        else
-                        {
-                            <option label="Web Development" value="156783" selected="selected">Web Development</option>
-                        }
-                        @if (ViewBag.tyt != "012540")
-                        {
-
-                            <option label="Interface Desgin, Interaction and Experience" value="012540">Interface Desgin, Interaction and Experience</option>
-
-                        }
-                        else
-                        {
-                            <option label="Interface Desgin, Interaction and Experience" value="012540" selected="selected">Interface Desgin, Interaction and Experience</option>
-                        }
-
-                        @if (ViewBag.tyt != "105284")
-                        {
-
-                            <option label="Agile Development with .NET" value="105284">Agile Development with .NET</option>
-
-                        }
-                        else
-                        {
-                            <option label="Agile Development with .NET" value="105284" selected="selected">Agile Development with .NET</option>
-                        }
-
                     </select>
                 </div>
 
@@ -369,163 +309,40 @@
             </div>
 
             <br />
-            <div style="height: 555px; overflow: auto;">
-
-                <table class="table table-hover stud" @ViewBag.studenthidden>
+            <div style="height: 400px; overflow: auto; ">
+                <table class="table text-nowrap stud" @ViewBag.studenthidden>
                     <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
                         <tr>
-
-                            <th>
-                                Name
-                            </th>
-                            @if (planid == 0)
+                            @if (test?.Count > 0)
                             {
-                                @*when the planid is 0(default),to show all course name*@
-                                <th>
-                                    PF
-                                </th>
-                                <th>
-                                    SDC++
-                                </th>
-
-                                <th>
-                                    WEB
-                                </th>
-                                <th>
-                                    IDIE
-                                </th>
-                                <th>
-                                    AgNET
-                                </th>
-                            }
-
-                            @foreach (var findcs in plancs)
-                            {
-                                if (findcs.planId == planid)
+                                foreach (var n in test)
                                 {
-                                    @*if the got planid is not 0, to make sure what it is, and find which course it has*@
-                                    var selecrcourse = course.FirstOrDefault(p => p.courseID == findcs.courseId).courseName;
-                                    string simpleName = "";
-                                    if (selecrcourse == "Software Development with C++")
-                                    {
-                                        simpleName = "SDC++";
-                                    }
-                                    else if (selecrcourse == "Programming Fundamentals")
-                                    {
-                                        simpleName = "PF";
-                                    }
-                                    else if (selecrcourse == "Web Development")
-                                    {
-                                        simpleName = "WEB";
-                                    }
-                                    else if (selecrcourse == "Interface Desgin, Interaction and Experience")
-                                    {
-                                        simpleName = "IDIE";
-                                    }
-                                    else if (selecrcourse == "Agile Development with .NET")
-                                    {
-                                        simpleName = "AgNet";
-                                    }
-                                    <th>
-                                        @simpleName
-                                    </th>
+                                    <td>@n</td>
                                 }
                             }
-
-
-                            <th>
-                                GPA
-                            </th>
-
 
                         </tr>
 
-                        @foreach (var item in stucourse)
+                        @if (studentsCourses?.Count > 0)
                         {
-
-                            var cstu = item;
-                            var a = cstu.CPP;
-                            var b = cstu.PF;
-                            var c = cstu.WEB;
-                            var d = cstu.IDIE;
-                            var e = cstu.AgNET;
-
-                            var CPPtoStr = cstu.CPPtoStr;
-                            var PFtoStr = cstu.PFtoStr;
-                            var WEBtoStr = cstu.WEBtoStr;
-                            var IDIEtoStr = cstu.IDIEtoStr;
-                            var AgNETtoStr = cstu.AgNETtoStr;
-                            @*Find the course name in ctucourse*@
-                            <tr id="tdrag @item.ID">
-                                <td hidden>
-                                    <div> @item.Name</div>
-                                </td>
-                                @if (planid == 0)
-                                {
-                                    <td id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)">
+                            foreach (var item in studentsCourses)
+                            {
+                                <tr>
+                                    <td>
                                         @item.Name
                                     </td>
-                                    <td @ViewBag.planBHidden>
-                                        @*the planBHidden and planAHideen is used to display or hidden this tag, *@
-                                        @*This depends on the selected planid and passes the value to the controller*@
-                                        @*to determine which of planahidden and planbhidden is "hidden".*@
-                                        @*when the planid is 0, it will display all course's grade*@
-                                        @PFtoStr
-                                    </td>
+                                    @if (item?.StudentCourses?.Count > 0)
+                                    {
+                                        foreach (var n in item.StudentCourses)
+                                        {
+                                            <td>
+                                                @n.grade
+                                            </td>
+                                        }
+                                    }
 
-                                    <td @ViewBag.planBHidden>
-                                        @CPPtoStr
-                                    </td>
-
-                                    <td @ViewBag.planBHidden>
-                                        @WEBtoStr
-                                    </td>
-
-                                    <td @ViewBag.planAHidden>
-                                        @IDIEtoStr
-                                    </td>
-
-                                    <td @ViewBag.planAHidden>
-                                        @AgNETtoStr
-                                    </td>
-
-                                    <td>
-                                        @item.Gpa
-                                    </td>
-                                }
-                                else if (item.Planid == planid)
-                                {
-                                    <td id="drag @item.ID" data-a="@a" data-b="@b" data-c="@c" data-d="@d" data-e="@e" data-f="@item.Gpa" draggable="true" ondragstart="drag(event)">
-                                        @item.Name
-                                    </td>
-                                    <td @ViewBag.planBHidden>
-                                        @PFtoStr
-                                    </td>
-
-                                    <td @ViewBag.planBHidden>
-                                        @CPPtoStr
-                                    </td>
-
-                                    <td @ViewBag.planBHidden>
-                                        @WEBtoStr
-                                    </td>
-
-                                    <td @ViewBag.planAHidden>
-                                        @IDIEtoStr
-                                    </td>
-
-                                    <td @ViewBag.planAHidden>
-                                        @AgNETtoStr
-                                    </td>
-
-                                    <td>
-                                        @item.Gpa
-                                    </td>
-                                }
-                            </tr>
-
-
-
+                                </tr>
+                            }
                         }
                     </tbody>
 
@@ -608,11 +425,11 @@
         //Cancels the default action for the event.
 
         var data = ev.dataTransfer.getData("Text");
-        //Retrieves the data of the text. 
-         //If the data of this type does not exist or the data transfer does not contain data, an empty string is returned
+        //Retrieves the data of the text.
+        //If the data of this type does not exist or the data transfer does not contain data, an empty string is returned
 
         var idstr = ev.currentTarget.getAttribute("id");
-         //Get the id attribute of the clicked element
+        //Get the id attribute of the clicked element
 
         if (document.getElementById(idstr).innerHTML.includes(data)) {
             //Controls the value of the current layer
@@ -627,12 +444,12 @@
             var projectID = dp[1].split(" ")[1];
             var staffID = dp[0].split(" ")[1];
             document.getElementById("stafftable").querySelector("#pro" + staffID).textContent = Number(document.getElementById("stafftable").querySelector("#pro" + staffID).textContent) - 1;
-            //    Find the current element in staff table      
-            //obtain the element of PRO + staff ID       
+            //    Find the current element in staff table
+            //obtain the element of PRO + staff ID
             //obtain its content(number of allocated projects)
             if (document.getElementById("tableExcel").querySelector("#difficulty" + projectID).getAttribute("data-diff") == "yes") {
                 document.getElementById("stafftable").querySelector("#diff" + staffID).textContent = Number(document.getElementById("stafftable").querySelector("#diff" + staffID).textContent) - 1;
-            //The diffculty level in the staff attribute is reduced by one
+                //The diffculty level in the staff attribute is reduced by one
             }
             $.get("/ProjectPeopleAllocations/deletStaff", { projectId: projectID, staffId: staffID })
             //After successful removal, obtain the values of projectid and staffid.
@@ -692,7 +509,7 @@
         var idstr = ev.currentTarget.getAttribute("id");
         //Get the id attribute of the clicked element（projectID）
         var data = ev.dataTransfer.getData("Text");
-         //If the data of this type does not exist or the data transfer does not contain data, an empty string is returned
+        //If the data of this type does not exist or the data transfer does not contain data, an empty string is returned
         if (data.includes('drag') && idstr.includes('div')) {
             //Determines the currently selected student.
             ev.currentTarget.appendChild(document.getElementById(data));
@@ -761,17 +578,22 @@
     function changedesc() {
         document.getElementById('namedc').value = "desc";
         document.getElementById("formdd").submit();
-      
+
     }
     function changeasc() {
         document.getElementById('namedc').value = "asc";
         document.getElementById("formdd").submit();
-          //use these two funcation to tell controller what betten(decs or acs) be clicked
+        //use these two funcation to tell controller what betten(decs or acs) be clicked
     }
 
     function sbmt() {
         // a funcation to submit this from, this may be used by many part.
-        document.getElementById("formdd").submit();
+
+        //document.getElementById("formdd").submit();
+
+        let id = document.getElementById("yyjsb").value;
+        window.location = "/ProjectPeopleAllocations?index=" + id;
+        console.log(id)
     }
 
     //Export Excel function
@@ -802,7 +624,7 @@
         }
     }
 
-    
+
     function method5(tableid) {
         if (getExplorer() == 'ie') {
             var curTbl = document.getElementById(tableid);
@@ -810,11 +632,11 @@
             var oXL = new ActiveXObject("Excel.Application");
             //create the object excel for AX
             var oWB = oXL.Workbooks.Add();
-            //Get the workbook's object  
+            //Get the workbook's object
             var xlsheet = oWB.Worksheets(1);
             var sel = document.body.createTextRange();
             sel.moveToElementText(curTbl);
-            //move the contents of the table into the TextRange  
+            //move the contents of the table into the TextRange
             sel.select();
             //select all the contents of the TextRange
             sel.execCommand("Copy");
@@ -840,7 +662,7 @@
             tableToExcel(tableid)
         }
     }
-    
+
     var tableToExcel = (function () {
         //construct a base64 string path to the jump address download
         var uri = 'data:application/vnd.ms-excel;base64,',

@@ -206,6 +206,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Memberships.cs" />
     <Compile Include="Models\Model1.cs" />
+    <Compile Include="Models\MyViewModel.cs" />
     <Compile Include="Models\PeopleComments.cs" />
     <Compile Include="Models\PeopleContacts.cs" />
     <Compile Include="Models\PlanCourses.cs" />
