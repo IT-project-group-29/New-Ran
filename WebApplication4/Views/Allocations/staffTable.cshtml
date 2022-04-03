@@ -5,9 +5,8 @@
 
 <div>
     <table class="table table-hover staff" @ViewBag.staffHidden>
-        <tbody id="stafftable" ondrop="dropTablestaff(event)" ondragover="allowDrop(event)">
-            @*to display staff's list*@
-            <tr>
+        <thead style="display:block">
+            <tr style="display: table; width: 100%; table-layout: fixed;">
                 <th>
                     Name
                 </th>
@@ -23,10 +22,14 @@
 
                 </th>
             </tr>
-
+        </thead>
+        <tbody  style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll; overflow-x: hidden;"
+               id="stafftable" ondrop="dropTablestaff(event)" ondragover="allowDrop(event)">
+            @*to display staff's list*@
             @foreach (var item in staff)
             {
-                <tr id="istaff @item.staffID">
+                <tr id="istaff @item.staffID"
+                     style="display: table; width: 100%; table-layout: fixed;">
                     <td>
                         <div id="staff @item.staffID" draggable="true" ondragstart="drag(event)"> @item.username</div>
                     </td>
@@ -39,7 +42,7 @@
                         <div id="@tutss">@item.diffnum</div>
                     </td>
                     <td>
-                       <a onclick="sbmtEdit(@item.staffID)">Edit</a>
+                        <a onclick="sbmtEdit(@item.staffID)">Edit</a>
                     </td>
                 </tr>
             }

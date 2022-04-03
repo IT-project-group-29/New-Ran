@@ -9,7 +9,13 @@
 
     <thead style="display:block">
         <tr style="display: table; width: 100%; table-layout: fixed;">
-            <th>Plan</th>
+            <th>
+                Plan <a style="color:green; text-decoration: none"
+                        href="javascript:void(0)"
+                        onclick="AddNewPlanHref()">
+                    <font size="3">+</font>
+                </a>
+            </th>
             <th>Course in this Plan</th>
         </tr>
     </thead>
@@ -27,7 +33,7 @@
                 <td class="LeftBoxPlan">@PItem.planName</td>
 
                 <td id="LeftSpan @PItem.planId">
-                    @{ var L = Model.Where(m => m.planId == PItem.planId).ToList();}
+                    @{ var L = Model.Where(a => a.planId == PItem.planId).ToList();}
                     @foreach (var C in L)
                     {
                         <span id="@PItem.planId bind @C.courseId"

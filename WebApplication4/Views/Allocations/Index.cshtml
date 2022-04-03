@@ -89,13 +89,15 @@
             bottom: 5%;
             left: 53%;
             right: 20px;
-            margin-top:10px;
+            margin-top:-10px;
             overflow:auto;
             @* background-color:lightpink;*@
         }
     </style>
 </head>
 <body>
+   
+    
     <div id="LeftTop">
         @using (Ajax.BeginForm("ChangeDate", "Allocations", ("ddlyear", "DDLSemester"), new AjaxOptions()
         {
@@ -245,51 +247,97 @@
 
             <div class="col-md-5 stud" @ViewBag.studenthidden>
                 @*Another function of studenthidden is to keep the options of the original student and supervisor drop-down boxes when submitting the page.*@
+                @using (Ajax.BeginForm("SelectPlan", "Allocations", "planSelecter", new AjaxOptions()
+                {
 
-                <select id="planSelect" class=" form-control" name="plan" hidden="">
+                    HttpMethod = "post",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "RightBottom"
+                }))
+                {
+                    <select id="planSelect" class=" form-control" name="planSelecter" hidden="" onchange="ChangeSortInside(this), sbmt('SelectPlan')">
 
-                    @*the planid's default value is 0, so it will default show "All plans" in this drop down box *@
-                    <option label="All Plans" value="0" name="plan" selected="selected">All Plans</option>
-
-
-                    @foreach (var item in plans)
-                    {
-
-                        @*Find the corresponding planid to output its plan name*@
-                        <option value="@item.planId">@item.planName</option>
+                        @*the planid's default value is 0, so it will default show "All plans" in this drop down box *@
+                        <option label="All Plans" id="AllPlan" value="AllPlan" name="plan" selected="selected">All Plans</option>
 
 
+                        @foreach (var item in plans)
+                        {
 
+                            @*Find the corresponding planid to output its plan name*@
+                            <option id="Plan @item.planId" value="@item.planId">@item.planName</option>
+
+
+
+                        }
+
+                    </select>
+
+                    <input id="SelectPlan" type="submit" hidden="hidden" />
+                }
+                @using (Ajax.BeginForm("ChangeSortPlan", "Allocations","SelecedPlan", new AjaxOptions()
+                {
+
+                    HttpMethod = "post",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "sort"
+                }))
+                {   <input id="SelecedPlan" name="SelecedPlan" value="" hidden="hidden" />
+                    
+                    <input id="AddPlansbmt" type="submit" hidden="hidden" />
                     }
-
-                </select>
-
 
             </div>
         </div>
 
 
-        <h3>Sort</h3>
-        <div class="row">
-            <div id="sort" class="col-md-5">
-                <select class=" form-control" name="SortSelection">
-                    <option label="Name" value="name">Name</option>
-                    <option label="GPA" value="GPA">GPA</option>
+
+        <div id="sortslide" class="row">
+            <h3>&nbsp; Sort</h3>
+            <div id="sort" class="col-md-5" style="margin-right:5px; width:50%;">
+
+                <select id="sortSelecter" class=" form-control" name="SortSelection">
+                    <option id="SortName" label="Name" value="name">Name</option>
+                    <option id="SortGPA" label="GPA" value="GPA">GPA</option>
                 </select>
             </div>
+            <div class="col-md-5">
+                @using (Ajax.BeginForm("OrderByFunc", "Allocations", ("OrderBySort", "OrderByPlanId", "OrderBySortCourseId"), new AjaxOptions()
+                {
+
+                    HttpMethod = "post",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "RightBottom"
+                }))
+                {
+                    <input id="OrderBySort" name="OrderBySort" value="" hidden="hidden" />
+                    <input id="OrderByPlanId" name="OrderByPlanId" value="" hidden="hidden" />
+                    <input id="OrderBySortCourseId" name="OrderBySortCourseId" value="" hidden="hidden" />
+                    <input id="OrderBySortSbmt" type="submit" hidden="hidden" />
+                }
+                <button class="btn btn-primary" onclick="OrderBy('P')">Positive</button>
+                <button class="btn btn-primary" onclick="OrderBy('N')">Negative</button>
+            </div>
+            
         </div>
     </div>
 
     <div id="RightBottom">
         <table class="table table-hover stud">
-            <tbody id="studenttable" ondrop="dropstu(event)" ondragover="allowDrop(event)">
-                <tr>
+            <thead style="display:block">
+                <tr style="display: table; width: 100%; table-layout: fixed;">
                     <th>Name</th>
                     <th>GPA</th>
                 </tr>
+            </thead>
+            <tbody style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll;"
+                   id="studenttable"
+                   ondrop="dropstu(event)"
+                   ondragover="allowDrop(event)">
                 @foreach (var item in students)
                 {
-                    <tr id="stddrag @item.studentID">
+                    <tr id="stddrag @item.studentID"
+                        style="display: table; width: 100%; table-layout: fixed;">
                         <td>
                             @item.uniUserName
                         </td>
@@ -302,7 +350,7 @@
             </tbody>
         </table>
     </div>
-    <div id="edtDiv" style="display:none" >
+    <div id="edtDiv" style="display:none">
         <input onclick="canceldiv()" class="btn btn-danger" type="button" style="position:absolute; width:10px; height:10px; right:5px; top:5px;" />
         <div id="edtText" style="position:absolute;left:20%;right:20%;top:15px; bottom:15px;"></div>
     </div>
@@ -310,7 +358,12 @@
 
 </html>
 <script>
-
+    function ChangeSortInside(t) {
+        var Sort = document.getElementById("SelecedPlan");
+      
+        Sort.value = t.value;
+        document.getElementById("AddPlansbmt").click();
+    }
     function sbmt(ID) {
         // a funcation to submit the ajax form, this may be used by many place.
         console.log(ID);
@@ -321,15 +374,19 @@
         //this function is used to hidden or show the plan selection.
         var selstf = document.getElementById("selstf");
         var selstd = document.getElementById("selstd");
+       
         if (selstf.getAttribute("selected") == "selected") {
-
+            
+            $("#sortslide").slideDown();
             selstd.setAttribute("selected", "selected");
             selstf.removeAttribute("selected");
             document.getElementById(ID).style.display = "inline";
         } else {
             selstd.removeAttribute("selected");
             selstf.setAttribute("selected", "selected");
+            $("#sortslide").slideUp();
 
+            document.getElementById("AllPlan").selected = true;
             document.getElementById(ID).style.display = "none";
         }
 
@@ -345,4 +402,30 @@
     function canceldiv() {
         document.getElementById("edtDiv").style.display = "none";
     }
+
+    function OrderBy(t) {
+        var planID = $("#planSelect").find("option:selected").attr("id");
+        document.getElementById("OrderByPlanId").value = planID;
+        if (t == 'P') {
+            document.getElementById("OrderBySort").value = "Positive";
+        }
+        if (t == 'N') {
+            document.getElementById("OrderBySort").value = "Negative";
+        }
+
+        var CourseID = $("#sortSelecter").find("option:selected").attr("id");
+        if (CourseID == "SortName") {
+            document.getElementById("OrderBySortCourseId").value = "Name";
+
+        }
+        else if (CourseID == "SortGPA") {
+            document.getElementById("OrderBySortCourseId").value = "GPA";
+
+        } else {
+            document.getElementById("OrderBySortCourseId").value = CourseID;
+        }
+
+        document.getElementById("OrderBySortSbmt").click();
+    }
+
 </script>

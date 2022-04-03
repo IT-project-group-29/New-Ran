@@ -176,12 +176,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AllocationsController.cs" />
     <Compile Include="Controllers\AspNetUsersController.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\NewPlanCourseController.cs" />
     <Compile Include="Controllers\PlanCoursesController.cs" />
     <Compile Include="Controllers\PriorityProjectsController.cs" />
     <Compile Include="Controllers\ProjectEffortsController.cs" />
     <Compile Include="Controllers\ProjectPeopleAllocationsController.cs" />
+    <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\StudentCoursesController.cs" />
     <Compile Include="Controllers\AspNetRolesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -367,6 +369,22 @@
     <Content Include="Views\NewPlanCourse\Index.cshtml" />
     <Content Include="Views\Allocations\staffDiv.cshtml" />
     <Content Include="Views\NewPlanCourse\AddNew.cshtml" />
+<<<<<<< HEAD
+    <Content Include="Views\NewPlanCourse\newPlanPage.cshtml" />
+    <Content Include="Views\Allocations\SelectPlan.cshtml" />
+    <Content Include="Views\Allocations\AllPlanSort.cshtml" />
+    <Content Include="Views\Allocations\SelectedSort.cshtml" />
+    <Content Include="Views\Allocations\StudentOrderByCourseGrade.cshtml" />
+=======
+    <Content Include="Views\Staff\Index.cshtml" />
+    <Content Include="Views\Staff\Detail.cshtml" />
+    <Content Include="Views\Staff\Delete.cshtml" />
+    <Content Include="Views\Client\Index.cshtml" />
+    <Content Include="Views\Client\Detail.cshtml" />
+    <Content Include="Views\Client\Edit.cshtml" />
+    <Content Include="Views\Client\Delete.cshtml" />
+    <Content Include="Views\Staff\Edit.cshtml" />
+>>>>>>> b38892805380562e0a77e6f4729f5c6c48670588
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -29,11 +29,14 @@
             <label class="control-label col-md-2"> Select Account Type </label>
 
             <div class="col-md-10">
-                <select class="form-control userTypeSelect" onchange="multipleUserTypeChange()">
-                    <option value="student">Student</option>
-                    <option value="client">Client</option>
-                    <option value="staff">Staff</option>
-                </select>
+                @*<select class="form-control userTypeSelect" id="Role" name="Role" onchange="multipleUserTypeChange()">
+                    <option value="15A8EC6E-31A9-4753-AF05-5A900AA18E71">Student</option>
+                    <option value="A13BD030-B150-4602-B1C4-B6FD80E4A11E">Client</option>
+                    <option value="83AC9356-6F98-441F-B7F1-9BF7338135C4">Staff</option>
+
+                </select>*@
+                @Html.DropDownList("Role", null, htmlAttributes: new { @class = "form-control", onchange = "multipleUserTypeChange()" })
+
             </div>
         </div>
 
@@ -183,22 +186,22 @@
         $(".divClient").slideUp();
         $(".divStaff").slideUp();
         $(".divControls").slideUp();
-
-        switch ($(".userTypeSelect").val()) {
+        //alert($("#Role").find("option:selected").text());
+        switch ($("#Role").find("option:selected").text()) {
             case "":
                 $(".divHeading").slideDown();
                 break;
 
-            case "student":
+            case "Student":
                 $(".divStudent").slideDown();
                 $(".divControls").slideDown();
                 break;
 
-            case "client":
+            case "Client":
                 $(".divClient").slideDown();
                 break;
 
-            case "staff":
+            case "Staff":
                 $(".divStaff").slideDown();;
                 break;
 

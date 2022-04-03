@@ -14,15 +14,14 @@ namespace WebApplication4.Controllers
         // GET: NewPlanCourse
         public ActionResult Index()
         {
-            ViewBag.plans = db.Plans.ToList();
-            ViewBag.course = db.Course.ToList();
+            
+            ViewBag.plans = db.Plans.OrderBy(a => a.planName).ToList();
+            ViewBag.course = db.Course.OrderBy(a => a.courseName).ToList();
             return View(db.PlanCourses.ToList());
         }
-
+        
         public ActionResult DeleteCourse(string DelcsID)
         {
-            ViewBag.plans = db.Plans.ToList();
-            ViewBag.course = db.Course.ToList();
             var pcDel = db.PlanCourses.Where(a => a.courseId == DelcsID).ToList();
             foreach (var item in pcDel)
             {
@@ -31,10 +30,29 @@ namespace WebApplication4.Controllers
             }
             db.Course.Remove(db.Course.FirstOrDefault(a => a.courseID == DelcsID));
             db.SaveChanges();
+
+            ViewBag.plans = db.Plans.OrderBy(a => a.planName).ToList();
+            ViewBag.course = db.Course.OrderBy(a => a.courseName).ToList();
             return PartialView("dragdrop", db.PlanCourses.ToList());
         }
 
-
+        public ActionResult DelPlan(int thisid)
+        {
+            var pcDel = db.PlanCourses.Where(a => a.planId == thisid).ToList();
+            foreach (var item in pcDel)
+            {
+                db.PlanCourses.Remove(item);
+            }
+            var stud = db.Students.Where(a => a.planId == thisid).ToList();
+            foreach(var item in stud)
+            {
+                item.planId = 0;
+               // item.planId = null;
+            }
+            db.Plans.Remove(db.Plans.FirstOrDefault(a => a.planId == thisid));
+            db.SaveChanges();
+            return Content("removed");
+        }
         public ActionResult DelSpan(int thisid, string deld)
         {
             int pID = thisid;
@@ -85,7 +103,7 @@ namespace WebApplication4.Controllers
             }
             else return Content("null");
         }
-        public ActionResult IsCourseNameRepeated(String courseName)
+        public ActionResult IsCourseNameRepeated(string courseName)
         {
             if (courseName != "")
             {
@@ -104,7 +122,7 @@ namespace WebApplication4.Controllers
 
         }
 
-        public ActionResult IsCourseCodeRepeated(String courseCode)
+        public ActionResult IsCourseCodeRepeated(string courseCode)
         {
 
             if (courseCode != "")
@@ -122,12 +140,46 @@ namespace WebApplication4.Controllers
             }
             else { return Content("null"); }
         }
+        public ActionResult IsPlanNameRepeated(string planName)
+        {
+            if (planName != "")
+            {
 
+                if (db.Plans.FirstOrDefault(a => a.planName == planName) == null)
+                {
+                    return Content("OK");
+                }
+                else
+                {
+                    return Content("repeated");
+                }
+
+            }
+            else { return Content("null"); }
+            
+        }
+        public ActionResult IsPlanCodeRepeated(string planCode)
+        {
+            if (planCode != "")
+            {
+
+                if (db.Plans.FirstOrDefault(a => a.planCode == planCode) == null)
+                {
+                    return Content("OK");
+                }
+                else
+                {
+                    return Content("repeated");
+                }
+
+            }
+            else { return Content("null"); }
+
+        }
         public ActionResult AddCourse(string CId,string CName, string CCode)
         {
 
-            ViewBag.plans = db.Plans.ToList();
-            ViewBag.course = db.Course.ToList();
+            
             var newCourse = new Course();
             newCourse.courseID = CId;
             newCourse.courseName = CName;
@@ -136,5 +188,22 @@ namespace WebApplication4.Controllers
             db.SaveChanges();
             return Content("success");
         }
+
+        public ActionResult AddPlan(string PName,string PCode,string PDur)
+        {
+            
+            var newPlan = new Plans();
+            newPlan.planName = PName;
+            newPlan.planCode = PCode;
+            newPlan.projectDuration = Convert.ToInt32(PDur);
+            db.Plans.Add(newPlan);
+            db.SaveChanges();
+            ViewBag.plans = db.Plans.OrderBy(a => a.planName).ToList();
+            ViewBag.course = db.Course.OrderBy(a => a.courseName).ToList();
+            return PartialView("dragdrop", db.PlanCourses.ToList());
+
+        }
+       
+
     }
 }
