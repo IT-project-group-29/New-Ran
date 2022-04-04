@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<WebApplication4.Models.ProjectPeopleAllocations>
+@{
     var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
 }
 <table class="table table-hover stud">
@@ -10,12 +11,19 @@
     </thead>
     <tbody style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll;"
            id="studenttable"
-           ondrop="dropstu(event)"
-           ondragover="allowDrop(event)">
+           ondragover="dragOver(event)">
         @foreach (var item in students)
         {
+            if (Model.FirstOrDefault(a => a.personID == item.studentID) == null)
+
+            {@*make sure the selected student will not be displayed in the student table*@
+
+
             <tr id="stddrag @item.studentID"
-                style="display: table; width: 100%; table-layout: fixed;">
+                style="display: table; width: 100%; table-layout: fixed;"
+                draggable="true"
+                ondragover="dragOver(event)"
+                ondragstart="DragStudentsStart(event)">
                 <td>
                     @item.uniUserName
                 </td>
@@ -25,5 +33,6 @@
                 </td>
             </tr>
         }
+    }
     </tbody>
 </table>

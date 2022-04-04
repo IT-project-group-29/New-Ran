@@ -133,17 +133,18 @@ namespace WebApplication4.Controllers
 
         public ActionResult SelectPlan(string planSelecter)
         {
-            if(planSelecter == "AllPlan")
+            var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
+            if (planSelecter == "AllPlan")
             {             
                 ViewBag.stdt = db.Students.OrderBy(a => a.uniUserName).ToList();
-                return PartialView("AllPlanStudent");
+                return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
             }
             else
             {
                 var planSel = Convert.ToInt32(planSelecter);
                 ViewBag.stdt = db.Students.Where(a => a.planId == planSel).ToList();
                 ViewBag.stdtplanId = planSel;
-                return PartialView("Selectplan");
+                return PartialView("Selectplan", projectPeopleAllocations.ToList());
             }
         }
         public ActionResult ChangeDate(int ddlyear, string DDLSemester)
@@ -181,7 +182,8 @@ namespace WebApplication4.Controllers
 
         public ActionResult OrderByFunc(string OrderBySort,string OrderByPlanId, string OrderBySortCourseId)
         {
-            if(OrderByPlanId != "AllPlan")
+            var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
+            if (OrderByPlanId != "AllPlan")
             {
                 int planid = Convert.ToInt32(OrderByPlanId.Substring(5));
                 var studentslist = db.Students.Where(a => a.planId == planid).ToList();
@@ -194,12 +196,14 @@ namespace WebApplication4.Controllers
                 if (OrderBySortCourseId == "Name")
                 {
                     ViewBag.stdt = db.Students.Where(a => a.planId == planid).OrderBy(a => a.uniUserName).ToList();
-                    return PartialView("AllPlanStudent");
+                        
+                        return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
                 }
                 else if (OrderBySortCourseId == "GPA")
                 {
                     ViewBag.stdt = db.Students.Where(a => a.planId == planid).OrderByDescending(a => a.gpa).ToList();
-                    return PartialView("AllPlanStudent");
+                       
+                        return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
                 }
                 else
                 {
@@ -211,7 +215,8 @@ namespace WebApplication4.Controllers
 
                         ViewBag.stdtCs = studentcoureselist.OrderByDescending(a => a.grade).ToList();
                         ViewBag.stdt = db.Students.Where(a => a.planId == planid).ToList();
-                        return PartialView("StudentOrderByCourseGrade");
+                       
+                        return PartialView("StudentOrderByCourseGrade", projectPeopleAllocations.ToList());
 
                     }
             }if(OrderBySort == "Negative")
@@ -219,12 +224,14 @@ namespace WebApplication4.Controllers
                 if (OrderBySortCourseId == "Name")
                 {
                     ViewBag.stdt = db.Students.Where(a => a.planId == planid).OrderByDescending(a => a.uniUserName).ToList();
-                    return PartialView("AllPlanStudent");
+                        
+                        return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
                 }
                 else if (OrderBySortCourseId == "GPA")
                 {
                     ViewBag.stdt = db.Students.Where(a => a.planId == planid).OrderBy(a => a.gpa).ToList();
-                    return PartialView("AllPlanStudent");
+                        
+                        return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
                 }
                 else
                 {
@@ -236,7 +243,8 @@ namespace WebApplication4.Controllers
 
                         ViewBag.stdtCs = studentcoureselist.OrderBy(a => a.grade).ToList();
                         ViewBag.stdt = db.Students.Where(a => a.planId == planid).ToList();
-                        return PartialView("StudentOrderByCourseGrade");
+                        
+                        return PartialView("StudentOrderByCourseGrade", projectPeopleAllocations.ToList());
                     }
             }
             }
@@ -258,12 +266,14 @@ namespace WebApplication4.Controllers
                     if (OrderBySortCourseId == "Name")
                     {
                         ViewBag.stdt = db.Students.OrderBy(a => a.uniUserName).ToList();
-                        return PartialView("AllPlanStudent");
+                        
+                        return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
                     }
                     else if (OrderBySortCourseId == "GPA")
                     {
                         ViewBag.stdt = db.Students.OrderByDescending(a => a.gpa).ToList();
-                        return PartialView("AllPlanStudent");
+                        
+                        return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
                     }
                     
                 }
@@ -272,12 +282,14 @@ namespace WebApplication4.Controllers
                     if (OrderBySortCourseId == "Name")
                     {
                         ViewBag.stdt = db.Students.OrderByDescending(a => a.uniUserName).ToList();
-                        return PartialView("AllPlanStudent");
+                       
+                        return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
                     }
                     else if (OrderBySortCourseId == "GPA")
                     {
                         ViewBag.stdt = db.Students.OrderBy(a => a.gpa).ToList();
-                        return PartialView("AllPlanStudent");
+                        
+                        return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
                     }
                    
                 }
@@ -286,7 +298,21 @@ namespace WebApplication4.Controllers
             return PartialView();
         }
 
+        public ActionResult AddStudentToProject(string studentId,string projectId)
+        {
+            var PPA = new ProjectPeopleAllocations();
+            var userid = Convert.ToInt32(studentId);
+            PPA.projectID = Convert.ToInt32( projectId);
+            PPA.personID = userid;
+            PPA.personRole = "student";
+            PPA.dateCreated = DateTime.Now;
 
+            db.ProjectPeopleAllocations.Add(PPA);          
+
+            db.SaveChanges();
+            var name = db.Students.FirstOrDefault(a => a.studentID == userid).uniUserName;
+            return Content(name); 
+        }
 
     }
 }

@@ -67,8 +67,8 @@
 </head>
 <body>
     @using (Ajax.BeginForm("AddPlan", "NewPlanCourse", ("PName", "PCode", "PDur"), new AjaxOptions()
-        {
-            
+    {
+
         HttpMethod = "post",
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "Left"
@@ -79,6 +79,20 @@
         <input id="PCode" name="PCode" value="" hidden="hidden" />
         <input id="PDur" name="PDur" value="" hidden="hidden" />
         <input id="AddPlansbmt" type="submit" hidden="hidden" />
+    }
+    @using (Ajax.BeginForm("AddCourseByAjaxForm", "NewPlanCourse", ("CId", "CName", "CCode"), new AjaxOptions()
+    {
+
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "Righttable"
+    }))
+    {
+        <input id="CId" name="CId" value="" hidden="hidden" />
+        <input id="CName" name="CName" value="" hidden="hidden" />
+        <input id="CCode" name="CCode" value="" hidden="hidden" />
+
+        <input id="AddCoursesbmt" type="submit" hidden="hidden" />
     }
 
 
@@ -122,10 +136,9 @@
                             style="display: table; width: 100%; table-layout: fixed;"
                             draggable="true"
                             ondragstart="dropElement(event)"
-                             ondragend="spandragOver()"
+                            ondragend="spandragOver()"
                             ondrop="eleOndrop(event,this)"
-                            ondragover="dragOver(event)"
-                           >
+                            ondragover="dragOver(event)">
                             <td class="LeftBoxPlan">@PItem.planName</td>
 
                             <td id="LeftSpan @PItem.planId">
@@ -168,7 +181,6 @@
                             style="display: table; width: 100%; table-layout: fixed;"
                             draggable="true"
                             ondragstart="dropElement(event)"
-                            
                             ondragover="dragOver(event)">
 
                             <td>@CItem.courseName</td>
@@ -193,7 +205,7 @@
             <div class="table table-hover" id="tableExcel">
                 <div style="margin-bottom:20px;">
                     <input type="text"
-                            class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            id="AddNewCourseId"
                            placeholder="New Course ID"
                            onblur="AddNewCourseCidOnBlur(this)" />
@@ -201,7 +213,7 @@
                 </div>
                 <div style="margin-bottom:20px;">
                     <input type="text"
-                            class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            id="AddNewCourseName"
                            placeholder="New Course Name"
                            onblur="AddNewCourseCnameOnBlur(this)" />
@@ -209,7 +221,7 @@
                 </div>
                 <div style="margin-bottom:20px;">
                     <input type="text"
-                            class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            id="AddNewCourseCode"
                            placeholder="New Course Code"
                            onblur="AddNewCourseCcodeOnBlur(this)" />
@@ -233,7 +245,7 @@
             <div class="table table-hover" id="tableExcel">
                 <div style="margin-bottom:20px;">
                     <input type="text"
-                            class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            id="AddNewPlanName"
                            placeholder="New Plan Name"
                            onblur="AddNewPlanNameOnBlur(this)" />
@@ -241,7 +253,7 @@
                 </div>
                 <div style="margin-bottom:20px;">
                     <input type="text"
-                            class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            id="AddNewPlanCode"
                            placeholder="New Plan Code"
                            onblur="AddNewPlanCodeOnBlur(this)" />
@@ -249,7 +261,7 @@
                 </div>
                 <div style="margin-bottom:20px;">
                     <input type="number"
-                           class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            maxlength="1"
                            min="1"
                            max="5"
@@ -332,12 +344,9 @@
         function spanDrag(e) {
             //when drag "Course in this Plan"<span>,get the span's information, include spanID courseID,
             document.getElementById("delete").style.display = "inherit";
-            console.log("deeeeeeee", e);
-            console.log("deeeeeeee", e.target);
-            console.log("deeeeeeee",e.target.id);
             e.dataTransfer.setData('delID', e.target.id);
             var src = e.target.parentElement.id;
-            var sub = src.slice(9);
+            
             e.dataTransfer.setData('spanPlID', src);
             e.dataTransfer.setData('PPid', e.target.parentElement.parentElement.id);
             e.dataTransfer.setData('PPPiD', e.target.parentElement.parentElement.parentElement.id);
@@ -352,7 +361,7 @@
 
         function spandragOver() {
             //when stop drag, let the Rubbish bins(Right bottom) be invisible
-            console.log("aasdasdasdasdasd");
+            
             document.getElementById("delete").style.display = "none";
 
 
@@ -391,6 +400,7 @@
                 console.log(delcourse+"will be deleted");
                 document.getElementById("DelCssbmt").click();
                 document.getElementById(delcourse).remove();
+                spandragOver();
             }
             if (pid == "Lefttable") {
                 $.ajax({
@@ -622,7 +632,19 @@
             if (Cid.value == "" | Cname.value == "" | Ccode.value == "") {
                 alert("please input information");
             } else {
-                $.ajax({
+                document.getElementById("CId").value = Cid.value;
+                document.getElementById("CName").value = Cname.value;
+                document.getElementById("CCode").value = Ccode.value;
+                document.getElementById("AddCoursesbmt").click();
+                spandragOver();
+                Cid.value = "";
+                Cname.value = "";
+                Ccode.value = "";
+                document.getElementById("addCidSpan").innerHTML = "";
+                document.getElementById("addCnameSpan").innerHTML = "";
+                document.getElementById("addCcodeSpan").innerHTML = "";
+
+         @*       $.ajax({
                     type: "POST",
                     url: "/NewPlanCourse/AddCourse",
                     data: { CId: Cid.value, CName: Cname.value, CCode: Ccode.value },
@@ -649,7 +671,7 @@
                         }
                     },
 
-                })
+                })*@
             }
         }
 
