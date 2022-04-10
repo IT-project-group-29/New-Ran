@@ -369,13 +369,13 @@
     <Content Include="Views\NewPlanCourse\Index.cshtml" />
     <Content Include="Views\Allocations\staffDiv.cshtml" />
     <Content Include="Views\NewPlanCourse\AddNew.cshtml" />
-<<<<<<< HEAD
+
     <Content Include="Views\NewPlanCourse\newPlanPage.cshtml" />
     <Content Include="Views\Allocations\SelectPlan.cshtml" />
     <Content Include="Views\Allocations\AllPlanSort.cshtml" />
     <Content Include="Views\Allocations\SelectedSort.cshtml" />
     <Content Include="Views\Allocations\StudentOrderByCourseGrade.cshtml" />
-=======
+
     <Content Include="Views\Staff\Index.cshtml" />
     <Content Include="Views\Staff\Detail.cshtml" />
     <Content Include="Views\Staff\Delete.cshtml" />
@@ -384,7 +384,7 @@
     <Content Include="Views\Client\Edit.cshtml" />
     <Content Include="Views\Client\Delete.cshtml" />
     <Content Include="Views\Staff\Edit.cshtml" />
->>>>>>> b38892805380562e0a77e6f4729f5c6c48670588
+
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -434,10 +434,5 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target> -->
+
 </Project>
