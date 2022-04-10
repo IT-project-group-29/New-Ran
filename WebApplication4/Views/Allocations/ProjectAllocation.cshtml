@@ -23,11 +23,13 @@
     </tr>
     @foreach (var pjt in projects)
     {
-        <tr>
+        <tr id="ProjectTable @pjt.projectID"
+            ondrop="ProjectPeopleBind(event,this)"
+            ondragover="dragOver(event)">
             <td>
                 @Html.DisplayFor(pid => pjt.projectID)
                 @{var prodiff = "difficulty" + pjt.projectID;}
-                <span id="@prodiff" data-diff="@pjt.difficult">
+                <span id="@prodiff">
                     @if (pjt.difficult == "yes")
                     {
                         <span>⭐</span>
@@ -49,26 +51,24 @@
             </td>
             <td>
                 <div>
-                    <div id="projstaff @pjt.projectID" ondrop="dropStaff(event)" style="min-height:10px" ondragover="allowDrop(event)">
+                    <div id="projstaff @pjt.projectID" ondrop="dropStaff(event)" style="min-height:10px" ondragover="dragOver(event)">
                         @*define this tag's id, it will be used in javascript to get this tag*@
                         @{
                             var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
                         }
                         @foreach (var pstaff in staffs)
                         {
-                            var staffdd = staff.FirstOrDefault(p => p.staffID == pstaff.personID);
-                            if (staffdd != null)
-                            {
-                                <div id="staff @staffdd.staffID-projstaff @pjt.projectID" draggable="true" ondragstart="drag(event)"> @staffdd.username</div>
-                                @*tell this tag to use the funcation "drag" which created in the JS part*@
+
+                            <div id="ProjectTableStaff @pstaff.personID"
+                                 ondragstart="LeftTableDragStart(event)"
+                                 ondragover="dragOver(event)">@staff.FirstOrDefault(a => a.staffID == pstaff.personID).username</div>
                             }
-                        }
                     </div>
                 </div>
             </td>
             <td>
                 <div>
-                    <div id="div @pjt.projectID" ondrop="dropStuProject(event)" ondragover="allowDrop(event)" style="min-height:10px">
+                    <div id="divStudent @pjt.projectID" ondragover="dragOver(event)" style="min-height:10px">
 
                         @{
                             var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
@@ -76,15 +76,11 @@
                         }
                         @foreach (var pstudent in prostudents)
                         {
-                            var stuinfo = students.FirstOrDefault(p => p.studentID == pstudent.personID);
-                            if (stuinfo != null)
-                            {
 
-
-                                <div id="drag @stuinfo.studentID" draggable="true" ondragstart="drag(event)"> @stuinfo.uniUserName</div>
-                                @*Data A-E are the results of the five courses of the selected students,they will be used in JS code*@
+                            <div id="ProjectTableStudent @pstudent.personID"
+                                 ondragstart="LeftTableDragStart(event)"
+                                 ondragover="dragOver(event)">@students.FirstOrDefault(a => a.studentID == pstudent.personID).uniUserName</div>
                             }
-                        }
                     </div>
                 </div>
             </td>

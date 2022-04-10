@@ -203,7 +203,20 @@ namespace WebApplication4.Controllers
             return PartialView("dragdrop", db.PlanCourses.ToList());
 
         }
-       
+        public ActionResult AddCourseByAjaxForm(string CId,string CName, string CCode)
+        {
+
+            var newCourse = new Course();
+            newCourse.courseID = CId;
+            newCourse.courseName = CName;
+            newCourse.courseCode = CCode;
+            db.Course.Add(newCourse);
+            db.SaveChanges();
+            ViewBag.course = db.Course.OrderBy(a => a.courseName).ToList();
+            return PartialView("AddNew");
+        }
+
+
 
     }
 }

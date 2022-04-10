@@ -13,7 +13,10 @@ namespace WebApplication4.Models
 
         [StringLength(100)]
         public string companyName { get; set; }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ff2fd70001df947002414e94c94821042304620b
     }
-
 }
+

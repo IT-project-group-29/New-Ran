@@ -148,11 +148,13 @@
             </tr>
             @foreach (var pjt in projects)
             {
-                <tr>
+                <tr id="ProjectTable @pjt.projectID"
+                    ondrop="ProjectPeopleBind(event,this)"
+                    ondragover="dragOver(event)">
                     <td>
                         @Html.DisplayFor(pid => pjt.projectID)
                         @{var prodiff = "difficulty" + pjt.projectID;}
-                        <span id="@prodiff" data-diff="@pjt.difficult">
+                        <span id="@prodiff">
                             @if (pjt.difficult == "yes")
                             {
                                 <span>⭐</span>
@@ -174,26 +176,25 @@
                     </td>
                     <td>
                         <div>
-                            <div id="projstaff @pjt.projectID" ondrop="dropStaff(event)" style="min-height:10px" ondragover="allowDrop(event)">
+                            <div id="projstaff @pjt.projectID"  style="min-height:10px" ondragover="dragOver(event)">
                                 @*define this tag's id, it will be used in javascript to get this tag*@
                                 @{
                                     var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
                                 }
                                 @foreach (var pstaff in staffs)
                                 {
-                                    var staffdd = staff.FirstOrDefault(p => p.staffID == pstaff.personID);
-                                    if (staffdd != null)
-                                    {
-                                        <div id="staff @staffdd.staffID-projstaff @pjt.projectID" draggable="true" ondragstart="drag(event)"> @staffdd.username</div>
-                                        @*tell this tag to use the funcation "drag" which created in the JS part*@
-                                    }
+                                   
+                                    <div id="@pjt.projectID ProjectTableStaff @pstaff.personID"
+                                         ondragstart="LeftTableDragStart(event)"
+                                         ondragover="dragOver(event)"
+                                         >@staff.FirstOrDefault(a => a.staffID == pstaff.personID).username</div>
                                 }
                             </div>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <div id="div @pjt.projectID" ondrop="dropStuProject(event)" ondragover="allowDrop(event)" style="min-height:10px">
+                            <div id="divStudent @pjt.projectID" ondragover="dragOver(event)" style="min-height:10px">
 
                                 @{
                                     var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
@@ -201,15 +202,13 @@
                                 }
                                 @foreach (var pstudent in prostudents)
                                 {
-                                    var stuinfo = students.FirstOrDefault(p => p.studentID == pstudent.personID);
-                                    if (stuinfo != null)
-                                    {
-
-
-                                        <div id="drag @stuinfo.studentID" draggable="true" ondragstart="drag(event)"> @stuinfo.uniUserName</div>
-                                        @*Data A-E are the results of the five courses of the selected students,they will be used in JS code*@
+                              
+                                    <div id="ProjectTableStudent @pstudent.personID"
+                                         ondragstart="LeftTableDragStart(event)"
+                                         ondragover="dragOver(event)"
+                                        
+                                         >@students.FirstOrDefault(a => a.studentID == pstudent.personID).uniUserName</div>
                                     }
-                                }
                             </div>
                         </div>
                     </td>
@@ -332,12 +331,21 @@
             </thead>
             <tbody style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll;"
                    id="studenttable"
-                   ondrop="dropstu(event)"
-                   ondragover="allowDrop(event)">
+                   
+                   ondragover="dragOver(event)"
+                   >
                 @foreach (var item in students)
                 {
+                    if (Model.FirstOrDefault(a => a.personID == item.studentID) == null)
+
+                    {@*make sure the selected student will not be displayed in the student table*@
+
+
                     <tr id="stddrag @item.studentID"
-                        style="display: table; width: 100%; table-layout: fixed;">
+                        style="display: table; width: 100%; table-layout: fixed;"
+                        draggable="true"
+                        ondragover="dragOver(event)"
+                        ondragstart="DragStudentsStart(event)">
                         <td>
                             @item.uniUserName
                         </td>
@@ -347,6 +355,7 @@
                         </td>
                     </tr>
                 }
+            }
             </tbody>
         </table>
     </div>
@@ -358,6 +367,58 @@
 
 </html>
 <script>
+  
+    function DragStudentsStart(e) {
+        //put the value(information) of the <tr>tag, which will be draged, into script
+        e.dataTransfer.setData('Student', e.target.parentElement.id)
+        e.dataTransfer.setData('StudentTableId', e.target.id);
+        console.log(e.target.id.slice(8));
+        e.dataTransfer.setData('StudentId', e.target.id.slice(8));
+    }
+
+    function DragStaffStart(e) {
+        //put the value(information) of the <tr>tag, which will be draged, into script
+        e.dataTransfer.setData('StaffTableId', e.target.id);
+        console.log(e.target.id.slice(8));
+        e.dataTransfer.setData('StaffId', e.target.id.slice(8));
+    }
+    function ProjectPeopleBind(e,t) {
+        //drag people to project to allocated
+        var thisid = t.id.slice(13);
+        if (e.dataTransfer.getData("Student") == "studenttable") {
+            var studentId = e.dataTransfer.getData("StudentId");
+            $.ajax({
+                type: "POST",
+                url: "/Allocations/AddStudentToProject",
+                data: { studentId: studentId, projectId: thisid },
+                success: function (data) {
+
+                    console.log(data);
+                    var newdiv = document.createElement("div");
+                    
+                    newdiv.setAttribute("id", "ProjectTableStudent " + studentId);
+                    newdiv.setAttribute("ondragstart", "LeftTableDragStart(event)");
+                    newdiv.setAttribute("ondragover", "dragOver(event)");
+                    newdiv.innerHTML = data;
+                    document.getElementById("stddrag " + studentId).remove();
+                    document.getElementById("divStudent " + thisid).appendChild(newdiv);
+
+                    
+                },
+
+            })
+        }
+    }
+    function dragProjectStudent() {
+
+    }
+
+
+
+    function dragOver(e) {
+        //cancel the default event, if i don't use "e.preventDefault();", the other function maybe not work
+        e.preventDefault();
+    }
     function ChangeSortInside(t) {
         var Sort = document.getElementById("SelecedPlan");
       
