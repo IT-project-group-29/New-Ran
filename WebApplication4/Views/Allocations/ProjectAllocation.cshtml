@@ -51,7 +51,7 @@
             </td>
             <td>
                 <div>
-                    <div id="projstaff @pjt.projectID" ondrop="dropStaff(event)" style="min-height:10px" ondragover="dragOver(event)">
+                    <div id="divStaff @pjt.projectID" style="min-height:10px" ondragover="dragOver(event)" data-isDiff=@pjt.difficult>
                         @*define this tag's id, it will be used in javascript to get this tag*@
                         @{
                             var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
@@ -59,8 +59,8 @@
                         @foreach (var pstaff in staffs)
                         {
 
-                            <div id="ProjectTableStaff @pstaff.personID"
-                                 ondragstart="LeftTableDragStart(event)"
+                            <div id="@pjt.projectID ProjectTableStaff @pstaff.personID"
+                                 ondragstart="LeftStaffTableDragStart(event)"
                                  ondragover="dragOver(event)">@staff.FirstOrDefault(a => a.staffID == pstaff.personID).username</div>
                             }
                     </div>
@@ -78,7 +78,7 @@
                         {
 
                             <div id="ProjectTableStudent @pstudent.personID"
-                                 ondragstart="LeftTableDragStart(event)"
+                                 ondragstart="LeftStudentTableDragStart(event)"
                                  ondragover="dragOver(event)">@students.FirstOrDefault(a => a.studentID == pstudent.personID).uniUserName</div>
                             }
                     </div>

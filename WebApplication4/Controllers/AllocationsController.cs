@@ -117,16 +117,19 @@ namespace WebApplication4.Controllers
         }
         public ActionResult Change(string pop)
         {
-            ViewBag.staff = db.Staff.ToList();
-            ViewBag.stdt = db.Students.ToList();
+            ViewBag.staff = db.Staff.OrderBy(a => a.username).ToList();
+            ViewBag.stdt = db.Students.OrderBy(a => a.uniUserName).ToList();
+            ViewBag.project = db.Projects.ToList();
+            var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
+            var staffAllocations = db.ProjectPeopleAllocations.Where(a => a.personRole == "staff");
             if (pop == "staff")
             {
                 
-                return PartialView("staffTable");
+                return PartialView("staffTable", staffAllocations.ToList());
             }
             else
             {
-                return PartialView("AllPlanStudent");
+                return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
             }
            
         }
@@ -312,6 +315,28 @@ namespace WebApplication4.Controllers
             db.SaveChanges();
             var name = db.Students.FirstOrDefault(a => a.studentID == userid).uniUserName;
             return Content(name); 
+        }
+        public ActionResult AddStaffToProject(string staffId,string projectId)
+        {
+            var PPA = new ProjectPeopleAllocations();
+            var userid = Convert.ToInt32(staffId);
+            var project = Convert.ToInt32(projectId);
+            if (db.ProjectPeopleAllocations.FirstOrDefault(a => a.projectID == project && a.personID == userid) == null)
+            {
+
+            
+            PPA.projectID = Convert.ToInt32(projectId);
+            PPA.personID = userid;
+            PPA.personRole = "staff";
+            PPA.dateCreated = DateTime.Now;
+
+            db.ProjectPeopleAllocations.Add(PPA);
+
+            db.SaveChanges();
+            var name = db.Staff.FirstOrDefault(a => a.staffID == userid).username;
+            return Content(name);
+            }
+            return Content("Seleced staff is already in this project");
         }
 
     }

@@ -17,7 +17,7 @@ namespace WebApplication4.Controllers
             
             ViewBag.plans = db.Plans.OrderBy(a => a.planName).ToList();
             ViewBag.course = db.Course.OrderBy(a => a.courseName).ToList();
-            return View(db.PlanCourses.ToList());
+            return View(db.PlanCourses.OrderBy(a => a.Course.courseName).ToList());
         }
         
         public ActionResult DeleteCourse(string DelcsID)

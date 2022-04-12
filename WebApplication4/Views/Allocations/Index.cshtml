@@ -176,7 +176,7 @@
                     </td>
                     <td>
                         <div>
-                            <div id="projstaff @pjt.projectID"  style="min-height:10px" ondragover="dragOver(event)">
+                            <div id="divStaff @pjt.projectID"  style="min-height:10px" ondragover="dragOver(event)" data-isDiff=@pjt.difficult>
                                 @*define this tag's id, it will be used in javascript to get this tag*@
                                 @{
                                     var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
@@ -185,7 +185,7 @@
                                 {
                                    
                                     <div id="@pjt.projectID ProjectTableStaff @pstaff.personID"
-                                         ondragstart="LeftTableDragStart(event)"
+                                         ondragstart="LeftStaffTableDragStart(event)"
                                          ondragover="dragOver(event)"
                                          >@staff.FirstOrDefault(a => a.staffID == pstaff.personID).username</div>
                                 }
@@ -204,7 +204,7 @@
                                 {
                               
                                     <div id="ProjectTableStudent @pstudent.personID"
-                                         ondragstart="LeftTableDragStart(event)"
+                                         ondragstart="LeftStudentTableDragStart(event)"
                                          ondragover="dragOver(event)"
                                         
                                          >@students.FirstOrDefault(a => a.studentID == pstudent.personID).uniUserName</div>
@@ -372,15 +372,15 @@
         //put the value(information) of the <tr>tag, which will be draged, into script
         e.dataTransfer.setData('Student', e.target.parentElement.id)
         e.dataTransfer.setData('StudentTableId', e.target.id);
-        console.log(e.target.id.slice(8));
         e.dataTransfer.setData('StudentId', e.target.id.slice(8));
     }
 
     function DragStaffStart(e) {
         //put the value(information) of the <tr>tag, which will be draged, into script
+        e.dataTransfer.setData('Staff', e.target.parentElement.id)
         e.dataTransfer.setData('StaffTableId', e.target.id);
-        console.log(e.target.id.slice(8));
-        e.dataTransfer.setData('StaffId', e.target.id.slice(8));
+        console.log(e.target.id.slice(7));
+        e.dataTransfer.setData('StaffId', e.target.id.slice(7));
     }
     function ProjectPeopleBind(e,t) {
         //drag people to project to allocated
@@ -397,13 +397,48 @@
                     var newdiv = document.createElement("div");
                     
                     newdiv.setAttribute("id", "ProjectTableStudent " + studentId);
-                    newdiv.setAttribute("ondragstart", "LeftTableDragStart(event)");
+                    newdiv.setAttribute("ondragstart", "LeftStudentTableDragStart(event)");
                     newdiv.setAttribute("ondragover", "dragOver(event)");
                     newdiv.innerHTML = data;
                     document.getElementById("stddrag " + studentId).remove();
                     document.getElementById("divStudent " + thisid).appendChild(newdiv);
 
                     
+                },
+
+            })
+        }
+        if (e.dataTransfer.getData("Staff") == "stafftable") {
+            var staffID = e.dataTransfer.getData("StaffId");
+            $.ajax({
+                type: "POST",
+                url: "/Allocations/AddStaffToProject",
+                data: { staffId: staffID, projectId: thisid },
+                success: function (data) {
+                    if (data != "Seleced staff is already in this project") {
+
+
+                        console.log(data);
+                        var newdiv = document.createElement("div");
+
+                        newdiv.setAttribute("id", thisid + " ProjectTableStaff " + staffID);
+                        newdiv.setAttribute("ondragstart", "LeftStaffTableDragStart(event)");
+                        newdiv.setAttribute("ondragover", "dragOver(event)");
+                        newdiv.innerHTML = data;
+                        console.log(newdiv);
+                        console.log(newdiv.nodeType);
+                        console.log(document.getElementById("divStaff " + thisid).getAttribute("data-isDiff"));
+                        document.getElementById("divStaff " + thisid).appendChild(newdiv);
+                        var StaffProjectNumber = document.getElementById("pro" + staffID);
+                        var StaffDiffProjectNumber = document.getElementById("diff" + staffID);
+                        StaffProjectNumber.innerText = parseInt(StaffProjectNumber.innerText) + 1;
+                        if (document.getElementById("divStaff " + thisid).getAttribute("data-isDiff") == "yes") {
+                            StaffDiffProjectNumber.innerText = parseInt(StaffDiffProjectNumber.innerText) + 1;
+                        }
+                    } else {
+                        alert(data);
+                    }
+
                 },
 
             })

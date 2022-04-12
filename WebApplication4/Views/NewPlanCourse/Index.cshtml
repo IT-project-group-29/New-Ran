@@ -37,10 +37,10 @@
             position: fixed;
             right: 0px;
             bottom: 0px;
-            width: 130px;
+            width: 120px;
             height: 120px;
             z-index: 999;
-            background-color: red;
+            @*background-color: red;*@
         }
         #AddNewCourse {
             position: fixed;
@@ -181,7 +181,8 @@
                             style="display: table; width: 100%; table-layout: fixed;"
                             draggable="true"
                             ondragstart="dropElement(event)"
-                            ondragover="dragOver(event)">
+                            ondragover="dragOver(event)"
+                             ondragend="spandragOver()">
 
                             <td>@CItem.courseName</td>
 
@@ -194,7 +195,13 @@
     <div id="delete"
          hidden="hidden"
          ondragover="dragOver(event)"
-         ondrop="spanOndrag(event)"></div>
+         ondrop="spanOndrag(event)">
+
+        <img width="120" height="120" src="~/Content/Trash_can.png" />
+        
+
+
+    </div>
     <div id="AddNewCourse"
          hidden="hidden">
         <input onclick="canceldiv()"
@@ -233,6 +240,7 @@
                    class="btn btn-primary"
                    type="button"
                    value="Add" />
+           
         </div>
     </div>
     <div id="AddNewPlan"
