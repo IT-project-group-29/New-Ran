@@ -7,13 +7,39 @@
     <title>@ViewBag.Title - the unisa project allocation tool</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .jumbotron {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+            color: inherit;
+            background-color: #eeeeee;
+        }
 
+            .jumbotron h1,
+            .jumbotron .h1 {
+                color: inherit;
+            }
+
+            .jumbotron p {
+                margin-bottom: 15px;
+                font-size: 21px;
+                font-weight: 200;
+            }
+
+            .jumbotron > hr {
+                border-top-color: #d5d5d5;
+            }
+    </style>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+
+    
+
+    <nav class="navbar navbar-expand bg-dark navbar-dark fixed-top" style="margin-bottom:10px;">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -21,24 +47,30 @@
                 @Html.ActionLink("UniSA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        @Html.ActionLink("Home", "Index", "Home", new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("About", "About", "Home", new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Contact", "Contact", "Home", new { @class = "nav-link" })
+                    </li>
 
                     @if (User.Identity.IsAuthenticated)
                     {
 
                         if (!User.IsInRole("Admin"))
                         {
-                            <li class="dropdown" id="projectsLI">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Projects<span class="caret"></span></a>
+                            <li class="nav-item dropdown" id="projectsLI">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Projects<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
 
-                                    <li>@Html.ActionLink("Project Management", "index", "Projects")</li>
-                                    <li>@Html.ActionLink("Email Allocated Students", "LiEmailStudents", "Email")</li>
-                                    <li>@Html.ActionLink("Email Allocated Staff", "LiEmailStaff", "Email")</li>
-                                    <li>@Html.ActionLink("Email Clients", "LiEmailClients", "Email")</li>
+                                    <li>@Html.ActionLink("Project Management", "index", "Projects", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Email Allocated Students", "LiEmailStudents", "Email", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Email Allocated Staff", "LiEmailStaff", "Email", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Email Clients", "LiEmailClients", "Email", new { @class = "dropdown-item" })</li>
                                 </ul>
 
                             </li>
@@ -47,16 +79,16 @@
                         if (User.IsInRole("Admin"))
                         {
                             <li class="dropdown" id="projectsLI">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Projects<span class="caret"></span></a>
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Projects<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
 
 
-                                    <li>@Html.ActionLink("Project Management", "index", "Projects")</li>
-                                    <li>@Html.ActionLink("Project Allocation", "Index", "ProjectPeopleAllocations")</li>
-                                    <li>@Html.ActionLink("Project Prioritisation", "Index", "PriorityProjects")</li>
-                                    <li>@Html.ActionLink("Email Allocated Students", "LiEmailStudents", "Email")</li>
-                                    <li>@Html.ActionLink("Email Allocated Staff", "LiEmailStaff", "Email")</li>
-                                    <li>@Html.ActionLink("Email Clients", "LiEmailClients", "Email")</li>
+                                    <li>@Html.ActionLink("Project Management", "index", "Projects", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Project Allocation", "Index", "ProjectPeopleAllocations", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Project Prioritisation", "Index", "PriorityProjects", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Email Allocated Students", "LiEmailStudents", "Email", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Email Allocated Staff", "LiEmailStaff", "Email", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Email Clients", "LiEmailClients", "Email", new { @class = "dropdown-item" })</li>
                                 </ul>
 
                             </li>
@@ -64,37 +96,35 @@
                         if (User.IsInRole("Admin"))
                         {
                             <li class="dropdown" id="adminManagementLI">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Management<span class="caret"></span></a>
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin Management<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
 
-                                    <li>@Html.ActionLink("Add Single Account", "Create", "AspNetUsers")</li>
-                                    <li>@Html.ActionLink("Add Multiple Accounts", "Index", "MulAccount")</li>
-                                    <li>@Html.ActionLink("Link Students to Courses", "Index", "StudentCourses")</li>
-                                    <li>@Html.ActionLink("Link Courses to Plans", "Index", "PlanCourses")</li>
-                                    <li>@Html.ActionLink("Student Management", "Index", "Students")</li>
-                                    <li>@Html.ActionLink("Staff Management", "Index", "Staff")</li>
-                                    <li>@Html.ActionLink("Client Management", "Index", "Client")</li>
-                                    <li>@Html.ActionLink("Role Management", "Index", "AspNetRoles")</li>
-                                    <li>@Html.ActionLink("Effort Management", "Index", "ProjectEfforts")</li>
+                                    <li>@Html.ActionLink("Add Single Account", "Create", "AspNetUsers", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Add Multiple Accounts", "Index", "MulAccount", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Link Students to Courses", "Index", "StudentCourses", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Link Courses to Plans", "Index", "PlanCourses", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Student Management", "Index", "Students", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Staff Management", "Index", "Staff", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Client Management", "Index", "Client", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Role Management", "Index", "AspNetRoles", new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Effort Management", "Index", "ProjectEfforts", new { @class = "dropdown-item" })</li>
                                 </ul>
                             </li>
                         }
 
                     }
-
-
-
                 </ul>
-                @Html.Partial("_LoginPartial")
+
             </div>
+            <div style="float:left"> @Html.Partial("_LoginPartial")</div>
         </div>
-    </div>
+</nav>
     <div class="container body-content">
         @RenderBody()
-        
-        
+
+
     </div>
-    
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
