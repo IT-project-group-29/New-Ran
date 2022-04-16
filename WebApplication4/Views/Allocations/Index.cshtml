@@ -244,7 +244,7 @@
                 }
             </div>
 
-            <div class="col-md-5 stud" @ViewBag.studenthidden>
+            <div class="col-md-5" @ViewBag.studenthidden>
                 @*Another function of studenthidden is to keep the options of the original student and supervisor drop-down boxes when submitting the page.*@
                 @using (Ajax.BeginForm("SelectPlan", "Allocations", "planSelecter", new AjaxOptions()
                 {
@@ -254,7 +254,7 @@
                     UpdateTargetId = "RightBottom"
                 }))
                 {
-                    <select id="planSelect" class=" form-control" name="planSelecter" hidden="" onchange="ChangeSortInside(this), sbmt('SelectPlan')">
+                    <select id="planSelect" class=" form-control" name="planSelecter"  onchange="ChangeSortInside(this), sbmt('SelectPlan')">
 
                         @*the planid's default value is 0, so it will default show "All plans" in this drop down box *@
                         <option label="All Plans" id="AllPlan" value="AllPlan" name="plan" selected="selected">All Plans</option>
