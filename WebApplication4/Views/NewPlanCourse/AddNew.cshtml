@@ -1,18 +1,21 @@
 ﻿
 @{
-    
+
     var course = (List<WebApplication4.Models.Course>)ViewBag.course;
 }
 
 @foreach (var CItem in course)
 {
-    <tr id=@CItem.courseID
-        style="display: table; width: 100%; table-layout: fixed;"
-        draggable="true"
-        ondragstart="dropElement(event)"
-        ondragover="dragOver(event)">
+    if (CItem.isHidden != "hidden")
+    {
+        <tr id=@CItem.courseID
+            style="display: table; width: 100%; table-layout: fixed;"
+            draggable="true"
+            ondragstart="dropElement(event)"
+            ondragover="dragOver(event)"
+            ondragend="spandragOver()">
 
-        <td>@CItem.courseName</td>
+            <td>@CItem.courseName</td>
 
-    </tr>
+        </tr>      }
 }

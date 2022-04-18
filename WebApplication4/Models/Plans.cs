@@ -28,6 +28,8 @@ namespace WebApplication4.Models
 
         public int projectDuration { get; set; }
 
+        public string isHidden { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlanCourses> PlanCourses { get; set; }
 
