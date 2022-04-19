@@ -220,17 +220,17 @@ namespace WebApplication4.Controllers
 
         public ActionResult CourseAndPlan()
         {
-            ViewBag.course = db.Course.ToList();
+            ViewBag.course = db.Course.OrderBy(a => a.courseCode).ToList();
             return View();
         }
 
         public ActionResult HiddenOrNot(string choose)
         {
-            ViewBag.course = db.Course.ToList();
+            ViewBag.course = db.Course.OrderBy(a => a.courseCode).ToList();
             if (choose == "notHidden")
             {
 
-                return PartialView("CourseAndPlan");
+                return PartialView("notHidden");
             }
             else
             {
