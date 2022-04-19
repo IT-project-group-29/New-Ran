@@ -115,11 +115,11 @@ namespace WebApplication4.Controllers
             var a = db.Course.FirstOrDefault(p => p.courseID.Equals(courseId)).courseName;
             return a;
         }
-        public ActionResult Change(string pop)
-        {
+        public ActionResult Change(string pop,string YearBeSel, string SemBeSel)
+        {var year = Convert.ToInt32(YearBeSel);
             ViewBag.staff = db.Staff.OrderBy(a => a.username).ToList();
             ViewBag.stdt = db.Students.OrderBy(a => a.uniUserName).ToList();
-            ViewBag.project = db.Projects.ToList();
+            ViewBag.project = db.Projects.Where(p => p.projectYear == year && p.projectSemester == SemBeSel).ToList();
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
             var staffAllocations = db.ProjectPeopleAllocations.Where(a => a.personRole == "staff");
             if (pop == "staff")

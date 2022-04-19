@@ -42,10 +42,13 @@
                 {
                     if (proj.personID == item.staffID)
                     {
-                        projCount = projCount + 1;
-                        if (project.FirstOrDefault(a => a.projectID == proj.projectID).difficult=="yes")
-                        {
-                            diffCount = diffCount + 1;
+                        
+                        if(project.FirstOrDefault(a => a.projectID == proj.projectID) != null) {
+                            projCount = projCount + 1;
+                            if (project.FirstOrDefault(a => a.projectID == proj.projectID).difficult=="yes")
+                            {
+                                diffCount = diffCount + 1;
+                            }
                         }
                     }
                 }
