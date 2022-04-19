@@ -420,6 +420,7 @@
     <Content Include="Views\Client\Edit.cshtml" />
     <Content Include="Views\Client\Delete.cshtml" />
     <Content Include="Views\Staff\Edit.cshtml" />
+    <Content Include="Views\Allocations\StaffProjectIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />

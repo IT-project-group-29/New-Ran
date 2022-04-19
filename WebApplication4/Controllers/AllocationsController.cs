@@ -338,6 +338,11 @@ namespace WebApplication4.Controllers
             }
             return Content("Seleced staff is already in this project");
         }
+        public ActionResult StaffProjectIndex()
+        {
+            ViewBag.staff = db.Staff.OrderBy(a => a.username).ToList();
+            return View(db.ProjectPeopleAllocations.ToList());
+        }
 
     }
 }
