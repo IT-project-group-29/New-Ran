@@ -216,7 +216,26 @@ namespace WebApplication4.Controllers
             return PartialView("AddNew");
         }
 
+        /*=============================================================================*/
 
+        public ActionResult CourseAndPlan()
+        {
+            ViewBag.course = db.Course.ToList();
+            return View();
+        }
 
+        public ActionResult HiddenOrNot(string choose)
+        {
+            ViewBag.course = db.Course.ToList();
+            if (choose == "notHidden")
+            {
+
+                return PartialView("CourseAndPlan");
+            }
+            else
+            {
+                return PartialView("HiddenCourse");
+            }
+        }
     }
 }

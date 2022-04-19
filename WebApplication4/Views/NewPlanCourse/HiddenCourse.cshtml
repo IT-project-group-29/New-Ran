@@ -1,0 +1,27 @@
+﻿@model IEnumerable<WebApplication4.Models.PlanCourses>
+@{
+    ViewBag.Title = "CourseAndPlan";
+    var course = (List<WebApplication4.Models.Course>)ViewBag.course;
+}
+
+        
+            @foreach (var c in course)
+            {
+                if (c.isHidden != null)
+                {
+                    <tr>
+                        <td class="col-md-3">@c.courseCode</td>
+                        <td>@c.courseName</td>
+                        @if (@c.courseAbbreviation == null)
+                        {
+                            <td>Null</td>
+                        }
+                        else
+                        {
+                        <td>@c.courseAbbreviation</td>
+                        }
+                    </tr>
+                }
+            }
+
+

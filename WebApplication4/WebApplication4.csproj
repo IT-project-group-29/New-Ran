@@ -421,6 +421,8 @@
     <Content Include="Views\Client\Delete.cshtml" />
     <Content Include="Views\Staff\Edit.cshtml" />
     <Content Include="Views\Allocations\StaffProjectIndex.cshtml" />
+    <Content Include="Views\NewPlanCourse\CourseAndPlan.cshtml" />
+    <Content Include="Views\NewPlanCourse\HiddenCourse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
