@@ -1,0 +1,115 @@
+﻿@model IEnumerable<WebApplication4.Models.ProjectPeopleAllocations>
+@using WebApplication4.Models
+@{
+    ViewBag.Title = "Index";
+    var plancs = (List<WebApplication4.Models.PlanCourses>)ViewBag.plancs;
+    var course = (List<WebApplication4.Models.Course>)ViewBag.course;
+    var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
+    var plans = (List<WebApplication4.Models.Plans>)ViewBag.plans;
+    var plansID = ViewBag.plansID;
+    var studentsCourses = (List<MyViewModel>)ViewBag.MyList;
+    var test = (List<string>)ViewBag.Test;
+    var stucourse = ViewBag.stcs;
+}
+
+<h2>Detailed Information</h2>
+<div id="details">
+    <div class="row">
+
+        <div class="col-md-5 stud" @ViewBag.studenthidden>
+            @*Another function of studenthidden is to keep the options of the original student and supervisor drop-down boxes when submitting the page.*@
+
+            <select id="plan1" class="form-control" name="plan" onchange="sbmt()">
+                @if (plansID == 0)
+                {
+                    @*the planid's default value is 0, so it will default show "All plans" in this drop down box *@
+
+                    <option label="All Plans" value="0" name="plan" selected="selected">
+                        All Plans
+                    </option>
+                }
+                else
+                {
+                    @*<option href="/ProjectPeopleAllocations?index=0" label="All Plans" value="0" name="plan" selected="">All Plans</option>*@
+                    <option label="All Plans" value="0" name="plan" selected="">
+                        All Plans
+                    </option>
+                }
+                @foreach (var item in plans)
+                {
+                    if (@item.planId == plansID)
+                    {
+                        @*Find the corresponding planid to output its plan name*@
+                        <option href="/DetailedInformation?index=@item.planId" value="@item.planId" selected="selected" onchange="sbmt()">@item.planName</option>
+                    }
+                    else
+                    {
+                        <option href="/DetailedInformation?index=@item.planId" value="@item.planId" onchange="sbmt()">@item.planName</option>
+
+                    }
+
+                }
+
+            </select>
+
+        </div>
+        <br />
+
+
+        <br />
+        <div style="height: 400px; overflow: auto; ">
+            <table class="table text-nowrap stud" @ViewBag.studenthidden>
+
+                <tr>
+                    @if (test?.Count > 0)
+                    {
+                        foreach (var n in test)
+                        {
+                            <td>@n</td>
+                        }
+                    }
+
+                </tr>
+
+                @if (studentsCourses?.Count > 0)
+                {
+                    foreach (var item in studentsCourses)
+                    {
+                        <tr>
+                            <td>
+                                @item.Name
+                            </td>
+                            @if (item?.StudentCourses?.Count > 0)
+                            {
+                                foreach (var student in item.StudentCourses)
+                                {
+                                    <td>
+                                        @student.grade
+                                    </td>
+                                }
+                            }
+
+                        </tr>
+                    }
+                }
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function sbmt() {
+        // a funcation to submit this from, this may be used by many part.
+
+        //document.getElementById("formdd").submit();
+
+        let id = document.getElementById("plan1").value;
+        window.location = "/DetailedInformation?index=" + id;
+        console.log(id)
+    }
+</script>
+
+

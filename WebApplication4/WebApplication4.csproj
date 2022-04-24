@@ -168,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\BundleConfig2.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="Controllers\AllocationsController.cs" />
     <Compile Include="Controllers\AspNetUsersController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\DetailedInformation.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\NewPlanCourseController.cs" />
     <Compile Include="Controllers\PlanCoursesController.cs" />
@@ -423,9 +425,11 @@
     <Content Include="Views\NewPlanCourse\CourseAndPlan.cshtml" />
     <Content Include="Views\NewPlanCourse\HiddenCourse.cshtml" />
     <Content Include="Views\NewPlanCourse\notHidden.cshtml" />
+    <Content Include="Views\DetailedInformation\index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
