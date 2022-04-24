@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WebApplication4.Models
 {
-    public class MyViewModel
+    public class CourseModel
     {
         public string Name { get; set; }
 

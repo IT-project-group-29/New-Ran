@@ -27,33 +27,33 @@ namespace WebApplication4.Controllers
 
 
 
-            List<string> viewBagTest = new List<string>();
+            List<string> PlanCourses = new List<string>();
 
             if (index == 0 || index == null)
             {
-                viewBagTest = db.PlanCourses.Include(a => a.Course).Select(a => a.Course).Select(a => a.courseName).ToList();
+                PlanCourses = db.PlanCourses.Include(a => a.Course).Select(a => a.Course).Select(a => a.courseName).ToList();
             }
             else
             {
-                var test2 = db.PlanCourses.Include(a => a.Course).Where(a => a.planId == index).Select(a => a.Course).ToList();
-                viewBagTest = test2.Select(a => a.courseName).ToList();
+                var plancourses = db.PlanCourses.Include(a => a.Course).Where(a => a.planId == index).Select(a => a.Course).ToList();
+                PlanCourses = plancourses.Select(a => a.courseName).ToList();
             }
-            viewBagTest.Insert(0, "Name");
-            ViewBag.Test = viewBagTest.ToList();
+            PlanCourses.Insert(0, "Name");
+            ViewBag.PlanCourse = PlanCourses.ToList();
 
-            var thisPlanStu = db.Students.Where(n => n.planId == index).ToList();
-            List<MyViewModel> myList = new List<MyViewModel>();
-            foreach (var n in thisPlanStu)
+            var thisPlanStudent = db.Students.Where(n => n.planId == index).ToList();
+            List<CourseModel> CourseList = new List<CourseModel>();
+            foreach (var n in thisPlanStudent)
             {
                 var courseStudents = db.StudentCourses.Where(m => m.studentID == n.studentID).ToList();
-                var myModel = new MyViewModel
+                var myModel = new CourseModel
                 {
                     Name = n.uniUserName,
                     StudentCourses = courseStudents
                 };
-                myList.Add(myModel);
+                CourseList.Add(myModel);
             }
-            ViewBag.MyList = myList.DistinctBy(a => a.Name).ToList();
+            ViewBag.CourseList = CourseList.DistinctBy(a => a.Name).ToList();
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
 
             return View(projectPeopleAllocations.ToList());

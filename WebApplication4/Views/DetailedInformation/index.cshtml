@@ -7,14 +7,13 @@
     var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
     var plans = (List<WebApplication4.Models.Plans>)ViewBag.plans;
     var plansID = ViewBag.plansID;
-    var studentsCourses = (List<MyViewModel>)ViewBag.MyList;
-    var test = (List<string>)ViewBag.Test;
+    var studentsCourses = (List<CourseModel>)ViewBag.CourseList;
+    var plancourse = (List<string>)ViewBag.PlanCourse;
     var stucourse = ViewBag.stcs;
 }
 
-<h2>Detailed Information</h2>
-<div id="details">
-    <div class="row">
+<h2 style="position:absolute; top:100px"> Detailed Information</h2>
+    <div class="row" style="position:absolute; top: 200px; width:1200px">
 
         <div class="col-md-5 stud" @ViewBag.studenthidden>
             @*Another function of studenthidden is to keep the options of the original student and supervisor drop-down boxes when submitting the page.*@
@@ -57,13 +56,12 @@
 
 
         <br />
-        <div style="height: 400px; overflow: auto; ">
             <table class="table text-nowrap stud" @ViewBag.studenthidden>
 
                 <tr>
-                    @if (test?.Count > 0)
+                    @if (plancourse?.Count > 0)
                     {
-                        foreach (var n in test)
+                        foreach (var n in plancourse)
                         {
                             <td>@n</td>
                         }
@@ -95,7 +93,7 @@
 
 
             </table>
-        </div>
+       
     </div>
 </div>
 
@@ -103,8 +101,6 @@
 
     function sbmt() {
         // a funcation to submit this from, this may be used by many part.
-
-        //document.getElementById("formdd").submit();
 
         let id = document.getElementById("plan1").value;
         window.location = "/DetailedInformation?index=" + id;
