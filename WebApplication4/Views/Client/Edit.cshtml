@@ -2,28 +2,27 @@
 @{
     //var email = (List<WebApplication4.Models.AspNetUsers>)ViewBag.Email;
 }
-@*<head>
-    <script>
-        function check() {
-            var e = document.getElementById("echeck").value;
-            if (e == "") {
-                alert("dfghjk,l");
-                return false;
-            }
+<head>
+    <style>
+        h2 {
+            position: absolute;
+            top: 100px;
         }
-    </script>
+        #showBox {
+            position:relative;
+            top: 100px;
+        }
+    </style>
 
-</head>*@
+</head>
 <h2>Edit</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+    <div id="showBox" class="form-horizontal">
 
-        <h4>Client</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.clientID)
         @Html.HiddenFor(model => model.companyName)
@@ -34,6 +33,7 @@
             <label class="col-md-2 control-label">  Email: </label>
             <div class="col-md-10">
                 <input type="text" value=@ViewBag.Email name="email" class="col-md-10 form-control" />
+                <br />
             </div>
         </div>
 
@@ -42,19 +42,22 @@
             <div class="col-md-10">
                 <input type="text" value=@ViewBag.PhoneNumber name="phoneNumber" class="col-md-10 form-control" />
             </div>
+            <br />
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default"/>@*//Define the submit button. The submit button sends the form data to the server.*@
+                <input type="submit" value="Save" class="btn btn-primary" />@*//Define the submit button. The submit button sends the form data to the server.*@
             </div>
+            <br />
+        </div>
+        <div>
+            @Html.ActionLink("Back to Management page", "Index")
+            @*Display the text: Back to List of the connection with the controller index of the current page*@
         </div>
     </div>
 }
-<div>
-    @Html.ActionLink("Back to Management page", "Index")
-    @*Display the text: Back to List of the connection with the controller index of the current page*@
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

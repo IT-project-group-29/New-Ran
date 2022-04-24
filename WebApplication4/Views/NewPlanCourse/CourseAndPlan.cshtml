@@ -6,12 +6,27 @@
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <html xmlns="http://www.w3.org/1999/xhtml">
-
+<head>
+    <style>
+        .headText {
+            position: relative;
+            top: 30px
+        }
+        .selectBox {
+            position: relative;
+            top: 40px
+        }
+        table {
+            position: relative;
+            top: 50px
+        }
+    </style>
+</head>
 <body>
-    <div style="position:relative; top :30px">
+    <div class="headText">
         <h3>Choose Course</h3>
     </div>
-    <div style="position:relative; top :40px">
+    <div class="selectBox">
         @using (Ajax.BeginForm("HiddenOrNot", "NewPlanCourse", "choose", new AjaxOptions()
         {
             HttpMethod = "post",
@@ -30,8 +45,7 @@
             <input id="sub" type="submit" hidden="hidden" />
         }
     </div>
-    <table class="table table-light"
-           style="position:relative; top :50px">
+    <table class="table table-light">
         <thead>
             <tr>
                 <th>
