@@ -90,6 +90,8 @@ namespace WebApplication4.Controllers
             return new SelectList(DDLSemester, DDLSemester[selectMonth]);
         }
 
+
+
         public List<int> GetAllPlansID()
         {//use this func can get all plans' ID in database
             var l = new List<int>();
@@ -115,6 +117,18 @@ namespace WebApplication4.Controllers
             var a = db.Course.FirstOrDefault(p => p.courseID.Equals(courseId)).courseName;
             return a;
         }
+
+        public ActionResult ChangeStatus(string projId, string statusId)
+        { var pid = Convert.ToInt32(projId);
+            var statuID = db.ProjectStatus.FirstOrDefault(a => a.StatusName == statusId).ProjectStatusId;
+            var proj = db.Projects.FirstOrDefault(a => a.projectID == pid);
+            proj.projectStatus = statuID;
+            proj.projectStatusChangeDate = DateTime.Now;
+
+            db.SaveChanges();
+            return Content("OK");
+        }
+
         public ActionResult Change(string pop,string YearBeSel, string SemBeSel)
         {var year = Convert.ToInt32(YearBeSel);
             ViewBag.staff = db.Staff.OrderBy(a => a.username).ToList();
@@ -130,8 +144,9 @@ namespace WebApplication4.Controllers
             else
             {
                 return PartialView("AllPlanStudent", projectPeopleAllocations.ToList());
+                //this function is used to Asynchronous refresh people table between staff and student
             }
-           
+
         }
 
         public ActionResult SelectPlan(string planSelecter)
@@ -149,6 +164,7 @@ namespace WebApplication4.Controllers
                 ViewBag.stdtplanId = planSel;
                 return PartialView("Selectplan", projectPeopleAllocations.ToList());
             }
+            //when select a new plan, the sort select's option will change, the new data is from database
         }
         public ActionResult ChangeDate(int ddlyear, string DDLSemester)
         {
@@ -158,6 +174,7 @@ namespace WebApplication4.Controllers
             ViewBag.staff = db.Staff.ToList();
             ViewBag.stdt = db.Students.ToList();
             return PartialView("ProjectAllocation", projectPeopleAllocations.ToList());
+            //change date and find the select semester and year's projects
         }
 
         public ActionResult EditStaff(int STID)
@@ -165,6 +182,7 @@ namespace WebApplication4.Controllers
             var a = db.Staff.FirstOrDefault(c => c.staffID == STID);
             ViewBag.stff = a;
             return PartialView("staffDiv");
+            //return a selected staff information's view to Asynchronous refresh the <div> which display it
         }
         public ActionResult ChangeSortPlan(string SelecedPlan)
         {
@@ -181,10 +199,12 @@ namespace WebApplication4.Controllers
                 ViewBag.Course = db.Course.ToList();
                 return PartialView("SelectedSort");
             }
+            //when select a new plan, the student table will change, add new data"grade"
         }
 
         public ActionResult OrderByFunc(string OrderBySort,string OrderByPlanId, string OrderBySortCourseId)
         {
+            //this function is to sort order student table, there are some different situations need to make sure by the value
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
             if (OrderByPlanId != "AllPlan")
             {
@@ -301,8 +321,40 @@ namespace WebApplication4.Controllers
             return PartialView();
         }
 
-        public ActionResult AddStudentToProject(string studentId,string projectId)
+
+        public ActionResult DeleteStudentAllocation(string personId, string projectId)
+        {// when drag student back from project table, will use this function to delete the ProjectPeopleAllocation data
+            string planid = "";
+            var Person = Convert.ToInt32(personId);
+            var Proj = Convert.ToInt32(projectId);
+            var DeleteAllocation = db.ProjectPeopleAllocations.FirstOrDefault(a => a.personID == Person && a.projectID == Proj);
+            if(DeleteAllocation.personRole == "student")
+            {
+                planid = db.Students.FirstOrDefault(a => a.studentID == Person).planId.ToString();
+            }
+            db.ProjectPeopleAllocations.Remove(DeleteAllocation);
+            db.SaveChanges();
+            
+            
+            return Content(planid);
+        }
+
+        public ActionResult DeleteStaffAllocation(string personId, string projectId)
         {
+            // when drag staff back from project table, will use this function to delete the ProjectPeopleAllocation data
+            var Person = Convert.ToInt32(personId);
+            var Proj = Convert.ToInt32(projectId);
+            var DeleteAllocation = db.ProjectPeopleAllocations.FirstOrDefault(a => a.personID == Person && a.projectID == Proj);
+            
+            db.ProjectPeopleAllocations.Remove(DeleteAllocation);
+            db.SaveChanges();
+
+
+            return Content("OK");
+        }
+
+        public ActionResult AddStudentToProject(string studentId,string projectId)
+        {//when drag student from student table to project table, use this func to add new ProjectPeopleAllocation data
             var PPA = new ProjectPeopleAllocations();
             var userid = Convert.ToInt32(studentId);
             PPA.projectID = Convert.ToInt32( projectId);
@@ -317,7 +369,7 @@ namespace WebApplication4.Controllers
             return Content(name); 
         }
         public ActionResult AddStaffToProject(string staffId,string projectId)
-        {
+        {//when drag staff from staff table to project table, use this func to add new ProjectPeopleAllocation data
             var PPA = new ProjectPeopleAllocations();
             var userid = Convert.ToInt32(staffId);
             var project = Convert.ToInt32(projectId);
@@ -338,6 +390,8 @@ namespace WebApplication4.Controllers
             }
             return Content("Seleced staff is already in this project");
         }
+
+        //==================================================================================================================
         public ActionResult StaffProjectIndex()
         {
             ViewBag.staff = db.Staff.OrderBy(a => a.username).ToList();

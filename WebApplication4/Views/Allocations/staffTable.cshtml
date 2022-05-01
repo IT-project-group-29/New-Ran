@@ -5,7 +5,8 @@
 }
 
 <div>
-    <table class="table table-hover staff" @ViewBag.staffHidden>
+    <table class="table table-hover staff" @ViewBag.staffHidden
+           ondrop="dropPeopleBack(event)">
         <thead style="display:block">
             <tr style="display: table; width: 100%; table-layout: fixed;">
                 <th>

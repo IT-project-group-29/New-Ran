@@ -11,7 +11,8 @@
     </thead>
     <tbody style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll;"
            id="studenttable"
-           ondragover="dragOver(event)">
+           ondragover="dragOver(event)"
+           ondrop="dropPeopleBack(event)">
         @foreach (var item in students)
         {
             if (Model.FirstOrDefault(a => a.personID == item.studentID) == null)

@@ -40,13 +40,21 @@
             <td>
                 @Html.DisplayFor(modelItem => pjt.projectTitle)
                 <div>
-                    @foreach (var psta in pstatus)
-                    {
-                        if (psta.ProjectStatusId == pjt.projectStatus)
+                    <select class="form-control" id="projStatu @pjt.projectID" onchange="selectedStatu(this)">
+                        @foreach (var psta in pstatus)
                         {
-                            <div style="border:1px solid #000;width:150px;">@psta.StatusName</div>
+
+
+                            if (psta.ProjectStatusId == pjt.projectStatus)
+                            {
+                                <option data-statu=@psta.ProjectStatusId selected="selected">@psta.StatusName</option>
+                            }
+                            else
+                            {
+                                <option>@psta.StatusName</option>
+                            }
                         }
-                    }
+                    </select>
                 </div>
             </td>
             <td>
@@ -60,8 +68,11 @@
                         {
 
                             <div id="@pjt.projectID ProjectTableStaff @pstaff.personID"
+                                 data-staffId=@pstaff.personID
+                                 data-projId=@pjt.projectID
                                  ondragstart="LeftStaffTableDragStart(event)"
-                                 ondragover="dragOver(event)">@staff.FirstOrDefault(a => a.staffID == pstaff.personID).username</div>
+                                 ondragover="dragOver(event)"
+                                 draggable="true">@staff.FirstOrDefault(a => a.staffID == pstaff.personID).username</div>
                             }
                     </div>
                 </div>
@@ -78,8 +89,11 @@
                         {
 
                             <div id="ProjectTableStudent @pstudent.personID"
-                                 ondragstart="LeftStudentTableDragStart(event)"
-                                 ondragover="dragOver(event)">@students.FirstOrDefault(a => a.studentID == pstudent.personID).uniUserName</div>
+                                 data-plan=@students.FirstOrDefault(a => a.studentID == pstudent.personID).planId
+                                 data-StudprojId=@projects.FirstOrDefault(a => a.projectID == pjt.projectID).projectID
+                                 ondragstart="LeftStudentTableDragStart(event,this)"
+                                 ondragover="dragOver(event)"
+                                 draggable="true">@students.FirstOrDefault(a => a.studentID == pstudent.personID).uniUserName</div>
                             }
                     </div>
                 </div>
