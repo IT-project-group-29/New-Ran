@@ -1,0 +1,92 @@
+﻿@model IEnumerable<WebApplication4.Models.PlanCourses>
+@{
+    ViewBag.Title = "CourseAndPlan";
+    var course = (List<WebApplication4.Models.Course>)ViewBag.course;
+}
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        .headText {
+            position: relative;
+            top: 30px
+        }
+        .selectBox {
+            position: relative;
+            top: 40px
+        }
+        table {
+            position: relative;
+            top: 50px
+        }
+    </style>
+</head>
+<body>
+    <div class="headText">
+        <h3>Choose Course</h3>
+    </div>
+    <div class="selectBox">
+        @using (Ajax.BeginForm("HiddenOrNot", "NewPlanCourse", "choose", new AjaxOptions()
+        {
+            HttpMethod = "post",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "showBox"
+        }))
+        {
+            <select id="choose" name="choose" onchange="subHidden('sub')">
+                <option id="selNotHidden" name="selNotHidden" value="notHidden" selected="selected">
+                    Not Hiddened
+                </option>
+                <option id="selHidden" name="selHidden" value="hidden">
+                    Hiddened
+                </option>
+            </select>
+            <input id="sub" type="submit" hidden="hidden" />
+        }
+    </div>
+    <table class="table table-light">
+        <thead>
+            <tr>
+                <th>
+                    Course ID
+                </th>
+                <th>
+                    Course Name
+                </th>
+                <th>
+                    Course Abbreviation
+                </th>
+            </tr>
+        </thead>
+        <tbody id="showBox">
+            @foreach (var c in course)
+            {
+                if (c.isHidden == null)
+                {
+                    <tr>
+                        <td class="col-md-3">@c.courseCode</td>
+                        <td>@c.courseName</td>
+                        @if (@c.courseAbbreviation == null)
+                        {
+                            <td>Null</td>
+                        }
+                        else
+                        {
+                            <td>@c.courseAbbreviation</td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>
+<script>
+    function subHidden(sub) {
+        document.getElementById('sub').click();
+        console.log(sub);
+    }
+</script>
+

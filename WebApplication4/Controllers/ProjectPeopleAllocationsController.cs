@@ -36,11 +36,11 @@ namespace WebApplication4.Controllers
 
             var thisPlanCourses = db.PlanCourses.Include(a => a.Course).Where(n => n.planId == index)
                .Select(n => n.courseId).ToList();
-            List<MyViewModel> myList = new List<MyViewModel>();
+            List<CourseModel> myList = new List<CourseModel>();
             var courseStudents = db.StudentCourses.Where(m => thisPlanCourses.Contains(m.courseID)).ToList();
             foreach (var n in courseStudents)
             {
-                var myModel = new MyViewModel
+                var myModel = new CourseModel
                 {
                     Name = n.Students.uniUserName,
                     StudentCourses = courseStudents.Where(m => m.studentID == n.Students.studentID).ToList()
