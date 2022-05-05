@@ -64,16 +64,9 @@
             bottom: 10%;
             left: 53%;
             right: 20px;
-           @* background-color:aqua;*@
+           
         }
-        #RightTop2 {
-           @* position: absolute;
-            top: 25%;
-            bottom: 60%;
-            left: 53%;
-            right: 20px;*@
-           @* background-color:blue;*@
-        }
+        
         #LeftBottom {
             position: absolute;
             top: 27%;
@@ -81,7 +74,7 @@
             left: 5%;
             right: 53%;
             overflow: auto;
-            @*background-color:greenyellow;*@
+           
         }
         #RightBottom {
             position: absolute;
@@ -91,9 +84,75 @@
             right: 20px;
             margin-top:-10px;
             overflow:auto;
-            @* background-color:lightpink;*@
+           
+        }
+        .timeDropDown {
+            position: absolute;
+        }
+        .timeSeletor {
+            bottom: 30%;
+            top: 30%
+        }
+        .ddyear {
+            right: 55%;
+            left: 1px
+        }
+        .ddsem {
+            left: 55%;
+            right: 1px
+        }
+        
+        .timebtn {
+            right: 10%;
+            left: 67%;
+        }
+        .timediv {
+            right: 35%;
+            left: 5%;
+        }
+        .leftTableName {
+            min-height: 10px
+        }
+        #sort {
+            
+            width: 50%
+        }
+        .tableHead {
+            display: block
+        }
+        .tableBody {
+            position: absolute;
+            display: block;
+            top: 38px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            overflow-y: scroll;
+        }
+        .tableTr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+        .hiddenOnLoad {
+            display: none
+        }
+        .cancelBtn {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            right: 5px;
+            top: 5px;
+        }
+        #edtText {
+            position: absolute;
+            left: 20%;
+            right: 20%;
+            top: 15px;
+            bottom: 15px;
         }
     </style>
+    
 </head>
 <body>
    
@@ -107,20 +166,20 @@
             UpdateTargetId = "LeftBottom"
         }))
         {
-            <div style="position:absolute;bottom:30%; top:30%;right:35%;left:5%;">
+            <div  class="timeDropDown timeSeletor timediv">
 
-                <div style="position:absolute;right:55%; left:1px;">
+                <div class="timeDropDown ddyear">
                     @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control"  ,id = "selectedYear" ,onchange= "sbmt('sbmtSearch'),changeDateStaff()" })
                     @*a drop-down list to show the year, the value was defined in controller*@
                 </div>
-                <div style="position:absolute;left:55%; right:1px;">
+                <div class="timeDropDown ddsem">
                     @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control", id = "selectedSem" , onchange = "sbmt('sbmtSearch'),changeDateStaff()" })
                     @*a drop-down list to show the semester, the value was defined in controller*@
                 </div>
 
 
             </div>
-            <div style="position: absolute; bottom: 30%; top: 30%; right: 10%; left: 67%;" class="col-md-4">
+            <div class="col-md-4 timeDropDown timeSeletor timebtn">
 
                 <input id="sbmtSearch" type="submit" class="btn btn-primary" value="search" hidden />
 
@@ -186,7 +245,7 @@
                     </td>
                     <td>
                         <div>
-                            <div id="divStaff @pjt.projectID"  style="min-height:10px" ondragover="dragOver(event)" data-isDiff=@pjt.difficult>
+                            <div id="divStaff @pjt.projectID"   ondragover="dragOver(event)" data-isDiff=@pjt.difficult class="leftTableName">
                                 @*define this tag's id, it will be used in javascript to get this tag*@
                                 @{
                                     var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
@@ -207,7 +266,7 @@
                     </td>
                     <td>
                         <div>
-                            <div id="divStudent @pjt.projectID" ondragover="dragOver(event)" style="min-height:10px">
+                            <div id="divStudent @pjt.projectID" ondragover="dragOver(event)"  class="leftTableName">
 
                                 @{
                                     var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
@@ -324,8 +383,8 @@
 
 
         <div id="sortslide" class="row">
-            <h3>&nbsp; Sort</h3>
-            <div id="sort" class="col-md-5" style="margin-right:5px; width:50%;">
+            <h3>Sort</h3>
+            <div id="sort" class="col-md-5">
 
                 <select id="sortSelecter" class=" form-control" name="SortSelection">
                     <option id="SortName" label="Name" value="name">Name</option>
@@ -358,15 +417,14 @@
     <div id="RightBottom">
         <table class="table table-hover stud"
                ondrop="dropPeopleBack(event)">
-            <thead style="display:block">
-                <tr style="display: table; width: 100%; table-layout: fixed;">
+            <thead  class="tableHead">
+                <tr class="tableTr">
                     <th>Name</th>
                     <th>GPA</th>
                 </tr>
             </thead>
-            <tbody style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll;"
-                   id="studenttable"
-                   
+            <tbody id="studenttable"
+                   class="tableBody"
                    ondragover="dragOver(event)"
                    >
                 @foreach (var item in students)
@@ -377,7 +435,7 @@
 
 
                     <tr id="stddrag @item.studentID"
-                        style="display: table; width: 100%; table-layout: fixed;"
+                        class="tableTr"
                         draggable="true"
                         ondragover="dragOver(event)"
                         ondragstart="DragStudentsStart(event)">
@@ -394,9 +452,9 @@
             </tbody>
         </table>
     </div>
-    <div id="edtDiv" style="display:none">
-        <input onclick="canceldiv()" class="btn btn-danger" type="button" style="position:absolute; width:10px; height:10px; right:5px; top:5px;" />
-        <div id="edtText" style="position:absolute;left:20%;right:20%;top:15px; bottom:15px;"></div>
+    <div id="edtDiv" class="hiddenOnLoad">
+        <input onclick="canceldiv()" class="btn btn-danger cancelBtn" type="button" />
+        <div id="edtText" ></div>
     </div>
 </body>
 

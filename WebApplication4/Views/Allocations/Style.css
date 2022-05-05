@@ -1,0 +1,130 @@
+﻿#edtDiv {
+    position: fixed;
+    border: 1px solid #000;
+    top: 25%;
+    bottom: 25%;
+    right: 30%;
+    left: 30%;
+    background-color: white;
+    z-index: 999;
+}
+
+#Edt {
+    color: #0c5fc4;
+    background-color: #FFFFFF;
+    border: 0px none;
+    font-size: 15px;
+}
+
+#LeftTop {
+    position: absolute;
+    top: 10%;
+    bottom: 75%;
+    left: 5%;
+    right: 53%;
+}
+
+#RightTop1 {
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    left: 53%;
+    right: 20px;
+}
+
+#LeftBottom {
+    position: absolute;
+    top: 27%;
+    bottom: 5%;
+    left: 5%;
+    right: 53%;
+    overflow: auto;
+}
+
+#RightBottom {
+    position: absolute;
+    top: 42%;
+    bottom: 5%;
+    left: 53%;
+    right: 20px;
+    margin-top: -10px;
+    overflow: auto;
+}
+
+.timeDropDown {
+    position: absolute;
+}
+
+.timeSeletor {
+    bottom: 30%;
+    top: 30%
+}
+
+.ddyear {
+    right: 55%;
+    left: 1px
+}
+
+.ddsem {
+    left: 55%;
+    right: 1px
+}
+
+.timebtn {
+    right: 10%;
+    left: 67%;
+}
+
+.timediv {
+    right: 35%;
+    left: 5%;
+}
+
+.leftTableName {
+    min-height: 10px
+}
+
+#sort {
+    margin-right: 5px;
+    width: 50%
+}
+
+.tableHead {
+    display: block
+}
+
+.tableBody {
+    position: absolute;
+    display: block;
+    top: 38px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow-y: scroll;
+}
+
+.tableTr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.hiddenOnLoad {
+    display: none
+}
+
+.cancelBtn {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    right: 5px;
+    top: 5px;
+}
+
+#edtText {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    top: 15px;
+    bottom: 15px;
+}
