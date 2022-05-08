@@ -428,6 +428,7 @@
     <Content Include="Views\NewPlanCourse\HiddenCourse.cshtml" />
     <Content Include="Views\NewPlanCourse\notHidden.cshtml" />
     <Content Include="Views\DetailedInformation\index.cshtml" />
+    <Content Include="Views\Manage\IndexPeople.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />

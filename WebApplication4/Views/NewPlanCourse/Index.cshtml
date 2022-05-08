@@ -62,6 +62,56 @@
             background-color: white;
             z-index: 999;
         }
+
+        .tableHead {
+            display: block
+        }
+
+        .tableBody {
+            position: absolute;
+            display: block;
+            top: 38px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            overflow-y: scroll;
+            overflow-x: hidden
+        }
+
+        .tableTr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+        .DragSpan {
+            border: 1px solid #000;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .AddCoursebutton {
+            color: green;
+            text-decoration: none
+        }
+        #delete {
+            display: none
+        }
+        .cancelDivBtn {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            right: 5px;
+            top: 5px;
+        }
+        #edtText {
+            position: absolute;
+            left: 30%;
+            right: 30%;
+            top: 35px;
+            bottom: 15px;
+        }
+        .Additems {
+            margin-bottom: 20px;
+        }
     </style>
     <script></script>
 </head>
@@ -115,8 +165,8 @@
 
             <table class="table table-hover stud">
 
-                <thead style="display:block">
-                    <tr style="display: table; width: 100%; table-layout: fixed;">
+                <thead class="tableHead">
+                    <tr class="tableTr">
                         <th>
                             Plan <a style="color:green; text-decoration: none"
                                     href="javascript:void(0)"
@@ -128,12 +178,12 @@
                     </tr>
                 </thead>
                 <tbody id="Lefttable"
-                       style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll; overflow-x: hidden;">
+                       class="tableBody">
 
                     @foreach (var PItem in plans)
                     {
                         <tr id=@PItem.planId
-                            style="display: table; width: 100%; table-layout: fixed;"
+                            class="tableTr"
                             draggable="true"
                             ondragstart="dropElement(event)"
                             ondragend="spandragOver()"
@@ -152,7 +202,7 @@
                                     if (C.isHidden != "hidden")
                                     {
                                         <span id="@PItem.planId bind @C.courseId"
-                                              style="border: 1px solid #000;margin-top:5px; margin-bottom:5px;"
+                                              class="DragSpan"                                              
                                               ondragstart="spanDrag(event)"
                                               ondragend="spandragOver()"
                                               draggable="true">
@@ -170,10 +220,10 @@
         <div id="Right">
             <table class="table table-hover stud"
                    ondrop="hiddenPlanCourseSpan(event)">
-                <thead style="display:block">
-                    <tr style="display: table; width: 100%; table-layout: fixed;">
+                <thead  class="tableHead">
+                    <tr class="tableTr">
                         <th>
-                            Course <a style="color:green; text-decoration: none"
+                            Course <a class="AddCoursebutton"
                                       href="javascript:void(0)"
                                       onclick="AddNewCourseHref()"><font size="3">+</font></a>
                         </th>
@@ -181,14 +231,14 @@
                     </tr>
                 </thead>
                 <tbody id="Righttable"
-                       style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll; overflow-x: hidden;">
+                       class="tableBody">
                     @foreach (var CItem in course)
                     {
 
 
                     if (CItem.isHidden != "hidden") { 
                         <tr id=@CItem.courseID
-                            style="display: table; width: 100%; table-layout: fixed;"
+                            class="tableTr"
                             draggable="true"
                             ondragstart="dropElement(event)"
                             ondragover="dragOver(event)"
@@ -204,7 +254,6 @@
         </div>
     </div>
     <div id="delete"
-         style="display:none"
          ondragover="dragOver(event)"
          ondrop="spanOndrag(event)">
 
@@ -216,12 +265,11 @@
     <div id="AddNewCourse"
          hidden="hidden">
         <input onclick="canceldiv()"
-               class="btn btn-danger"
-               type="button"
-               style="position:absolute; width:10px; height:10px; right:5px; top:5px;" />
-        <div id="edtText" style="position:absolute;left:30%;right:30%;top:35px; bottom:15px;">
+               class="btn btn-danger cancelDivBtn"
+               type="button"/>
+        <div id="edtText" >
             <div class="table table-hover" id="tableExcel">
-                <div style="margin-bottom:20px;">
+                <div class="Additems">
                     <input type="text"
                            class="form-control col-md-10"
                            id="AddNewCourseId"
@@ -229,7 +277,7 @@
                            onblur="AddNewCourseCidOnBlur(this)" />
                     <br /><span id="addCidSpan"></span><br />
                 </div>
-                <div style="margin-bottom:20px;">
+                <div  class="Additems">
                     <input type="text"
                            class="form-control col-md-10"
                            id="AddNewCourseName"
@@ -237,7 +285,7 @@
                            onblur="AddNewCourseCnameOnBlur(this)" />
                     <br /> <span id="addCnameSpan"></span><br />
                 </div>
-                <div style="margin-bottom:20px;">
+                <div class="Additems">
                     <input type="text"
                            class="form-control col-md-10"
                            id="AddNewCourseCode"
@@ -257,12 +305,12 @@
     <div id="AddNewPlan"
          hidden="hidden">
         <input onclick="cancelPlandiv()"
-               class="btn btn-danger"
+               class="btn btn-danger cancelDivBtn"
                type="button"
-               style="position:absolute; width:10px; height:10px; right:5px; top:5px;" />
-        <div id="edtText" style="position:absolute;left:30%;right:30%;top:35px; bottom:15px;">
+                />
+        <div id="edtText" class="edtText">
             <div class="table table-hover" id="tableExcel">
-                <div style="margin-bottom:20px;">
+                <div class="Additems">
                     <input type="text"
                            class="form-control col-md-10"
                            id="AddNewPlanName"
@@ -270,7 +318,7 @@
                            onblur="AddNewPlanNameOnBlur(this)" />
                     <br /><span id="addPnameSpan"></span><br />
                 </div>
-                <div style="margin-bottom:20px;">
+                <div class="Additems">
                     <input type="text"
                            class="form-control col-md-10"
                            id="AddNewPlanCode"
@@ -278,7 +326,7 @@
                            onblur="AddNewPlanCodeOnBlur(this)" />
                     <br /> <span id="addPcodeSpan"></span><br />
                 </div>
-                <div style="margin-bottom:20px;">
+                <div class="Additems">
                     <input type="number"
                            class="form-control col-md-10"
                            maxlength="1"

@@ -191,105 +191,107 @@
 
     <div id="LeftBottom">
         <table class="table table-hover" id="tableExcel">
-            <tr>
-                <th>
-                    Project No.
-                </th>
-                <th>
-                    Project Title
-                </th>
-                <th>
-                    Staff
-                </th>
-                <th>
-                    Students
-                </th>
-            </tr>
-            @foreach (var pjt in projects)
-            {
-                <tr id="ProjectTable @pjt.projectID"
-                    ondrop="ProjectPeopleBind(event,this)"
-                    ondragover="dragOver(event)">
-                    <td>
-                        @Html.DisplayFor(pid => pjt.projectID)
-                        @{var prodiff = "difficulty" + pjt.projectID;}
-                        <span id="@prodiff">
-                            @if (pjt.difficult == "yes")
-                            {
-                                <span>⭐</span>
-                            }
-                            @*A star near by the project No. to Mark important items. Note: difficult items are newly added to the database*@
-                        </span>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => pjt.projectTitle)
-                        <div>
-
-                            <select class="form-control" id="projStatu @pjt.projectID" onchange="selectedStatu(this)">
-                                @foreach (var psta in pstatus)
-                                {
-
-                                    
-                                    if (psta.ProjectStatusId == pjt.projectStatus)
-                                    {
-                                        <option  selected="selected">@psta.StatusName</option>
-                                    }
-                                    else
-                                    {
-                                        <option>@psta.StatusName</option>
-                                    }
-                                }
-                            </select>
-                            
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <div id="divStaff @pjt.projectID"   ondragover="dragOver(event)" data-isDiff=@pjt.difficult class="leftTableName">
-                                @*define this tag's id, it will be used in javascript to get this tag*@
-                                @{
-                                    var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
-                                }
-                                @foreach (var pstaff in staffs)
-                                {
-                                   
-                                    <div id="@pjt.projectID ProjectTableStaff @pstaff.personID"
-                                         data-staffId=@pstaff.personID
-                                         data-projId=@pjt.projectID
-                                         ondragstart="LeftStaffTableDragStart(event)"
-                                         ondragover="dragOver(event)"
-                                          draggable="true"
-                                         >@staff.FirstOrDefault(a => a.staffID == pstaff.personID).username</div>
-                                }
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <div id="divStudent @pjt.projectID" ondragover="dragOver(event)"  class="leftTableName">
-
-                                @{
-                                    var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
-                                    @*Looking for a collection of students,*@
-                                }
-                                @foreach (var pstudent in prostudents)
-                                {
-                              
-                                    <div id="ProjectTableStudent @pstudent.personID"
-                                         data-plan=@students.FirstOrDefault(a => a.studentID == pstudent.personID).planId
-                                          data-StudprojId=@projects.FirstOrDefault(a => a.projectID == pjt.projectID).projectID
-                                         ondragstart="LeftStudentTableDragStart(event,this)"
-                                         ondragover="dragOver(event)"
-                                        draggable="true"
-                                         
-                                         >@students.FirstOrDefault(a => a.studentID == pstudent.personID).uniUserName</div>
-                                    }
-                            </div>
-                        </div>
-                    </td>
+            <thead class="tableHead">
+                <tr class="tableTr">
+                    <th>
+                        Project No.
+                    </th>
+                    <th>
+                        Project Title
+                    </th>
+                    <th>
+                        Staff
+                    </th>
+                    <th>
+                        Students
+                    </th>
                 </tr>
-            }
+            </thead>
+            <tbody class="tableBody">
+                @foreach (var pjt in projects)
+                {
+                    <tr id="ProjectTable @pjt.projectID"
+                        ondrop="ProjectPeopleBind(event,this)"
+                        ondragover="dragOver(event)"
+                        class="tableTr">
+                        <td>
+                            @Html.DisplayFor(pid => pjt.projectID)
+                            @{var prodiff = "difficulty" + pjt.projectID;}
+                            <span id="@prodiff">
+                                @if (pjt.difficult == "yes")
+                                {
+                                    <span>⭐</span>
+                                }
+                                @*A star near by the project No. to Mark important items. Note: difficult items are newly added to the database*@
+                            </span>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pjt.projectTitle)
+                            <div>
 
+                                <select class="form-control" id="projStatu @pjt.projectID" onchange="selectedStatu(this)">
+                                    @foreach (var psta in pstatus)
+                                    {
+
+
+                                        if (psta.ProjectStatusId == pjt.projectStatus)
+                                        {
+                                            <option selected="selected">@psta.StatusName</option>
+                                        }
+                                        else
+                                        {
+                                            <option>@psta.StatusName</option>
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <div id="divStaff @pjt.projectID" ondragover="dragOver(event)" data-isDiff=@pjt.difficult class="leftTableName">
+                                    @*define this tag's id, it will be used in javascript to get this tag*@
+                                    @{
+                                        var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
+                                    }
+                                    @foreach (var pstaff in staffs)
+                                    {
+
+                                        <div id="@pjt.projectID ProjectTableStaff @pstaff.personID"
+                                             data-staffId=@pstaff.personID
+                                             data-projId=@pjt.projectID
+                                             ondragstart="LeftStaffTableDragStart(event)"
+                                             ondragover="dragOver(event)"
+                                             draggable="true">@staff.FirstOrDefault(a => a.staffID == pstaff.personID).username</div>
+                                        }
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <div id="divStudent @pjt.projectID" ondragover="dragOver(event)" class="leftTableName">
+
+                                    @{
+                                        var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
+                                        @*Looking for a collection of students,*@
+                                    }
+                                    @foreach (var pstudent in prostudents)
+                                    {
+
+                                        <div id="ProjectTableStudent @pstudent.personID"
+                                             data-plan=@students.FirstOrDefault(a => a.studentID == pstudent.personID).planId
+                                             data-StudprojId=@projects.FirstOrDefault(a => a.projectID == pjt.projectID).projectID
+                                             ondragstart="LeftStudentTableDragStart(event,this)"
+                                             ondragover="dragOver(event)"
+                                             draggable="true">@students.FirstOrDefault(a => a.studentID == pstudent.personID).uniUserName</div>
+                                        }
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
         </table>
 
     </div>

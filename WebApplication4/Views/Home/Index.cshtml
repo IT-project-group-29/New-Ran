@@ -1,31 +1,173 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<style type="text/css">
+    .topDiv {
+        padding: 100px 100px 10px;
+    }
+   
+    .tableHead {
+        display: block
+    }
 
-<div class="jumbotron">
-    <h1>Unisa Project Allocation Tool</h1>
-    <p class="lead">The project allocation tool is a free tool for Unisa admins to allcoate students to different projects.</p>
-    <p><a href="https://www.unisa.edu.au/" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    .tableBody {
+        display: block;
+        top: 38px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        overflow-y: scroll;
+        max-height: 60vh;
+
+    }
+
+    .tableTr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+    .title{
+        font-size:20px;
+    }
+
+</style>
+<div  class="topDiv">
+        <div class="row">
+            
+            <div class="row">
+ 
+                    <span class="col-md-2 text-end title">Search to start:&nbsp;</span>
+                    <div class="col-md-8">
+                        <div class="input-group ">
+                            <input id="InputSearch" type="text" class="form-control">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" onclick="search()">
+                                    Search
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    
+
+                
+            </div>
+        </div>
+    
+</div>
+<div id="disPlayTable">
+    <table class="table table-hover" >
+        <thead class="tableHead">
+            <tr class="tableTr">
+                <th>
+                    Name
+                </th>
+                <th>
+                    Type
+                </th>
+            </tr>
+        </thead>
+        <tbody id="searchResult" class="tableBody">
+            
+        </tbody>
+    </table>
+
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>About the Tool</h2>
-        <p>
-            We used ASP.NET MVC which gives us a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>Click here to get free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>To Know More</h2>
-        <p>You can find more details in our school web pages.</p>
-        <p><a class="btn btn-default" href="https://www.unisa.edu.au/">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+
+<script>
+    function search() {
+        document.getElementById("searchResult").innerHTML = "";
+        var searchinput = document.getElementById("InputSearch").value;
+        if (searchinput != "") { 
+        $.ajax({
+
+            type: "POST",
+
+            url: "/Home/Searchdata",
+            
+            data: {
+
+                inputvalue: searchinput
+            },
+            success: function (data) {
+                console.log(data);
+                for (ObjType in data) {
+                    for (ObjID in data[ObjType]) {
+                        console.log(ObjID);
+                        var objTr = document.createElement("tr");
+                        objTr.setAttribute("class", "tableTr");
+                        objTr.setAttribute("onclick","turnToPage(this)")
+                        objTr.setAttribute("id", ObjType + ObjID);
+                        switch (ObjType) {
+                            case "proj":
+                                objTr.innerHTML = "<td>" + data[ObjType][ObjID] + "</td> <td>Project</td>";
+                                break;
+                            case "stud":
+                                objTr.innerHTML = "<td>" + data[ObjType][ObjID] + "</td> <td>Student</td>";
+                                break;
+                            case "staf":
+                                objTr.innerHTML = "<td>" + data[ObjType][ObjID] + "</td> <td>Staff</td>";
+                                break;
+                            case "page":
+                                objTr.innerHTML = "<td>" + data[ObjType][ObjID] + "</td> <td>Function</td>";
+
+                        }
+                       
+                        document.getElementById("searchResult").appendChild(objTr);
+                        
+                    }
+                }
+                console.log(data);
+                
+
+            },
+
+        })
+        }
+    }
+
+    function turnToPage(t) {
+        var id = t.id.slice(4);
+        var type = t.id.slice(0, 4);
+        switch (type) {
+            case "proj":
+                window.location.href = "/Projects/Details/" + id;
+                break;
+            case "stud":
+                window.location.href = "/Students/Details/" + id;
+                break;
+            case "staf":
+                window.location.href = "/Manage/Details/" + id;
+                break;
+            case "page":
+                switch (id) {
+                    case "PJAL":
+                        window.location.href = "/Allocations/Index";
+                        break;
+                    case "STFM":
+                        window.location.href = "/Manage/StaffManagement";
+                        break;
+                    case "STDM":
+                        window.location.href = "/Students/Index";
+                        break;
+                    case "PJTM":
+                        window.location.href = "/Projects/Index"
+                        break;
+                    case "CSPL":
+                        window.location.href = "/NewPlanCourse/Index";
+                        break;
+                    case "CSPD":
+                        window.location.href = "/NewPlanCourse/CourseAndPlan";
+                        break;
+                    case "SCSD":
+                        window.location.href = "/DetailedInformation/index";
+                        break;
+                }
+                break;
+
+        }
+    }
+</script>
