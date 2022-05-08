@@ -7,6 +7,7 @@
     <div class="col-auto">
         <label for="Student" class="visually-hidden">Search Student FirstName</label>
         <input type="text" class="form-control" name="searchstudent" placeholder="Search Student">
+       
     </div>
     <div class="col-auto">
         <button type="submit" class="btn btn-primary mb-3">Search Student</button>
@@ -30,13 +31,6 @@
         <th>
             <label class=" control-label col-md-1"> GPA </label>
         </th>
-        <th>
-            <label class=" control-label col-md-1"> Plan Name </label>
-        </th>
-        <th>
-            <label class=" control-label col-md-1"> Plan Name </label>
-        </th>
-
         <th></th>
     </tr>
 
@@ -54,12 +48,6 @@
     </td>
     <td>
         @Html.DisplayFor(modelItem => item.gpa)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.year)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.semester)
     </td>
 
     <td style="white-space:nowrap;">
