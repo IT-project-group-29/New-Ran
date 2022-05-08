@@ -7,98 +7,126 @@
     var students = (List<WebApplication4.Models.Students>)ViewBag.stdt;
     var plans = (List<WebApplication4.Models.Plans>)ViewBag.plans;
     var plansID = ViewBag.plansID;
+    var courseid = ViewBag.courseid;
+    var plancourseDict = (Dictionary<string, string>)ViewBag.PlanCourseDict;
+    var semesterid = ViewBag.semesterid;
+    var yearid = ViewBag.yearid;
     var orderby = ViewBag.OrderBy;
     var sortby = ViewBag.SortBy;
+    var flag = ViewBag.flag;
     var studentsCourses = (List<CourseModel>)ViewBag.CourseList;
     var plancourse = (List<string>)ViewBag.PlanCourse;
     var stucourse = ViewBag.stcs;
 }
 
 <h2 style="position:absolute; top:100px"> Detailed Information</h2>
-<div class="row" style="position:absolute; top: 200px; width:1200px">
+<div class="row" style="position:absolute; top: 150px; width:1200px">
 
-    <div class="col-md-5 stud" @ViewBag.studenthidden>
-        @*Another function of studenthidden is to keep the options of the original student and supervisor drop-down boxes when submitting the page.*@
+    <div class="row" style="border:dashed 1px lightblue; padding:10px;margin:20px;margin-bottom:5px;">
+            <div class="col-md-4" style="padding-top:10px;">Select Option 1</div>
+            @*Another function of studenthidden is to keep the options of the original student and supervisor drop-down boxes when submitting the page.*@
+            <div class="col-md-3">
+                <select id="plan1" class="form-control" name="plan" onchange="sbmt()">
+                    @if (plansID == 0)
+                    {@*the planid's default value is 0, so it will default show "All plans" in this drop down box *@
 
-        <select id="plan1" class="form-control" name="plan" onchange="sbmt()">
-            @if (plansID == 0)
-                {
-            @*the planid's default value is 0, so it will default show "All plans" in this drop down box *@
-
-            <option label="All Plans" value="0" name="plan" selected="selected">
-                All Plans
-            </option>
+                    <option label="All Plans" value="0" name="plan" selected="selected">
+                        All Plans
+                    </option>
                 }
                 else
-                {
-            @*<option href="/ProjectPeopleAllocations?index=0" label="All Plans" value="0" name="plan" selected="">All Plans</option>*@
-            <option label="All Plans" value="0" name="plan" selected="">
-                All Plans
-            </option>
-                }
-            @foreach (var item in plans)
-                {
-                    if (@item.planId == plansID)
+                { @*<option href="/ProjectPeopleAllocations?index=0" label="All Plans" value="0" name="plan" selected="">All Plans</option>*@
+                <option label="All Plans" value="0" name="plan" selected="">
+                    All Plans
+                </option>
+            }
+                    @foreach (var item in plans)
                     {
-            @*Find the corresponding planid to output its plan name*@
-            <option href="/DetailedInformation?index=@item.planId" value="@item.planId" selected="selected" onchange="sbmt()">@item.planName</option>
+                        if (@item.planId == plansID)
+                        {@*Find the corresponding planid to output its plan name*@
+                        <option href="/DetailedInformation?index=@item.planId" value="@item.planId" selected="selected" onchange="sbmt()">@item.planName</option>
                     }
                     else
                     {
-            <option href="/DetailedInformation?index=@item.planId" value="@item.planId" onchange="sbmt()">@item.planName</option>
-
+                        <option href="/DetailedInformation?index=@item.planId" value="@item.planId" onchange="sbmt()">@item.planName</option>
                     }
 
                 }
 
-        </select>
+                </select>
+            </div>
+
 
     </div>
+    <div class="row" style="border:dashed 1px lightblue; padding:10px;margin:20px;margin-top:5px;">
+        <div class="col-md-2" style="padding-top:10px;">Select Option 2</div>
+        <div class="col-md-3">
+            @Html.DropDownList("courseYears", null, htmlAttributes: new { @class = "form-control", id = "selectedYear", onchange = "changeResult()" })
+            @*a drop-down list to show the semester, the value was defined in controller*@
+        </div>
+        <div class="col-md-3">
+            @Html.DropDownList("semesters", null, htmlAttributes: new { @class = "form-control", id = "selectedSem", onchange = "changeResult()" })
+            @*a drop-down list to show the semester, the value was defined in controller*@
+        </div>
+        <div class="col-md-3">
+            @Html.DropDownList("courses", null, htmlAttributes: new { @class = "form-control", id = "selectedCourse", onchange = "changeResult()" })
+            @*a drop-down list to show the semester, the value was defined in controller*@
+        </div>
+    </div>
+
     <br />
 
 
     <br />
-    <table class="table text-nowrap stud" @ViewBag.studenthidden style="text-align:center">
-
-        <tr>
-            @if (plancourse?.Count > 0)
-                    {
-                        foreach (var n in plancourse)
-                        {
-            <th>@Html.ActionLink(n, "index", new { orderby = n, orderby1=orderby,sortby=sortby,index = plansID })</th>
-
-                        }
-                    }
-
-        </tr>
-
-        @if (studentsCourses?.Count > 0)
+    <table id="table" class="table text-nowrap" style="text-align:center" @ViewBag.studenthidden data-toggle="table" data-classes="table table-hover table-bordered">
+        <thead>
+            <tr>
+                @if (plancourse?.Count > 0)
                 {
-                    foreach (var item in studentsCourses)
+                    foreach (var n in plancourse)
                     {
-        <tr>
-            <td>
-                @item.Name
-            </td>
-            @if (item?.StudentCourses?.Count > 0)
-                            {
-                                foreach (var student in item.StudentCourses)
-                                {
-            <td>
-                @student.grade
-            </td>
-                                }
-                            }
+                        <th>@Html.ActionLink(n, "index", new { orderby = plancourseDict[n], orderby1 = orderby, sortby = sortby, index = plansID, yearid = yearid, semesterid = semesterid, courseid = courseid, flag = flag }, new { onmouseover = "displayAll(this,'" + plancourseDict[n] + "')", onmouseout = "displayAbbr(this,'" + n + "')" })</th>
 
-        </tr>
                     }
                 }
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (studentsCourses?.Count > 0)
+            {
+                foreach (var item in studentsCourses)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        @if (item?.StudentCourses?.Count > 0)
+                        {
+                            foreach (var student in item.StudentCourses)
+                            {
+                                <td>
+                                    @student.grade
+                                </td>
+                            }
+                        }
+
+                    </tr>
+                }
+            }
+        </tbody>
+
 
 
     </table>
+    <br />
+    <br />
+</div>
 
-</div>
-</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Content/bootstrap-table/dist/bootstrap-table.min.js"></script>
+<script src="~/Content/bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js"></script>
 
 <script>
 
@@ -109,6 +137,27 @@
         window.location = "/DetailedInformation?index=" + id;
         console.log(id)
     }
+    function displayAll(o, e) {
+        o.text = e;
+    }
+    function displayAbbr(o, e) {
+        o.text = e;
+    }
+    function changeResult() {
+        let yearid = document.getElementById("selectedYear").value;
+        let semid = document.getElementById("selectedSem").value;
+        let courseid = document.getElementById("selectedCourse").value;
+        window.location = "/DetailedInformation?yearid=" + yearid + "&semesterid=" + semid + "&courseid=" + courseid + "&flag=1";
+    }
+    $("#table").bootstrapTable('destroy').bootstrapTable({
+        fixedColumns: true,
+        fixedNumber: 1,
+        columns: [{
+            field: 'Name',
+            align: 'left',
+            width: '100'
+        }]
+    });
 </script>
 
 
