@@ -23,11 +23,13 @@
     </tr>
     @foreach (var pjt in projects)
     {
-        <tr>
+        <tr id="ProjectTable @pjt.projectID"
+            ondrop="ProjectPeopleBind(event,this)"
+            ondragover="dragOver(event)">
             <td>
                 @Html.DisplayFor(pid => pjt.projectID)
                 @{var prodiff = "difficulty" + pjt.projectID;}
-                <span id="@prodiff" data-diff="@pjt.difficult">
+                <span id="@prodiff">
                     @if (pjt.difficult == "yes")
                     {
                         <span>⭐</span>
@@ -38,37 +40,46 @@
             <td>
                 @Html.DisplayFor(modelItem => pjt.projectTitle)
                 <div>
-                    @foreach (var psta in pstatus)
-                    {
-                        if (psta.ProjectStatusId == pjt.projectStatus)
+                    <select class="form-control" id="projStatu @pjt.projectID" onchange="selectedStatu(this)">
+                        @foreach (var psta in pstatus)
                         {
-                            <div style="border:1px solid #000;width:150px;">@psta.StatusName</div>
+
+
+                            if (psta.ProjectStatusId == pjt.projectStatus)
+                            {
+                                <option data-statu=@psta.ProjectStatusId selected="selected">@psta.StatusName</option>
+                            }
+                            else
+                            {
+                                <option>@psta.StatusName</option>
+                            }
                         }
-                    }
+                    </select>
                 </div>
             </td>
             <td>
                 <div>
-                    <div id="projstaff @pjt.projectID" ondrop="dropStaff(event)" style="min-height:10px" ondragover="allowDrop(event)">
+                    <div id="divStaff @pjt.projectID" style="min-height:10px" ondragover="dragOver(event)" data-isDiff=@pjt.difficult>
                         @*define this tag's id, it will be used in javascript to get this tag*@
                         @{
                             var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
                         }
                         @foreach (var pstaff in staffs)
                         {
-                            var staffdd = staff.FirstOrDefault(p => p.staffID == pstaff.personID);
-                            if (staffdd != null)
-                            {
-                                <div id="staff @staffdd.staffID-projstaff @pjt.projectID" draggable="true" ondragstart="drag(event)"> @staffdd.username</div>
-                                @*tell this tag to use the funcation "drag" which created in the JS part*@
+
+                            <div id="@pjt.projectID ProjectTableStaff @pstaff.personID"
+                                 data-staffId=@pstaff.personID
+                                 data-projId=@pjt.projectID
+                                 ondragstart="LeftStaffTableDragStart(event)"
+                                 ondragover="dragOver(event)"
+                                 draggable="true">@staff.FirstOrDefault(a => a.staffID == pstaff.personID).username</div>
                             }
-                        }
                     </div>
                 </div>
             </td>
             <td>
                 <div>
-                    <div id="div @pjt.projectID" ondrop="dropStuProject(event)" ondragover="allowDrop(event)" style="min-height:10px">
+                    <div id="divStudent @pjt.projectID" ondragover="dragOver(event)" style="min-height:10px">
 
                         @{
                             var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
@@ -76,15 +87,14 @@
                         }
                         @foreach (var pstudent in prostudents)
                         {
-                            var stuinfo = students.FirstOrDefault(p => p.studentID == pstudent.personID);
-                            if (stuinfo != null)
-                            {
 
-
-                                <div id="drag @stuinfo.studentID" draggable="true" ondragstart="drag(event)"> @stuinfo.uniUserName</div>
-                                @*Data A-E are the results of the five courses of the selected students,they will be used in JS code*@
+                            <div id="ProjectTableStudent @pstudent.personID"
+                                 data-plan=@students.FirstOrDefault(a => a.studentID == pstudent.personID).planId
+                                 data-StudprojId=@projects.FirstOrDefault(a => a.projectID == pjt.projectID).projectID
+                                 ondragstart="LeftStudentTableDragStart(event,this)"
+                                 ondragover="dragOver(event)"
+                                 draggable="true">@students.FirstOrDefault(a => a.studentID == pstudent.personID).uniUserName</div>
                             }
-                        }
                     </div>
                 </div>
             </td>

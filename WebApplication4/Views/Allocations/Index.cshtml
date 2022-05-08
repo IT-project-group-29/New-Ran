@@ -110,11 +110,11 @@
             <div style="position:absolute;bottom:30%; top:30%;right:35%;left:5%;">
 
                 <div style="position:absolute;right:55%; left:1px;">
-                    @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control"  ,id = "selectedYear" ,onchange= "sbmt('sbmtSearch'),changeDateStaff()" })
                     @*a drop-down list to show the year, the value was defined in controller*@
                 </div>
                 <div style="position:absolute;left:55%; right:1px;">
-                    @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control", id = "selectedSem" , onchange = "sbmt('sbmtSearch'),changeDateStaff()" })
                     @*a drop-down list to show the semester, the value was defined in controller*@
                 </div>
 
@@ -122,7 +122,7 @@
             </div>
             <div style="position: absolute; bottom: 30%; top: 30%; right: 10%; left: 67%;" class="col-md-4">
 
-                <input type="submit" class="btn btn-primary" value="search" />
+                <input id="sbmtSearch" type="submit" class="btn btn-primary" value="search" hidden />
 
             </div>}
     </div>
@@ -148,11 +148,13 @@
             </tr>
             @foreach (var pjt in projects)
             {
-                <tr>
+                <tr id="ProjectTable @pjt.projectID"
+                    ondrop="ProjectPeopleBind(event,this)"
+                    ondragover="dragOver(event)">
                     <td>
                         @Html.DisplayFor(pid => pjt.projectID)
                         @{var prodiff = "difficulty" + pjt.projectID;}
-                        <span id="@prodiff" data-diff="@pjt.difficult">
+                        <span id="@prodiff">
                             @if (pjt.difficult == "yes")
                             {
                                 <span>⭐</span>
@@ -163,37 +165,49 @@
                     <td>
                         @Html.DisplayFor(modelItem => pjt.projectTitle)
                         <div>
-                            @foreach (var psta in pstatus)
-                            {
-                                if (psta.ProjectStatusId == pjt.projectStatus)
+
+                            <select class="form-control" id="projStatu @pjt.projectID" onchange="selectedStatu(this)">
+                                @foreach (var psta in pstatus)
                                 {
-                                    <div style="border:1px solid #000;width:150px;">@psta.StatusName</div>
+
+                                    
+                                    if (psta.ProjectStatusId == pjt.projectStatus)
+                                    {
+                                        <option  selected="selected">@psta.StatusName</option>
+                                    }
+                                    else
+                                    {
+                                        <option>@psta.StatusName</option>
+                                    }
                                 }
-                            }
+                            </select>
+                            
                         </div>
                     </td>
                     <td>
                         <div>
-                            <div id="projstaff @pjt.projectID" ondrop="dropStaff(event)" style="min-height:10px" ondragover="allowDrop(event)">
+                            <div id="divStaff @pjt.projectID"  style="min-height:10px" ondragover="dragOver(event)" data-isDiff=@pjt.difficult>
                                 @*define this tag's id, it will be used in javascript to get this tag*@
                                 @{
                                     var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
                                 }
                                 @foreach (var pstaff in staffs)
                                 {
-                                    var staffdd = staff.FirstOrDefault(p => p.staffID == pstaff.personID);
-                                    if (staffdd != null)
-                                    {
-                                        <div id="staff @staffdd.staffID-projstaff @pjt.projectID" draggable="true" ondragstart="drag(event)"> @staffdd.username</div>
-                                        @*tell this tag to use the funcation "drag" which created in the JS part*@
-                                    }
+                                   
+                                    <div id="@pjt.projectID ProjectTableStaff @pstaff.personID"
+                                         data-staffId=@pstaff.personID
+                                         data-projId=@pjt.projectID
+                                         ondragstart="LeftStaffTableDragStart(event)"
+                                         ondragover="dragOver(event)"
+                                          draggable="true"
+                                         >@staff.FirstOrDefault(a => a.staffID == pstaff.personID).username</div>
                                 }
                             </div>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <div id="div @pjt.projectID" ondrop="dropStuProject(event)" ondragover="allowDrop(event)" style="min-height:10px">
+                            <div id="divStudent @pjt.projectID" ondragover="dragOver(event)" style="min-height:10px">
 
                                 @{
                                     var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
@@ -201,15 +215,16 @@
                                 }
                                 @foreach (var pstudent in prostudents)
                                 {
-                                    var stuinfo = students.FirstOrDefault(p => p.studentID == pstudent.personID);
-                                    if (stuinfo != null)
-                                    {
-
-
-                                        <div id="drag @stuinfo.studentID" draggable="true" ondragstart="drag(event)"> @stuinfo.uniUserName</div>
-                                        @*Data A-E are the results of the five courses of the selected students,they will be used in JS code*@
+                              
+                                    <div id="ProjectTableStudent @pstudent.personID"
+                                         data-plan=@students.FirstOrDefault(a => a.studentID == pstudent.personID).planId
+                                          data-StudprojId=@projects.FirstOrDefault(a => a.projectID == pjt.projectID).projectID
+                                         ondragstart="LeftStudentTableDragStart(event,this)"
+                                         ondragover="dragOver(event)"
+                                        draggable="true"
+                                         
+                                         >@students.FirstOrDefault(a => a.studentID == pstudent.personID).uniUserName</div>
                                     }
-                                }
                             </div>
                         </div>
                     </td>
@@ -224,7 +239,7 @@
         <h3>Filter</h3>
         <div class="row">
             <div class="col-md-5">
-                @using (Ajax.BeginForm("Change", "Allocations", "pop", new AjaxOptions()
+                @using (Ajax.BeginForm("Change", "Allocations", ("pop", "YearBeSel", "SemBeSel"), new AjaxOptions()
                 {
 
                     HttpMethod = "post",
@@ -232,7 +247,7 @@
                     UpdateTargetId = "RightBottom"
                 }))
                 {
-                    <select class="form-control" id="selopt" name="pop" onchange="sbmt('StudentOrStaff'), hiddenPlanTag('planSelect')">
+                    <select class="form-control" id="selopt" name="pop" onchange="selectedDate(),sbmt('StudentOrStaff'), hiddenPlanTag('planSelect')">
 
                         @*studenthidden is a String value, it's default value is ""(no thing), so the select  will default to show students *@
                         @*selpt funcation can to show or hidden the student list and supervisors list*@
@@ -241,11 +256,26 @@
 
 
                     </select>
+                    <input id="YearBeSel" name="YearBeSel" value="" hidden="hidden" />
+                    <input id="SemBeSel" name="SemBeSel" value="" hidden="hidden" />
                     <input id="StudentOrStaff" type="submit" hidden="hidden" />
+                }
+                @using (Ajax.BeginForm("Change", "Allocations", ("pop", "YearBeSel", "SemBeSel"), new AjaxOptions()
+                {
+                        @*this ajax from just use to tell controller to get a refreshed table in right bottom*@
+                    HttpMethod = "post",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "RightBottom"
+                }))
+                {
+                    <input id="changeToStaffTable" name="pop" value="staff" hidden="hidden" />
+                    <input id="YearSel" name="YearBeSel" value="" hidden="hidden" />
+                    <input id="SemSel" name="SemBeSel" value="" hidden="hidden" />
+                    <input id="changeToStaffTablesbmt" type="submit" hidden="hidden" />
                 }
             </div>
 
-            <div class="col-md-5 stud" @ViewBag.studenthidden>
+            <div class="col-md-5" @ViewBag.studenthidden>
                 @*Another function of studenthidden is to keep the options of the original student and supervisor drop-down boxes when submitting the page.*@
                 @using (Ajax.BeginForm("SelectPlan", "Allocations", "planSelecter", new AjaxOptions()
                 {
@@ -255,7 +285,7 @@
                     UpdateTargetId = "RightBottom"
                 }))
                 {
-                    <select id="planSelect" class=" form-control" name="planSelecter" hidden="" onchange="ChangeSortInside(this), sbmt('SelectPlan')">
+                    <select id="planSelect" class=" form-control" name="planSelecter"  onchange="ChangeSortInside(this), sbmt('SelectPlan')">
 
                         @*the planid's default value is 0, so it will default show "All plans" in this drop down box *@
                         <option label="All Plans" id="AllPlan" value="AllPlan" name="plan" selected="selected">All Plans</option>
@@ -280,6 +310,7 @@
 
                     HttpMethod = "post",
                     InsertionMode = InsertionMode.Replace,
+                    //when submit the ajaxform, document will replace "ChangeSortPlan" with a new view (Asynchronous refresh)
                     UpdateTargetId = "sort"
                 }))
                 {   <input id="SelecedPlan" name="SelecedPlan" value="" hidden="hidden" />
@@ -299,6 +330,7 @@
                 <select id="sortSelecter" class=" form-control" name="SortSelection">
                     <option id="SortName" label="Name" value="name">Name</option>
                     <option id="SortGPA" label="GPA" value="GPA">GPA</option>
+            @*the sort selection, if user change plan, the option will change too*@
                 </select>
             </div>
             <div class="col-md-5">
@@ -315,15 +347,17 @@
                     <input id="OrderBySortCourseId" name="OrderBySortCourseId" value="" hidden="hidden" />
                     <input id="OrderBySortSbmt" type="submit" hidden="hidden" />
                 }
-                <button class="btn btn-primary" onclick="OrderBy('P')">Positive</button>
-                <button class="btn btn-primary" onclick="OrderBy('N')">Negative</button>
+                <button class="btn btn-primary" onclick="OrderBy('P')">ASC</button>
+                <button class="btn btn-primary" onclick="OrderBy('N')">DESC</button>
+                <input hidden value="P" id="WhichBtnBeClicked"/>
             </div>
             
         </div>
     </div>
 
     <div id="RightBottom">
-        <table class="table table-hover stud">
+        <table class="table table-hover stud"
+               ondrop="dropPeopleBack(event)">
             <thead style="display:block">
                 <tr style="display: table; width: 100%; table-layout: fixed;">
                     <th>Name</th>
@@ -332,12 +366,21 @@
             </thead>
             <tbody style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll;"
                    id="studenttable"
-                   ondrop="dropstu(event)"
-                   ondragover="allowDrop(event)">
+                   
+                   ondragover="dragOver(event)"
+                   >
                 @foreach (var item in students)
                 {
+                    if (Model.FirstOrDefault(a => a.personID == item.studentID) == null)
+
+                    {@*make sure the selected student will not be displayed in the student table*@
+
+
                     <tr id="stddrag @item.studentID"
-                        style="display: table; width: 100%; table-layout: fixed;">
+                        style="display: table; width: 100%; table-layout: fixed;"
+                        draggable="true"
+                        ondragover="dragOver(event)"
+                        ondragstart="DragStudentsStart(event)">
                         <td>
                             @item.uniUserName
                         </td>
@@ -347,6 +390,7 @@
                         </td>
                     </tr>
                 }
+            }
             </tbody>
         </table>
     </div>
@@ -358,6 +402,258 @@
 
 </html>
 <script>
+    function selectedStatu(t) {
+        //change the project status
+        var projID = t.id.slice(10);
+        @*var statusID = $("#" + t.id).find("option:selected").attr("data-statu");*@
+        var statusName = t.value;
+        console.log(projID + "+" + statusName);
+        $.ajax({
+            //these are ajax code use to asynchronous refresh this page
+            type: "POST",
+            //this is the transmission protocol, you can set it with "GET" or "POST","POST" is more secure
+            url: "/Allocations/ChangeStatus",
+            //using this url to tell the JS which controller and which function will be used 
+            data: {
+                //this will send some value to controller
+                projId: projID,
+                statusId: statusName
+            },
+            success: function (data) {
+              //data is from controller, it is a "string"type value,generally used for judgment,
+              //however, some time you can use the "data" to do some thing, like get a value from controller
+              //Here, we don't need it to do any function. The data storage has been completed in the controller
+              //so you can write no thing
+
+            },
+
+        })
+    }
+
+
+    function changeDateStaff() {
+        if (document.getElementById("selopt").value == "staff") {
+            document.getElementById("YearSel").value = document.getElementById("selectedYear").value;
+            document.getElementById("SemSel").value = document.getElementById("selectedSem").value;
+            sbmt('changeToStaffTablesbmt');
+        }
+       //After changing the time, submit the Ajax form to refresh the staff list data asynchronously
+            
+
+
+        
+    }
+
+    function selectedDate() {
+        //give a value to the AjaxForm(you can search it by id to find them),
+        //then, use the value to tell controller what data we need
+        document.getElementById("YearBeSel").value = document.getElementById("selectedYear").value;
+        document.getElementById("SemBeSel").value = document.getElementById("selectedSem").value;
+        @*console.log(document.getElementById("selectedYear").value);*@
+    }
+    function DragStudentsStart(e) {
+        //put the value(information) of the <tr>tag, which will be draged, into script(student)
+        e.dataTransfer.setData('Student', e.target.parentElement.id)
+        
+        e.dataTransfer.setData('StudentTableId', e.target.id);
+        e.dataTransfer.setData('StudentId', e.target.id.slice(8));
+    }
+
+    function DragStaffStart(e) {
+        //put the value(information) of the <tr>tag, which will be draged, into script(staff)
+        e.dataTransfer.setData('Staff', e.target.parentElement.id)
+        e.dataTransfer.setData('StaffTableId', e.target.id);
+        
+        e.dataTransfer.setData('StaffId', e.target.id.slice(7));
+    }
+    function ProjectPeopleBind(e,t) {
+        //drag people to project to allocated
+        var thisid = t.id.slice(13);
+        if (e.dataTransfer.getData("Student") == "studenttable") {
+            var studentId = e.dataTransfer.getData("StudentId");
+            $.ajax({
+                
+                type: "POST",
+                
+                url: "/Allocations/AddStudentToProject",
+                data: { studentId: studentId, projectId: thisid },
+                success: function (data) {
+
+                    console.log(data);
+                    var newdiv = document.createElement("div");
+                    
+                    newdiv.setAttribute("id", "ProjectTableStudent " + studentId);
+                    newdiv.setAttribute("ondragstart", "LeftStudentTableDragStart(event,this)");
+                    newdiv.setAttribute("ondragover", "dragOver(event)");
+                    newdiv.setAttribute("draggable", "true");
+                    newdiv.innerHTML = data;
+                    document.getElementById("stddrag " + studentId).remove();
+                    //remove draged element, because one student can only work for one project
+                    document.getElementById("divStudent " + thisid).appendChild(newdiv);
+                    //creat a new <div> when drag student to project
+
+                    
+                },
+
+            })
+        }
+        if (e.dataTransfer.getData("Staff") == "stafftable") {
+            var staffID = e.dataTransfer.getData("StaffId");
+            $.ajax({
+                type: "POST",
+                url: "/Allocations/AddStaffToProject",
+                data: { staffId: staffID, projectId: thisid },
+                success: function (data) {
+                    if (data != "Seleced staff is already in this project") {
+
+
+                        console.log(data);
+                        var newdiv = document.createElement("div");
+                        
+                        newdiv.setAttribute("id", thisid + " ProjectTableStaff " + staffID);
+                        newdiv.setAttribute("ondragstart", "LeftStaffTableDragStart(event)");
+                        newdiv.setAttribute("ondragover", "dragOver(event)");
+                        newdiv.setAttribute("draggable", "true");
+                        newdiv.setAttribute("data-staffId", staffID);
+                        newdiv.setAttribute("data-projId", thisid);
+                        newdiv.innerHTML = data;
+                        console.log(newdiv);
+                        console.log(newdiv.nodeType);
+                        console.log(document.getElementById("divStaff " + thisid).getAttribute("data-isDiff"));
+                        document.getElementById("divStaff " + thisid).appendChild(newdiv);
+                        var StaffProjectNumber = document.getElementById("pro" + staffID);
+                        var StaffDiffProjectNumber = document.getElementById("diff" + staffID);
+                        StaffProjectNumber.innerText = parseInt(StaffProjectNumber.innerText) + 1;
+                        //just like the previous, this is for staff
+                        if (document.getElementById("divStaff " + thisid).getAttribute("data-isDiff") == "yes") {
+                            StaffDiffProjectNumber.innerText = parseInt(StaffDiffProjectNumber.innerText) + 1;
+                        }
+                        //if the project is diffcult, count + 1
+
+                    } else {
+                        alert(data);
+                    }// if the staff was allocated to this project, alert.
+
+                },
+
+            })
+        }
+    }
+
+    //================================= Drop People Back Functions ===================================//
+
+
+@*student*@
+    function LeftStudentTableDragStart(e, t) {
+        //get the student info
+        var thisdrag = document.getElementById(e.target.id).getAttribute("data-plan");
+        var planID = $("#planSelect").find("option:selected").attr("id");
+        console.log(thisdrag+"is plan id")
+        console.log(e.target.parentElement.id);
+        console.log(e.target.parentElement.id.slice(11));
+        e.dataTransfer.setData('MakeSureStudentOrStaff', "student");
+        e.dataTransfer.setData('LeftTableStudentId', e.target.id.slice(20));
+        e.dataTransfer.setData('LeftTableRemoveId', e.target.id);
+        e.dataTransfer.setData('LeftTableProjId', e.target.parentElement.id.slice(10));
+        e.dataTransfer.setData('dataplan', thisdrag);
+        console.log(e.target.id);
+    }
+    @* staff *@
+    function LeftStaffTableDragStart(e, t) {
+        //get the staff info
+        
+        var thisstaffId = document.getElementById(e.target.id).getAttribute("data-staffId");
+        var thisprojId = document.getElementById(e.target.id).getAttribute("data-projId");
+        console.log(thisstaffId + "+" + thisprojId)
+        e.dataTransfer.setData('MakeSureStudentOrStaff', "staff");
+        e.dataTransfer.setData('LeftTableStaffId', thisstaffId);
+        e.dataTransfer.setData('LeftTableProjId', thisprojId);
+        e.dataTransfer.setData('LeftTableRemoveId', e.target.id);
+    }
+
+    function dropPeopleBack(e) {
+        if (e.dataTransfer.getData('MakeSureStudentOrStaff') == "student") {
+            //to make sure the draged div is student or staff
+            var rmId = e.dataTransfer.getData('LeftTableRemoveId');
+            var planID = $("#planSelect").find("option:selected").attr("id");
+            var dataplan = e.dataTransfer.getData('dataplan');
+            
+            $.ajax({
+                type: "POST",
+                url: "/Allocations/DeleteStudentAllocation",
+                data: {
+                    personId: e.dataTransfer.getData('LeftTableStudentId'),
+                    projectId: e.dataTransfer.getData('LeftTableProjId')
+                },
+                success: function (data) {
+                   @*this data from controller is the PlanId of the student*@
+                    
+                    document.getElementById(rmId).remove();
+                    if (document.getElementById("selopt").value == "student") {
+                        if (planID == "AllPlan" || planID.slice(5) == data) {
+                            
+                            
+                            
+                            
+                            OrderBy(document.getElementById("WhichBtnBeClicked").value);
+                            //OrderBy is another JS function to sort student table, I can use that to asynchronous refresh the page 
+                            //when we drag student back
+                        }
+                          
+                    }
+
+                },
+
+            })
+
+        }
+        if (e.dataTransfer.getData('MakeSureStudentOrStaff') == "staff") {
+            var rmId = e.dataTransfer.getData('LeftTableRemoveId');
+            var staffID = e.dataTransfer.getData('LeftTableStaffId');
+            var ProjId = e.dataTransfer.getData('LeftTableProjId');
+            $.ajax({
+                type: "POST",
+                url: "/Allocations/DeleteStaffAllocation",
+                data: {
+                    personId: staffID,
+                    projectId: ProjId
+                },
+                success: function (data) {
+                    
+
+                    document.getElementById(rmId).remove();
+                    if (document.getElementById("selopt").value == "staff") {
+                        var StaffProjectNumber = document.getElementById("pro" + staffID);
+                        var StaffDiffProjectNumber = document.getElementById("diff" + staffID);
+                        StaffProjectNumber.innerText = parseInt(StaffProjectNumber.innerText) - 1;
+                        if (document.getElementById("divStaff " + ProjId).getAttribute("data-isDiff") == "yes") {
+                            StaffDiffProjectNumber.innerText = parseInt(StaffDiffProjectNumber.innerText) - 1;
+                        }
+                        //when drag back staff, count - 1
+                        }
+
+                    
+                 
+                    
+
+                },
+
+            })
+        }
+
+
+    }
+
+    
+
+
+
+
+
+    function dragOver(e) {
+        //cancel the default event, if i don't use "e.preventDefault();", the other function maybe not work
+        e.preventDefault();
+    }
     function ChangeSortInside(t) {
         var Sort = document.getElementById("SelecedPlan");
       
@@ -396,21 +692,28 @@
     function sbmtEdit(stffid) {
         document.getElementById("STID").value = (stffid);
         sbmt("EDTsbmt");
+        //in the begin, this div is empty, I use ajax to add staff information
         document.getElementById("edtDiv").style.display = "initial";
     }
 
     function canceldiv() {
+        //let this div invisible
         document.getElementById("edtDiv").style.display = "none";
     }
 
     function OrderBy(t) {
+        //this is sort function to order student by name, gpa or course grade
         var planID = $("#planSelect").find("option:selected").attr("id");
         document.getElementById("OrderByPlanId").value = planID;
         if (t == 'P') {
             document.getElementById("OrderBySort").value = "Positive";
+            document.getElementById("WhichBtnBeClicked").value = "P";
+            //here I use a <input> to store which button i just click(asc)
         }
         if (t == 'N') {
             document.getElementById("OrderBySort").value = "Negative";
+            document.getElementById("WhichBtnBeClicked").value = "N";
+            //here I use a <input> to store which button i just click(desc)
         }
 
         var CourseID = $("#sortSelecter").find("option:selected").attr("id");
@@ -426,6 +729,7 @@
         }
 
         document.getElementById("OrderBySortSbmt").click();
+        //submit the ajax form
     }
 
 </script>

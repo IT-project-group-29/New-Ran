@@ -21,8 +21,12 @@ namespace WebApplication4.Models
         [StringLength(10)]
         public string temp { get; set; }
 
+        public string isHidden { get; set; }
+
         public virtual Course Course { get; set; }
 
         public virtual Plans Plans { get; set; }
+
+        
     }
 }

@@ -37,10 +37,10 @@
             position: fixed;
             right: 0px;
             bottom: 0px;
-            width: 130px;
+            width: 120px;
             height: 120px;
             z-index: 999;
-            background-color: red;
+            @*background-color: red;*@
         }
         #AddNewCourse {
             position: fixed;
@@ -67,8 +67,8 @@
 </head>
 <body>
     @using (Ajax.BeginForm("AddPlan", "NewPlanCourse", ("PName", "PCode", "PDur"), new AjaxOptions()
-        {
-            
+    {
+
         HttpMethod = "post",
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "Left"
@@ -80,12 +80,26 @@
         <input id="PDur" name="PDur" value="" hidden="hidden" />
         <input id="AddPlansbmt" type="submit" hidden="hidden" />
     }
+    @using (Ajax.BeginForm("AddCourseByAjaxForm", "NewPlanCourse", ("CId", "CName", "CCode"), new AjaxOptions()
+    {
+
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "Righttable"
+    }))
+    {
+        <input id="CId" name="CId" value="" hidden="hidden" />
+        <input id="CName" name="CName" value="" hidden="hidden" />
+        <input id="CCode" name="CCode" value="" hidden="hidden" />
+
+        <input id="AddCoursesbmt" type="submit" hidden="hidden" />
+    }
 
 
 
     @using (Ajax.BeginForm("DeleteCourse", "NewPlanCourse", "DelcsID", new AjaxOptions()
     {
-        Confirm = "are you sure to delete this course?",
+        
         HttpMethod = "post",
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "Left"
@@ -122,24 +136,29 @@
                             style="display: table; width: 100%; table-layout: fixed;"
                             draggable="true"
                             ondragstart="dropElement(event)"
-                             ondragend="spandragOver()"
+                            ondragend="spandragOver()"
                             ondrop="eleOndrop(event,this)"
-                            ondragover="dragOver(event)"
-                           >
-                            <td class="LeftBoxPlan">@PItem.planName</td>
+                            ondragover="dragOver(event)">
+                            @if (PItem.isHidden != "hidden")
+                            {
+                                <td class="LeftBoxPlan">@PItem.planName</td>
+                            }
+
 
                             <td id="LeftSpan @PItem.planId">
                                 @{ var L = Model.Where(a => a.planId == PItem.planId).ToList();}
                                 @foreach (var C in L)
                                 {
-                                    <span id="@PItem.planId bind @C.courseId"
-                                          style="border: 1px solid #000;margin-top:5px; margin-bottom:5px;"
-                                          ondragstart="spanDrag(event)"
-                                          ondragend="spandragOver()"
-                                          draggable="true">
-                                        @course.FirstOrDefault(a => a.courseID == C.courseId).courseName<br />
-                                    </span>
-
+                                    if (C.isHidden != "hidden")
+                                    {
+                                        <span id="@PItem.planId bind @C.courseId"
+                                              style="border: 1px solid #000;margin-top:5px; margin-bottom:5px;"
+                                              ondragstart="spanDrag(event)"
+                                              ondragend="spandragOver()"
+                                              draggable="true">
+                                            @C.Course.courseName <br />
+                                        </span>
+                                    }
 
                                 }
                             </td>
@@ -149,7 +168,8 @@
             </table>
         </div>
         <div id="Right">
-            <table class="table table-hover stud">
+            <table class="table table-hover stud"
+                   ondrop="hiddenPlanCourseSpan(event)">
                 <thead style="display:block">
                     <tr style="display: table; width: 100%; table-layout: fixed;">
                         <th>
@@ -164,25 +184,35 @@
                        style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll; overflow-x: hidden;">
                     @foreach (var CItem in course)
                     {
+
+
+                    if (CItem.isHidden != "hidden") { 
                         <tr id=@CItem.courseID
                             style="display: table; width: 100%; table-layout: fixed;"
                             draggable="true"
                             ondragstart="dropElement(event)"
-                            
-                            ondragover="dragOver(event)">
+                            ondragover="dragOver(event)"
+                             ondragend="spandragOver()">
 
                             <td>@CItem.courseName</td>
 
                         </tr>
+}
                     }
                 </tbody>
             </table>
         </div>
     </div>
     <div id="delete"
-         hidden="hidden"
+         style="display:none"
          ondragover="dragOver(event)"
-         ondrop="spanOndrag(event)"></div>
+         ondrop="spanOndrag(event)">
+
+        <img width="120" height="120" src="~/Content/Trash_can.png" />
+        
+
+
+    </div>
     <div id="AddNewCourse"
          hidden="hidden">
         <input onclick="canceldiv()"
@@ -193,7 +223,7 @@
             <div class="table table-hover" id="tableExcel">
                 <div style="margin-bottom:20px;">
                     <input type="text"
-                            class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            id="AddNewCourseId"
                            placeholder="New Course ID"
                            onblur="AddNewCourseCidOnBlur(this)" />
@@ -201,7 +231,7 @@
                 </div>
                 <div style="margin-bottom:20px;">
                     <input type="text"
-                            class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            id="AddNewCourseName"
                            placeholder="New Course Name"
                            onblur="AddNewCourseCnameOnBlur(this)" />
@@ -209,7 +239,7 @@
                 </div>
                 <div style="margin-bottom:20px;">
                     <input type="text"
-                            class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            id="AddNewCourseCode"
                            placeholder="New Course Code"
                            onblur="AddNewCourseCcodeOnBlur(this)" />
@@ -221,6 +251,7 @@
                    class="btn btn-primary"
                    type="button"
                    value="Add" />
+           
         </div>
     </div>
     <div id="AddNewPlan"
@@ -233,7 +264,7 @@
             <div class="table table-hover" id="tableExcel">
                 <div style="margin-bottom:20px;">
                     <input type="text"
-                            class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            id="AddNewPlanName"
                            placeholder="New Plan Name"
                            onblur="AddNewPlanNameOnBlur(this)" />
@@ -241,7 +272,7 @@
                 </div>
                 <div style="margin-bottom:20px;">
                     <input type="text"
-                            class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            id="AddNewPlanCode"
                            placeholder="New Plan Code"
                            onblur="AddNewPlanCodeOnBlur(this)" />
@@ -249,7 +280,7 @@
                 </div>
                 <div style="margin-bottom:20px;">
                     <input type="number"
-                           class="form-control col-md-10" 
+                           class="form-control col-md-10"
                            maxlength="1"
                            min="1"
                            max="5"
@@ -331,13 +362,10 @@
 
         function spanDrag(e) {
             //when drag "Course in this Plan"<span>,get the span's information, include spanID courseID,
-            document.getElementById("delete").style.display = "inherit";
-            console.log("deeeeeeee", e);
-            console.log("deeeeeeee", e.target);
-            console.log("deeeeeeee",e.target.id);
+            @*document.getElementById("delete").style.display = "inherit";*@
             e.dataTransfer.setData('delID', e.target.id);
             var src = e.target.parentElement.id;
-            var sub = src.slice(9);
+            
             e.dataTransfer.setData('spanPlID', src);
             e.dataTransfer.setData('PPid', e.target.parentElement.parentElement.id);
             e.dataTransfer.setData('PPPiD', e.target.parentElement.parentElement.parentElement.id);
@@ -352,12 +380,30 @@
 
         function spandragOver() {
             //when stop drag, let the Rubbish bins(Right bottom) be invisible
-            console.log("aasdasdasdasdasd");
+            
             document.getElementById("delete").style.display = "none";
 
 
         }
+        function hiddenPlanCourseSpan(e) {
+            var deldata = e.dataTransfer.getData("delID");
+            var ppid = e.dataTransfer.getData("PPid");
+            var pppid = e.dataTransfer.getData("PPPid");
+            if (pppid == "Lefttable") {
+                $.ajax({
+                    type: "POST",
+                    url: "/NewPlanCourse/DelSpan",
+                    data: { thisid: ppid, deld: deldata },
+                    success: function (data) {
+                        if (data == "removed") {
+                            //console.log(deldata + "be removed")
+                            document.getElementById(deldata).remove();
+                        }
+                    },
 
+                })
+            }
+        }
 
 
         function spanOndrag(e) {
@@ -388,9 +434,16 @@
             if (pid == "Righttable") {
 
                 document.getElementById("DelcsID").value = delcourse;
-                console.log(delcourse+"will be deleted");
+                console.log(delcourse + "will be deleted");
+                var cofm = confirm("Are you sure to delete this course?")
+
+                if (cofm == true) {
+
+                
                 document.getElementById("DelCssbmt").click();
-                document.getElementById(delcourse).remove();
+                    document.getElementById(delcourse).remove();
+                }
+                spandragOver();
             }
             if (pid == "Lefttable") {
                 $.ajax({
@@ -622,7 +675,19 @@
             if (Cid.value == "" | Cname.value == "" | Ccode.value == "") {
                 alert("please input information");
             } else {
-                $.ajax({
+                document.getElementById("CId").value = Cid.value;
+                document.getElementById("CName").value = Cname.value;
+                document.getElementById("CCode").value = Ccode.value;
+                document.getElementById("AddCoursesbmt").click();
+                spandragOver();
+                Cid.value = "";
+                Cname.value = "";
+                Ccode.value = "";
+                document.getElementById("addCidSpan").innerHTML = "";
+                document.getElementById("addCnameSpan").innerHTML = "";
+                document.getElementById("addCcodeSpan").innerHTML = "";
+
+         @*       $.ajax({
                     type: "POST",
                     url: "/NewPlanCourse/AddCourse",
                     data: { CId: Cid.value, CName: Cname.value, CCode: Ccode.value },
@@ -649,7 +714,7 @@
                         }
                     },
 
-                })
+                })*@
             }
         }
 

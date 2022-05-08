@@ -19,21 +19,7 @@ namespace WebApplication4.Controllers
         // GET: ProjectPeopleAllocations
         public ActionResult Index(int? index)
         {
-            //switch (index)
-            //{
-            //    case 0:
-            //        var test = db.PlanCourses.Include(a => a.Course).Select(a=>a.Course).ToList();
-            //        ViewBag.Test = test.Select(a => a.courseName).ToList();
-            //        break;
-            //    case 1:
-            //        var test2 = db.PlanCourses.Include(a => a.Course).Where(a=>a.planId == index).Select(a => a.Course).ToList();
-            //        ViewBag.Test = test2.Select(a => a.courseName).ToList();
-            //        break;
-            //    default:
-            //        var test3 = db.PlanCourses.Include(a => a.Course).Select(a => a.Course).ToList();
-            //        ViewBag.Test = test3.Select(a => a.courseName).ToList();
-            //        break;
-            //}
+
 
             List<string> viewBagTest= new List<string>();
             if (index == 0 || index == null)
@@ -50,11 +36,11 @@ namespace WebApplication4.Controllers
 
             var thisPlanCourses = db.PlanCourses.Include(a => a.Course).Where(n => n.planId == index)
                .Select(n => n.courseId).ToList();
-            List<MyViewModel> myList = new List<MyViewModel>();
+            List<CourseModel> myList = new List<CourseModel>();
             var courseStudents = db.StudentCourses.Where(m => thisPlanCourses.Contains(m.courseID)).ToList();
             foreach (var n in courseStudents)
             {
-                var myModel = new MyViewModel
+                var myModel = new CourseModel
                 {
                     Name = n.Students.uniUserName,
                     StudentCourses = courseStudents.Where(m => m.studentID == n.Students.studentID).ToList()
@@ -63,8 +49,7 @@ namespace WebApplication4.Controllers
             }
             ViewBag.MyList = myList.DistinctBy(a => a.Name).ToList();
 
-         /*   ViewBag.PlanAHidden = "";
-            ViewBag.PlanBHidden = "";*/
+         
             //both PlanAHidden and PlanBHidden's default is "",so the defualt display student grade list will
             //hidden no thing, it will display whole list
             ViewBag.course = db.Course.ToList();

@@ -17,7 +17,7 @@ namespace WebApplication4.Controllers
             
             ViewBag.plans = db.Plans.OrderBy(a => a.planName).ToList();
             ViewBag.course = db.Course.OrderBy(a => a.courseName).ToList();
-            return View(db.PlanCourses.ToList());
+            return View(db.PlanCourses.OrderBy(a => a.Course.courseName).ToList());
         }
         
         public ActionResult DeleteCourse(string DelcsID)
@@ -25,15 +25,15 @@ namespace WebApplication4.Controllers
             var pcDel = db.PlanCourses.Where(a => a.courseId == DelcsID).ToList();
             foreach (var item in pcDel)
             {
-                db.PlanCourses.Remove(item);
+                item.isHidden = "hidden";
 
             }
-            db.Course.Remove(db.Course.FirstOrDefault(a => a.courseID == DelcsID));
+            db.Course.FirstOrDefault(a => a.courseID == DelcsID).isHidden = "hidden";
             db.SaveChanges();
 
             ViewBag.plans = db.Plans.OrderBy(a => a.planName).ToList();
             ViewBag.course = db.Course.OrderBy(a => a.courseName).ToList();
-            return PartialView("dragdrop", db.PlanCourses.ToList());
+            return PartialView("dragdrop", db.PlanCourses.OrderBy(a => a.Course.courseName).ToList());
         }
 
         public ActionResult DelPlan(int thisid)
@@ -41,7 +41,7 @@ namespace WebApplication4.Controllers
             var pcDel = db.PlanCourses.Where(a => a.planId == thisid).ToList();
             foreach (var item in pcDel)
             {
-                db.PlanCourses.Remove(item);
+                item.isHidden="hidden";
             }
             var stud = db.Students.Where(a => a.planId == thisid).ToList();
             foreach(var item in stud)
@@ -49,7 +49,7 @@ namespace WebApplication4.Controllers
                 item.planId = 0;
                // item.planId = null;
             }
-            db.Plans.Remove(db.Plans.FirstOrDefault(a => a.planId == thisid));
+            db.Plans.FirstOrDefault(a => a.planId == thisid).isHidden="hidden";
             db.SaveChanges();
             return Content("removed");
         }
@@ -59,7 +59,7 @@ namespace WebApplication4.Controllers
             string cID = deld.Substring((deld.IndexOf("bind") + 5));
             var pc = db.PlanCourses.FirstOrDefault(a => a.planId == thisid && a.courseId == cID);
 
-            db.PlanCourses.Remove(pc);
+            pc.isHidden = "hidden";
             db.SaveChanges();
             return Content("removed");
         }
@@ -203,7 +203,39 @@ namespace WebApplication4.Controllers
             return PartialView("dragdrop", db.PlanCourses.ToList());
 
         }
-       
+        public ActionResult AddCourseByAjaxForm(string CId,string CName, string CCode)
+        {
 
+            var newCourse = new Course();
+            newCourse.courseID = CId;
+            newCourse.courseName = CName;
+            newCourse.courseCode = CCode;
+            db.Course.Add(newCourse);
+            db.SaveChanges();
+            ViewBag.course = db.Course.OrderBy(a => a.courseName).ToList();
+            return PartialView("AddNew");
+        }
+
+        /*=============================================================================*/
+
+        public ActionResult CourseAndPlan()
+        {
+            ViewBag.course = db.Course.OrderBy(a => a.courseName).ToList();
+            return View();
+        }
+
+        public ActionResult HiddenOrNot(string choose)
+        {
+            ViewBag.course = db.Course.OrderBy(a => a.courseName).ToList();
+            if (choose == "notHidden")
+            {
+
+                return PartialView("notHidden");
+            }
+            else
+            {
+                return PartialView("HiddenCourse");
+            }
+        }
     }
 }
