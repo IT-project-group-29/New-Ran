@@ -44,8 +44,8 @@ namespace WebApplication4.Controllers
         }
 
 
-        public ActionResult AddUserRole(string User, string Role)
-            //add users and roles
+        public JsonResult AddUserRole(string User, string Role)
+        //add users and roles
         {
             using (var context = new Model1())
             {
@@ -60,11 +60,41 @@ namespace WebApplication4.Controllers
                     var posts = context.Database.ExecuteSqlCommand($"insert into AspNetUserRoles(UserId,RoleId) values('{User}','{Role}') ");
                     //Add SQL statements to the database: add the values of Uesr and role to userid and roleid
                 }
+                else
+                {
+                    return Json("角色已存在:" + db.AspNetRoles.AsQueryable().Where(q => q.Id == Role).FirstOrDefault().Name);
+                }
             }
 
-            return RedirectToAction("Index");//Redirect page index
+            return Json("添加成功:" + db.AspNetRoles.AsQueryable().Where(q => q.Id == Role).FirstOrDefault().Name); ;//Redirect page index
         }
-
+        public JsonResult GetUserRoleList()
+        {
+            var userList = db.AspNetUsers.AsQueryable().ToList();
+            var roleList = db.AspNetRoles.AsQueryable().ToList();
+            var ruList = db.AspNetUserRoles.SqlQuery("select * from AspNetUserRoles order by UserId").ToList();
+            List<Dictionary<string, string>> dic = new List<Dictionary<string, string>>();
+            foreach (var item in ruList)
+            {
+                Dictionary<string, string> ru = new Dictionary<string, string>();
+                foreach (var u in userList)
+                {
+                    if (item.UserId == u.Id)
+                    {
+                        ru.Add("firstName", u.firstName + " " + u.lastName);
+                    }
+                }
+                foreach (var r in roleList)
+                {
+                    if (item.RoleId == r.Id)
+                    {
+                        ru.Add("role", r.Name);
+                    }
+                }
+                dic.Add(ru);
+            }
+            return Json(dic, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetUserRole(string User)
         {
             var ssss = db.AspNetUserRoles.SqlQuery("select * from AspNetUserRoles");
@@ -74,9 +104,19 @@ namespace WebApplication4.Controllers
             var roles = db.AspNetRoles.Where(p => ur.Contains(p.Id)).ToList();
             //Match the roles of the current user with all roles
             var dic = new Dictionary<string, string>();
+            string username = db.AspNetUsers.AsQueryable().Where(q => q.Id == User).Select(p => p.UserName).FirstOrDefault();
+            int i = 0;
             foreach (var item in roles)
             {
-                dic.Add(item.Id, item.Name);
+                if (i == 0)
+                {
+                    dic.Add(item.Id, username + ":" + item.Name);
+                }
+                else
+                {
+                    dic.Add(item.Id, item.Name);
+                }
+                i++;
                 //Add the role of the current user to a new dictionary
             }
             return Json(dic);
