@@ -6,69 +6,141 @@
 
 <h2>Role Management</h2>
 
+<div style="display:flex;justify-content:center;width:100%">
 
+    <div class="form-horizontal" style="width:50%">
+        <hr />
+        <h4>User Role</h4>
+        <form action="/AspNetRoles/Index" method="post">
+            @* Submit to / aspnetroles / index page *@
+            <div class="form-group">
+                <label class="control-label col-md-2">First Name </label>
+                @* set first name  *@
 
-<div class="form-horizontal">
-    <hr />
-    <h4>User Role</h4>
-    <form action="/AspNetRoles/Index" method="post">
-        @* Submit to / aspnetroles / index page *@
-        <div class="form-group">
-            <label class="control-label col-md-2">First Name </label>
-            @* set first name  *@
-            <div class="col-md-3">
-                <input type="text" name="Firstname" value="@ViewBag.firstname" class="form-control" />
-                @* Set an input box *@
+                <div class="col-md-5">
+                    <input type="text" name="Firstname" value="@ViewBag.firstname" class="form-control" />
+                    @* Set an input box *@
+                </div>
+
+                <input type="submit" name="name" value="Search" class="btn btn-primary" />
+
+                @* Define the submit button. The submit button sends the form data to the server.*@
+
             </div>
-            <input type="submit" name="name" value="Search" class="btn btn-primary" />
-            @* Define the submit button. The submit button sends the form data to the server.*@ 
+        </form>
+        <div class="form-group">
+            <label class="control-label col-md-2">User </label>
+            @* set User  *@
+            <div class="col-md-5">
+                @Html.DropDownList("User", null, htmlAttributes: new { @class = "form-control" })
+                @* Create drop-down list *@
+            </div>
+
         </div>
-    </form>
-    <div class="form-group">
-        <label class="control-label col-md-2">User </label>
-        @* set User  *@
-    <div class="col-md-5">
-        @Html.DropDownList("User", null, htmlAttributes: new { @class = "form-control" })
-        @* Create drop-down list *@
-    </div>
 
-    </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Role</label>
+            @* set Role  *@
+            <div class="col-md-5">
+                @Html.DropDownList("Role", null, htmlAttributes: new { @class = "form-control" })
+                @* Create drop-down list *@
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2">Role</label>
-        @* set Role  *@
-    <div class="col-md-10">
-        @Html.DropDownList("Role", null, htmlAttributes: new { @class = "form-control" })
-        @* Create drop-down list *@
-    </div>
-    </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div onclick="commit()" class="btn btn-primary">Add </div>
+                @* Creat add button *@
+            </div>
+        </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <div onclick="commit()" class="btn btn-primary">Add </div>
-            @* Creat add button *@
+        <div id="temp" style="text-align:right">
+            @* Set right justify div *@
         </div>
     </div>
 
-    <div id="temp" style="text-align:right">
-        @* Set right justify div *@
+
+    <div style="width:50%" id="roleList">
+
     </div>
 </div>
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script>
 
+        $(function () {
+            getuser();
+            getuserList()
+            $("#User").change(
+                //Trigger the change event of the user element:
+                function () {
 
-<script src="/Scripts/jquery-3.4.1.js"></script>
-<script>
+                    getuser();
+                })
 
-    $(function () {
-        getuser();
+        });
 
-        $("#User").change(
-            //Trigger the change event of the user element:
-            function () {
+        //Method to set the commit type button
+        function commit() {
+            //Send request function on /AspNetRoles/AddUserRole
+            $.post("/AspNetRoles/AddUserRole", {
+                User: $("#User").val(),
+                Role: $("#Role").val()
+                //The data sent to the background in the form of value, And return the corresponding value of value
+            },
+                function (data, status) {
+                    //Return function
+                    getuser()
+                    getuserList()
+                });
+        }
+        function getuser() {
+            //Send request function on /AspNetRoles/GetUserRole
+            $.post("/AspNetRoles/GetUserRole", {
+                User: $("#User").val()
+                //The data sent to the background in the form of value, And return the corresponding value of value
+            },
+                function (data, status) {
+                    //Set the appearance and format of the remove button
+                    var huh = $("#temp");
+                    huh.empty();
+                    for (var i in data) {
+                        huh.append("<div class='row'><div class='col-md-5' style='line-height:38px;' >" + data[i] + "</div><div  class='col-md-2'> <div style='border:1px solid #000'  class='btn btn-default' onclick=removeUR('" + i + "') >remove</div></div></div>");
+                    }
+                });
+        }
+        function getuserList() {
+            //Send request function on /AspNetRoles/GetUserRole
+            $.post("/AspNetRoles/GetUserRoleList", {
+                //The data sent to the background in the form of value, And return the corresponding value of value
+            },
+                function (data, status) {
+                    //Set the appearance and format of the remove button
+                    var huh = $("#roleList");
+                    var tr = ""
+                    huh.empty();
 
-                getuser();
-            })
+                    for (var i in data) {
+                        console.log(data[i].firstName)
+                        tr += "<tr>   <td>" + data[i].firstName + "</td>  <td>" + data[i].role + "</td> </tr>"
+                    }
+                    huh.append(" <table class='table'> <caption>人员角色表 </caption > <thead> <tr> <th>User</th>   <th>Role</th>  </tr>  </thead>  <tbody>" + tr + "</tbody> </table >");
+                    console.log(data);
+                });
+        }
+        function removeUR(Role) {
+            //Send request function on /AspNetRoles/RemoveUserRole
+            $.post("/AspNetRoles/RemoveUserRole", {
+                User: $("#User").val(),//The data sent to the background in the form of value, And return the corresponding value of value
+                Role: Role
+            },
+                function (data, status) {
+                    //Return function
+                    getuser()
+                    getuserList()
+                });
+        }
 
+<<<<<<< HEAD
     });   
 
     //Method to set the commit type button
@@ -113,3 +185,6 @@
     }
 
 </script>
+=======
+    </script>
+>>>>>>> 62e9b424e7f8bc573f235342cf630cce7fb34f44
