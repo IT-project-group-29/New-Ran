@@ -559,7 +559,6 @@
     <Content Include="Views\AspNetRoles\Delete.cshtml" />
     <Content Include="Views\AspNetRoles\Details.cshtml" />
     <Content Include="Views\AspNetRoles\Edit.cshtml" />
-    <Content Include="Views\AspNetRoles\Index.cshtml" />
     <Content Include="Views\Students\Index.cshtml" />
     <Content Include="Views\StudentCourses\Create.cshtml" />
     <Content Include="Views\StudentCourses\Delete.cshtml" />
@@ -635,6 +634,7 @@
     <Content Include="Views\NewPlanCourse\notHidden.cshtml" />
     <Content Include="Views\DetailedInformation\index.cshtml" />
     <Content Include="Views\Manage\IndexPeople.cshtml" />
+    <Content Include="Views\AspNetRoles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />

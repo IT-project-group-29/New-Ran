@@ -3,17 +3,26 @@
 @{
     ViewBag.Title = "Index";
 }
-
+<style>
+    .control-label{
+        text-align:right;
+        vertical-align:middle;
+        line-height:29px;
+    }
+    .form-group{
+        margin-bottom:5px;
+    }
+</style>
 <h2>Role Management</h2>
 
 <div style="display:flex;justify-content:center;width:100%">
 
-    <div class="form-horizontal" style="width:50%">
+    <div class="form-horizontal" style="width:60%">
         <hr />
         <h4>User Role</h4>
         <form action="/AspNetRoles/Index" method="post">
             @* Submit to / aspnetroles / index page *@
-            <div class="form-group">
+            <div class="form-group row ">
                 <label class="control-label col-md-2">First Name </label>
                 @* set first name  *@
 
@@ -22,45 +31,46 @@
                     @* Set an input box *@
                 </div>
 
-                <input type="submit" name="name" value="Search" class="btn btn-primary" />
+                <input type="submit" name="name" value="Search" class="btn btn-primary col-md-2" />
 
                 @* Define the submit button. The submit button sends the form data to the server.*@
 
             </div>
         </form>
-        <div class="form-group">
+        <div class="form-group row">
             <label class="control-label col-md-2">User </label>
             @* set User  *@
             <div class="col-md-5">
                 @Html.DropDownList("User", null, htmlAttributes: new { @class = "form-control" })
                 @* Create drop-down list *@
             </div>
-
+            <div class="col-md-1"></div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group row">
             <label class="control-label col-md-2">Role</label>
             @* set Role  *@
             <div class="col-md-5">
                 @Html.DropDownList("Role", null, htmlAttributes: new { @class = "form-control" })
                 @* Create drop-down list *@
             </div>
+            <div onclick="commit()" class="btn btn-primary col-md-2">Add </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div onclick="commit()" class="btn btn-primary">Add </div>
+            <div class="col-md-offset-2 col-md-8" style="text-align:center;">
+                
                 @* Creat add button *@
             </div>
         </div>
 
-        <div id="temp" style="text-align:right">
+        <div id="temp" style="text-align:right;margin-top:20px;">
             @* Set right justify div *@
         </div>
     </div>
 
 
-    <div style="width:50%" id="roleList">
+    <div style="width:40%" id="roleList">
 
     </div>
 </div>
@@ -104,7 +114,7 @@
                     var huh = $("#temp");
                     huh.empty();
                     for (var i in data) {
-                        huh.append("<div class='row'><div class='col-md-5' style='line-height:38px;' >" + data[i] + "</div><div  class='col-md-2'> <div style='border:1px solid #000'  class='btn btn-default' onclick=removeUR('" + i + "') >remove</div></div></div>");
+                        huh.append("<div class='row'><div class='col-md-5' style='line-height:38px;' >" + data[i] + "</div><div  class='col-md-2'> <div style='border:1px solid #000'  class='btn btn-danger' onclick=removeUR('" + i + "') >remove</div></div></div>");
                     }
                 });
         }
@@ -123,7 +133,7 @@
                         console.log(data[i].firstName)
                         tr += "<tr>   <td>" + data[i].firstName + "</td>  <td>" + data[i].role + "</td> </tr>"
                     }
-                    huh.append(" <table class='table'> <caption>人员角色表 </caption > <thead> <tr> <th>User</th>   <th>Role</th>  </tr>  </thead>  <tbody>" + tr + "</tbody> </table >");
+                    huh.append(" <table style='margin-top:12px;' class='table table-bordered'> <caption>人员角色表 </caption > <thead class='table-dark'> <tr> <th>User</th>   <th>Role</th>  </tr>  </thead>  <tbody>" + tr + "</tbody> </table >");
                     console.log(data);
                 });
         }
@@ -140,51 +150,51 @@
                 });
         }
 
-<<<<<<< HEAD
-    });   
+//<<<<<<< HEAD
+//    });   
 
     //Method to set the commit type button
-    function commit() {
-        //Send request function on /AspNetRoles/AddUserRole
-        $.post("/AspNetRoles/AddUserRole", {
-            User: $("#User").val(), 
-            Role: $("#Role").val()
-            //The data sent to the background in the form of value, And return the corresponding value of value
-        },
-            function (data, status) {
-                //Return function
-                getuser()
-            });
-    }
-    function getuser() {
-         //Send request function on /AspNetRoles/GetUserRole
-        $.post("/AspNetRoles/GetUserRole", {
-            User: $("#User").val()
-            //The data sent to the background in the form of value, And return the corresponding value of value
-        },
-            function (data, status) {
-                //Set the appearance and format of the remove button
-                var huh = $("#temp");
-                huh.empty();
-                for (var i in data) {
-                    huh.append("<div class='row'><div class='col-md-2'>" + data[i] + "</div><div  class='col-md-2'> <div  class = 'btn btn-default' onclick=removeUR('" + i + "') >remove</div></div></div>");
-                }
-            });
-    }
+    //function commit() {
+    //    //Send request function on /AspNetRoles/AddUserRole
+    //    $.post("/AspNetRoles/AddUserRole", {
+    //        User: $("#User").val(), 
+    //        Role: $("#Role").val()
+    //        //The data sent to the background in the form of value, And return the corresponding value of value
+    //    },
+    //        function (data, status) {
+    //            //Return function
+    //            getuser()
+    //        });
+    //}
+    //function getuser() {
+    //     //Send request function on /AspNetRoles/GetUserRole
+    //    $.post("/AspNetRoles/GetUserRole", {
+    //        User: $("#User").val()
+    //        //The data sent to the background in the form of value, And return the corresponding value of value
+    //    },
+    //        function (data, status) {
+    //            //Set the appearance and format of the remove button
+    //            var huh = $("#temp");
+    //            huh.empty();
+    //            for (var i in data) {
+    //                huh.append("<div class='row'><div class='col-md-2'>" + data[i] + "</div><div  class='col-md-2'> <div  class = 'btn btn-default' onclick=removeUR('" + i + "') >remove</div></div></div>");
+    //            }
+    //        });
+    //}
 
-    function removeUR(Role) {
-        //Send request function on /AspNetRoles/RemoveUserRole
-        $.post("/AspNetRoles/RemoveUserRole", {
-            User: $("#User").val(),//The data sent to the background in the form of value, And return the corresponding value of value
-            Role: Role
-        },
-            function (data, status) {
-                //Return function
-                getuser()
-            });
-    }
+    //function removeUR(Role) {
+    //    //Send request function on /AspNetRoles/RemoveUserRole
+    //    $.post("/AspNetRoles/RemoveUserRole", {
+    //        User: $("#User").val(),//The data sent to the background in the form of value, And return the corresponding value of value
+    //        Role: Role
+    //    },
+    //        function (data, status) {
+    //            //Return function
+    //            getuser()
+    //        });
+    //}
 
 </script>
-=======
+@*=======
     </script>
->>>>>>> 62e9b424e7f8bc573f235342cf630cce7fb34f44
+>>>>>>> 62e9b424e7f8bc573f235342cf630cce7fb34f44*@
