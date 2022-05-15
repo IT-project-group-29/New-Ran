@@ -1,17 +1,9 @@
 ﻿@model WebApplication4.Models.Staff
-@{ 
-//var email = (List<WebApplication4.Models.AspNetUsers>)ViewBag.Email;
-}
 <head>
     <style>
-        h2 {
-            position: absolute;
-            top: 100px;
-        }
-
         #showBox {
             position: relative;
-            top: 100px;
+            top: 50px;
         }
     </style>
 </head>
@@ -23,6 +15,7 @@
 
     <div class="form-horizontal" id="showBox">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @* These are hidden value that won't show at page *@
         @Html.HiddenFor(model => model.staffID)
         @Html.HiddenFor(model => model.uniStaffID)
         @Html.HiddenFor(model => model.username)
@@ -32,6 +25,7 @@
         <div class="form-group">
             <label class="col-md-2 control-label">  Date Ended: </label>
             <div class="col-md-10">
+                @* Get value from staff model and check if it is empty *@
                 @Html.EditorFor(model => model.dateEnded, new { htmlAttributes = new { @class = "form-control" }})
                 @Html.ValidationMessageFor(model => model.dateEnded, "", new { @class = "text-danger" })
             </div>
@@ -40,6 +34,7 @@
         <div class="form-group"><br />
             <label class="col-md-2 control-label">  Email: </label>
             <div class="col-md-10">
+                @* The ViewBag defined at Controller to get value from AspNetUser table *@
                 <input type="text" value=@ViewBag.Email name="email" class="col-md-10 form-control"/>
             </div>
         </div>

@@ -6,21 +6,19 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 @{
+    //Get value from controller: the data from AspNetUsers where has same personID
     var userDetail = ViewBag.getPersonID;
 }
 <head>
     <style>
+        @* This style is used to adjust the top margin*@
         .div {
             position: relative;
-            top: 100px;
-        }
-        h2 {
-            position: absolute;
-            top: 100px;
+            top: 50px;
         }
         h3 {
             position: relative;
-            top: 80px;
+            top: 30px;
         }
     </style>
 </head>
@@ -34,6 +32,7 @@
                 Client Name:
             </dt>
             <dd>
+                @* Get value from AspNetUsers table from database *@
                 @userDetail.UserName
             </dd>
             <dt>
@@ -58,6 +57,7 @@
                 Company Name:
             </dt>
             <dd>
+                @* Get value from Clients table from database *@
                 @ViewBag.companyName
             </dd>
         </dl>
@@ -66,6 +66,7 @@
             
             <p>
                 <br />
+                @* The first is the word of the link, and the second is the name of page which will turn to. *@
                 @Html.ActionLink("Back to List", "Index")
             </p>
         </div>

@@ -63,10 +63,6 @@
                 {
                     <tr>
                         <td >
-                            @*@{var staffid = "~/Staff/Detail" + staffname.staffID.ToString()};
-                            <a href=@staffid>
-                                @staffname.username
-                            </a>*@
                             @Html.ActionLink(@staffname.username, "Detail",
                              new { Controller = "Staff", id = staffname.staffID },
                              new { @class = "linkStyle" })
