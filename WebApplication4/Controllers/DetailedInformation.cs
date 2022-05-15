@@ -58,11 +58,12 @@ namespace WebApplication4.Controllers
                 else
                 {
                     var plancourses = db.PlanCourses.Include(a => a.Course).Where(a => a.planId == index).Select(a => a.Course).OrderBy(s => s.courseID).ToList();
-                    //PlanCourses = plancourses.Select(a => a.courseAbbreviation).ToList();
+                
                     foreach (var course in plancourses)
                     {
                         PlanCoursesAbbr[course.courseAbbreviation] = course.courseName;
                         PlanCourses.Add(course.courseAbbreviation);
+                    
                     }
                 }
                 PlanCourses.Insert(0, "Name");
@@ -134,6 +135,7 @@ namespace WebApplication4.Controllers
                 var selectedcourse = courseslist.Where(s => s.Selected == true).FirstOrDefault()?.Text;
                 var abbr = db.Course.Where(s => s.courseName == selectedcourse).FirstOrDefault()?.courseAbbreviation;
                 var selectedyear = int.Parse(courseyears.Where(s => s.Selected == true).FirstOrDefault()?.Text);
+                //let string to be int
                 var selectedsemester = semesters.Where(s => s.Selected == true).FirstOrDefault()?.Text;
                 if (selectedcourse != null && selectedyear != 0 && selectedsemester != null)
                 {
@@ -160,7 +162,7 @@ namespace WebApplication4.Controllers
                 }
 
             }
-
+            //orderby
             if (!string.IsNullOrEmpty(orderby))
             {
 
@@ -210,6 +212,7 @@ namespace WebApplication4.Controllers
         }
 
         public List<SelectListItem> Years(int index = 0)
+            //select box for choose year
         {
 
 
@@ -232,6 +235,7 @@ namespace WebApplication4.Controllers
             return selectListItems;
         }
         public List<SelectListItem> Semeters(int index = 0)
+             //dropdownlist box for choose semester
         {
             var semesters = db.StudentCourses.OrderBy(s => s.semester).Select(s => s.semester).Distinct().ToList();
             List<SelectListItem> selectListItems = new List<SelectListItem>();
@@ -251,8 +255,9 @@ namespace WebApplication4.Controllers
             }
             return selectListItems;
         }
-        // dropdown box for choose courses
+      
         public List<SelectListItem> Courses(int index = 0)
+        /*the selectbox of the courses and orderby the course name*/
         {
             var courses = db.Course.OrderBy(s => s.courseName).Select(s => s.courseName).ToList();
             List<SelectListItem> selectListItems = new List<SelectListItem>();
