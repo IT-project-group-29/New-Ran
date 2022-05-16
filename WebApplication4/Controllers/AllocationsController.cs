@@ -25,7 +25,7 @@ namespace WebApplication4.Controllers
             //Pass the time for the view, and the default is the current time
 
             var sem = SemNow();
-            ViewBag.project = db.Projects.Where(p => p.projectYear == DateTime.Now.Year && p.projectSemester == "SP2").ToList();
+            ViewBag.project = GetProject(DateTime.Now.Year, SemNow().SelectedValue.ToString());
             ViewBag.pstatus = db.ProjectStatus.ToList();
             ViewBag.staff = db.Staff.ToList();
             ViewBag.stdt = db.Students.ToList();
@@ -133,7 +133,7 @@ namespace WebApplication4.Controllers
         {var year = Convert.ToInt32(YearBeSel);
             ViewBag.staff = db.Staff.OrderBy(a => a.username).ToList();
             ViewBag.stdt = db.Students.OrderBy(a => a.uniUserName).ToList();
-            ViewBag.project = db.Projects.Where(p => p.projectYear == year && p.projectSemester == SemBeSel).ToList();
+            ViewBag.project = GetProject(year, SemBeSel);
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
             var staffAllocations = db.ProjectPeopleAllocations.Where(a => a.personRole == "staff");
             if (pop == "staff")
@@ -169,12 +169,41 @@ namespace WebApplication4.Controllers
         public ActionResult ChangeDate(int ddlyear, string DDLSemester)
         {
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
-            ViewBag.project = db.Projects.Where(p => p.projectYear == ddlyear && p.projectSemester == DDLSemester).ToList();
+            var projects = GetProject(ddlyear, DDLSemester);
+            
+            ViewBag.project = projects;
+            
             ViewBag.pstatus = db.ProjectStatus.ToList();
             ViewBag.staff = db.Staff.ToList();
             ViewBag.stdt = db.Students.ToList();
             return PartialView("ProjectAllocation", projectPeopleAllocations.ToList());
             //change date and find the select semester and year's projects
+        }
+        public List<Projects> GetProject(int ddlyear, string DDLSemester)
+        {
+            var projects = new List<Projects>();
+            if (DDLSemester == "SP5")
+            {
+                foreach (var project in db.Projects.Where(p => p.projectYear <= ddlyear && p.projectYear + p.projectDuration > ddlyear))
+                {
+                    projects.Add(project);
+                }
+               
+
+            }
+            if (DDLSemester == "SP2")
+            {
+                foreach (var project in db.Projects.Where(p => p.projectYear <= ddlyear && p.projectYear + p.projectDuration > ddlyear))
+                {
+                    projects.Add(project);
+                }
+                foreach (var project in db.Projects.Where(p => p.projectYear < ddlyear && p.projectYear + p.projectDuration == ddlyear && p.projectSemester == "SP5"))
+                {
+                    projects.Add(project);
+                }
+
+            }
+            return projects;
         }
 
         public ActionResult EditStaff(int STID)
