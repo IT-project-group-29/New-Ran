@@ -18,6 +18,7 @@
 
 <table class="table text-nowrap">
     <tr>
+        @*display the items*@
         <th>
             <label class=" control-label col-md-1"> Plan Name </label>
         </th>
@@ -34,7 +35,7 @@
 
         <th></th>
     </tr>
-
+    @*get the data from model*@
     @foreach (var item in Model)
     {
 <tr>
@@ -51,7 +52,7 @@
         @Html.DisplayFor(modelItem => item.gpa)
     </td>
  
-
+    @*actionlink which link to edit details and delete page*@
     <td style="white-space:nowrap;">
         @Html.ActionLink("Edit", "Edit", new { id = item.studentID }, new { @class = "btn btn-primary" }) |
         @Html.ActionLink("Details", "Details", new { id = item.studentID }, new { @class = "btn btn-primary" }) |

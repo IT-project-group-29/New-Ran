@@ -8,16 +8,12 @@
     <style>
         .div {
             position: relative;
-            top: 100px;
-        }
-
-        h2 {
-            position: absolute;
-            top: 100px;
+            top: 50px;
         }
     </style>
 </head>
 @{
+    //Get value from controller: the data from AspNetUsers where has same personID
     var userDetail = ViewBag.getPersonID;
 }
 
@@ -29,6 +25,7 @@
                 Client Name:
             </dt>
             <dd>
+                @* Get value from AspNetUsers table from database *@
                 @userDetail.UserName
             </dd>
             <dt>
@@ -53,10 +50,12 @@
                 Company Name:
             </dt>
             <dd>
+                @* Get value from Clients table from database *@
                 @ViewBag.companyName
             </dd>
         </dl>
         <p>
+            @* The first is the word of the link, and the second is the name of page which will turn to. *@
             @Html.ActionLink("Back to List", "Index")
         </p>
     </div>

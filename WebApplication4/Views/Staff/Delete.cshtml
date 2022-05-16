@@ -6,18 +6,15 @@
 <h2>Delete Staff</h2>
 <html xmlns="http://www.w3.org/1999/xhtml">
 @{
+    //Get value from controller: the data from AspNetUsers where has same personID
     var userDetail = ViewBag.getPersonID;
 }
 <head>
     <style>
+        @* This style is used to adjust the top margin*@
         .div {
             position: relative;
-            top: 100px;
-        }
-
-        h2 {
-            position: absolute;
-            top: 100px;
+            top: 50px;
         }
     </style>
 </head>
@@ -28,6 +25,7 @@
                 Staff Name:
             </dt>
             <dd>
+                @* Get value from AspNetUsers table from database *@
                 @userDetail.UserName
             </dd>
             <dt>
@@ -52,6 +50,7 @@
                 Date Ended:
             </dt>
             <dd>
+                @* Get value from Clients table from database *@
                 @ViewBag.dateEnded
             </dd>
 
@@ -62,6 +61,7 @@
             <input type="submit" value="Delete" class="btn btn-primary" />
             <p>
                 <br />
+                @* The first is the word of the link, and the second is the name of page which will turn to. *@
                 @Html.ActionLink("Back to List", "Index")
             </p>
         </div>
