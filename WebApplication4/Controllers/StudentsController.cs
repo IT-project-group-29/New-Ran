@@ -85,7 +85,8 @@ namespace WebApplication4.Controllers
         public ActionResult Edit([Bind(Include = "studentID,planId,uniUserName,uniStudentID,gpa,genderCode,international,externalStudent,studentEmail,year,semester,dateEnded")] Students students)
         {
             if (ModelState.IsValid)
-            {
+            {   
+  
                 db.Entry(students).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
