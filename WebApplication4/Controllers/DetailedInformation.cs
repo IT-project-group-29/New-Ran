@@ -29,8 +29,6 @@ namespace WebApplication4.Controllers
             }
             ViewBag.SortBy = sortby == "" ? "desc" : "";
             ViewBag.plancs = db.PlanCourses.ToList();
-            List<StudentInfo> StdInfom = GetStudents();
-            ViewBag.stcs = StdInfom;
             var courseyears = Years(yearid);
             var semesters = Semeters(semesterid);
             var courseslist = Courses(courseid);
@@ -58,7 +56,6 @@ namespace WebApplication4.Controllers
                 else
                 {
                     var plancourses = db.PlanCourses.Include(a => a.Course).Where(a => a.planId == index).Select(a => a.Course).OrderBy(s => s.courseID).ToList();
-                
                     foreach (var course in plancourses)
                     {
                         PlanCoursesAbbr[course.courseAbbreviation] = course.courseName;
@@ -174,7 +171,7 @@ namespace WebApplication4.Controllers
                 else if (orderby == "Name" && sortby == "desc")
                 {
                     CourseList = CourseList.OrderByDescending(s => s.Name).ToList();
-                }
+                } 
                 else
                 {
                     var grad = db.StudentCourses.Where(d => d.Course.courseName == orderby && d.Students.uniUserName != "" && d.Students.planId == 0).ToList();
@@ -195,21 +192,6 @@ namespace WebApplication4.Controllers
             return View();
         }
 
-        private List<StudentInfo> GetStudents()
-        {
-            List<StudentInfo> StdInfom = new List<StudentInfo>();
-            foreach (var item in db.Students)
-            {
-                StdInfom.Add(new StudentInfo
-                {
-                    ID = item.studentID,
-                    Planid = item.planId,
-                    Name = item.uniUserName,
-                    Gpa = item.gpa,
-                }); ;
-            }
-            return StdInfom;
-        }
 
         public List<SelectListItem> Years(int index = 0)
             //select box for choose year
