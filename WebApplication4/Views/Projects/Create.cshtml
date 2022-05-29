@@ -9,7 +9,7 @@
 
 @*This is the create project page*@
 @*In this page we need to input the information of projects and store them in database*@
-@using (Html.BeginForm("Create", "Projects",FormMethod.Post,new { enctype= "multipart/form-data" }))
+@using(Html.BeginForm("Create", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
@@ -68,7 +68,7 @@
 
     @*The Project Placement Requirements frame, input the Placement Requirements of the project this will store in the database*@
     <div class="form-group">
-        @Html.LabelFor(model => model.projectPlacementRequirements, "Project Placement Requirements", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.projectPlacementRequirements, "Project Placement", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.projectPlacementRequirements, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.projectPlacementRequirements, "", new { @class = "text-danger" })
@@ -162,8 +162,8 @@
         @Html.LabelFor(model => model.honoursUndergrad, "Honours Undergrad", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <select name="honoursUndergrad">
-                <option value="u">YES</option>
-                <option value="w">NO</option>
+                <option value="yes">yes</option>
+                <option value="yes">no</option>
             </select>
         </div>
     </div>
@@ -224,6 +224,16 @@
         </div>
     </div>
 
+    <div class="form-group">
+        @Html.LabelFor(model => model.difficult, "diffcult", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="studentsReq" class="form-control">
+                <option value="1">yes</option>
+                <option value="2">no</option>
+            </select>
+        </div>
+    </div>
+
     @*Upload file*@
     <div class="form-group">
         <label class="control-label col-md-2">Staff/Client Files</label>
@@ -234,14 +244,14 @@
     <div class="form-group">
         <label class="control-label col-md-2">Additional Files</label>
         <div class="col-md-10">
-            <input type="file" name="add" value="" />
-        </div>
+            <input type="file" name="add" value="" /><br />
+        </div><br />
     </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
+            <input type="submit" value="Create" class="btn btn-primary" /><br />
+        </div><br />
     </div>
 </div>
         }

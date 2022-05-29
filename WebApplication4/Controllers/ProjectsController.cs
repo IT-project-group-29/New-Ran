@@ -123,7 +123,7 @@ namespace WebApplication4.Controllers
         // POST: Projects/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "projectID,Id,projectCode,projectTitle,projectScope,projectOutcomes,projectDuration,projectPlacementRequirements,projectSponsorAgreement,projectStatus,projectStatusComment,projectStatusChangeDate,projectSemester,projectSemesterCode,projectYear,projectSequenceNo,honoursUndergrad,requirementsMet,projectCreatorID,dateCreated,projectEffortRequirements,austCitizenOnly,studentsReq,scholarshipAmt,scholarshipDetail,staffEmailSentDate,clientEmailSentDate,studentEmailSentDate")] Projects projects)
+        public ActionResult Create([Bind(Include = "Id,projectID,projectCode,projectTitle,projectScope,projectOutcomes,projectDuration,projectPlacementRequirements,projectSponsorAgreement,projectStatus,projectStatusComment,projectStatusChangeDate,projectSemester,projectSemesterCode,projectYear,projectSequenceNo,honoursUndergrad,requirementsMet,projectCreatorID,dateCreated,projectEffortRequirements,austCitizenOnly,studentsReq,scholarshipAmt,scholarshipDetail,staffEmailSentDate,clientEmailSentDate,studentEmailSentDate")] Projects projects)
         {
             //select all the information the need to input when create
             if (ModelState.IsValid)
@@ -161,9 +161,6 @@ namespace WebApplication4.Controllers
 
                     }
                 }
-
-                db.SaveChanges();
-
                 return RedirectToAction("Index");
             }
 

@@ -87,7 +87,7 @@ namespace WebApplication4.Controllers
             if (ModelState.IsValid)
             {   
   
-                db.Entry(students).State = EntityState.Modified;
+                db.Entry(students).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
