@@ -12,7 +12,6 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Projects</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.projectID)
@@ -240,24 +239,24 @@
             <div class="col-md-10">
                 @*Check the honours undergrad, the selected is used to show what it is in the drop down box*@
                 <select name="honoursUndergrad">
-                    @if (Model.honoursUndergrad == "u")
+                    @if (Model.honoursUndergrad == "yes")
                     {
-                        <option value="u" selected>YES</option>
+                        <option value="yes" selected>YES</option>
 
                     }
                     else
                     {
-                        <option value="u">YES</option>
+                        <option value="yes">YES</option>
                     }
 
-                    @if (Model.honoursUndergrad == "w")
+                    @if (Model.honoursUndergrad == "no")
                     {
-                        <option value="w" selected>NO</option>
+                        <option value="no" selected>NO</option>
 
                     }
                     else
                     {
-                        <option value="w">NO</option>
+                        <option value="no">NO</option>
                     }
 
                 </select>
@@ -345,7 +344,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />@*//Define the submit button. The submit button sends the form data to the server.*@
+            <input type="submit" value="Save" class="btn btn-primary" />@*//Define the submit button. The submit button sends the form data to the server.*@
         </div>
     </div>
 </div>

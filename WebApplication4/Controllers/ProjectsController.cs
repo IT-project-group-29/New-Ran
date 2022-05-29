@@ -193,7 +193,7 @@ namespace WebApplication4.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "projectID,Id,projectCode,projectTitle,projectScope,projectOutcomes,projectDuration,projectPlacementRequirements,projectSponsorAgreement,projectStatus,projectStatusComment,projectStatusChangeDate,projectSemester,projectSemesterCode,projectYear,projectSequenceNo,honoursUndergrad,requirementsMet,projectCreatorID,dateCreated,projectEffortRequirements,austCitizenOnly,studentsReq,scholarshipAmt,scholarshipDetail,staffEmailSentDate,clientEmailSentDate,studentEmailSentDate")] Projects projects)
+        public ActionResult Edit([Bind(Include = "Id,projectID,projectCode,projectTitle,projectScope,projectOutcomes,projectDuration,projectPlacementRequirements,projectSponsorAgreement,projectStatus,projectStatusComment,projectStatusChangeDate,projectSemester,projectSemesterCode,projectYear,projectSequenceNo,honoursUndergrad,requirementsMet,projectCreatorID,dateCreated,projectEffortRequirements,austCitizenOnly,studentsReq,scholarshipAmt,scholarshipDetail,staffEmailSentDate,clientEmailSentDate,studentEmailSentDate")] Projects projects)
         {
             if (ModelState.IsValid)
             {
