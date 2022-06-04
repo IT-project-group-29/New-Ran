@@ -24,30 +24,39 @@
 
         @foreach (var PItem in plans)
         {
-            <tr id=@PItem.planId
-                style="display: table; width: 100%; table-layout: fixed;"
-                draggable="true"
-                ondragstart="dropElement(event)"
-                ondrop="eleOndrop(event,this)"
-                ondragover="dragOver(event)">
-                <td class="LeftBoxPlan">@PItem.planName</td>
+            if (PItem.isHidden != "hidden")
+            {
+                <tr id=@PItem.planId
+                    class="tableTr"
+                    draggable="true"
+                    ondragstart="dropElement(event)"
+                    ondragend="spandragOver()"
+                    ondrop="eleOndrop(event,this)"
+                    ondragover="dragOver(event)">
 
-                <td id="LeftSpan @PItem.planId">
-                    @{ var L = Model.Where(a => a.planId == PItem.planId).ToList();}
-                    @foreach (var C in L)
-                    {
-                        <span id="@PItem.planId bind @C.courseId"
-                              style="border: 1px solid #000;margin-top:5px; margin-bottom:5px;"
-                              ondragstart="spanDrag(event)"
-                              ondragend="spandragOver(event)"
-                              draggable="true">
-                            @course.FirstOrDefault(a => a.courseID == C.courseId).courseName<br />
-                        </span>
+                    <td class="LeftBoxPlan">@PItem.planName</td>
 
 
-                    }
-                </td>
-            </tr>
+
+                    <td id="LeftSpan @PItem.planId">
+                        @{ var L = Model.Where(a => a.planId == PItem.planId).ToList();}
+                        @foreach (var C in L)
+                        {
+                            if (C.isHidden != "hidden")
+                            {
+                                <span id="@PItem.planId bind @C.courseId"
+                                      class="DragSpan"
+                                      ondragstart="spanDrag(event)"
+                                      ondragend="spandragOver()"
+                                      draggable="true">
+                                    @C.Course.courseName <br />
+                                </span>
+                            }
+
+                        }
+                    </td>
+                </tr>
+}
         }
     </tbody>
 </table>

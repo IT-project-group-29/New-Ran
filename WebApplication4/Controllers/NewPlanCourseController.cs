@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication4.Models;
 using System.Threading;
+using System.Regex;
 
 namespace WebApplication4.Controllers
 {
@@ -29,6 +30,7 @@ namespace WebApplication4.Controllers
 
             }
             db.Course.FirstOrDefault(a => a.courseID == DelcsID).isHidden = "hidden";
+            
             db.SaveChanges();
 
             ViewBag.plans = db.Plans.OrderBy(a => a.planName).ToList();
@@ -43,12 +45,12 @@ namespace WebApplication4.Controllers
             {
                 item.isHidden="hidden";
             }
-            var stud = db.Students.Where(a => a.planId == thisid).ToList();
+            /*var stud = db.Students.Where(a => a.planId == thisid).ToList();
             foreach(var item in stud)
             {
                 item.planId = 0;
                // item.planId = null;
-            }
+            }*/
             db.Plans.FirstOrDefault(a => a.planId == thisid).isHidden="hidden";
             db.SaveChanges();
             return Content("removed");
@@ -72,8 +74,18 @@ namespace WebApplication4.Controllers
             {
                 if (item.courseId == courseId)
                 {
+                    if(item.isHidden != "hidden") {
+                        flag = false;
+                        return Content("This course is already selected");
+                    }
+                    if (item.isHidden == "hidden")
+                    {
+                        flag = false;
+                        item.isHidden = null;
+                        var courseName = db.Course.FirstOrDefault(a => a.courseID == courseId).courseName;
+                        return Content(courseName);
+                    }
 
-                    flag = false;
                 }
             }
             if (flag)
@@ -90,6 +102,7 @@ namespace WebApplication4.Controllers
         }
         public ActionResult IsCourseIdRepeated(string courseId)
         {
+           
             if (courseId != "")
             {
                 if (db.Course.FirstOrDefault(a => a.courseID == courseId) == null)

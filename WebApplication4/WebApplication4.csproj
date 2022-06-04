@@ -57,9 +57,15 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="RegexMatcher, Version=1.0.7.2, Culture=neutral, PublicKeyToken=68d7f6ae806af85a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RegexMatcher.1.0.7.2\lib\net462\RegexMatcher.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Regex, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Regex.1.0.0.0\lib\net20\System.Regex.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -247,6 +253,9 @@
     <Content Include="App_Data\Test_log.ldf">
       <DependentUpon>Test.mdf</DependentUpon>
     </Content>
+    <Content Include="Assets\icon.ico" />
+    <Content Include="Assets\icon.png" />
+    <Content Include="Content\xiala.png" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -502,7 +511,9 @@
     <Content Include="Content\bootstrap-table\dist\themes\bootstrap-table\fonts\bootstrap-table.eot" />
     <Content Include="Content\bootstrap-table\dist\themes\bootstrap-table\fonts\bootstrap-table.ttf" />
     <Content Include="Content\bootstrap-table\dist\themes\bootstrap-table\fonts\bootstrap-table.woff" />
+    <Content Include="LICENSE.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\polyfil.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />

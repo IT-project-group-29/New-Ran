@@ -51,6 +51,7 @@
             left: 30%;
             background-color: white;
             z-index: 999;
+            display:none;
         }
         #AddNewPlan {
             position: fixed;
@@ -61,6 +62,7 @@
             left: 30%;
             background-color: white;
             z-index: 999;
+            display: none;
         }
 
         .tableHead {
@@ -101,6 +103,7 @@
             height: 10px;
             right: 5px;
             top: 5px;
+
         }
         #edtText {
             position: absolute;
@@ -111,6 +114,7 @@
         }
         .Additems {
             margin-bottom: 20px;
+            border-top: 0px solid currentColor;
         }
     </style>
     <script></script>
@@ -182,39 +186,40 @@
 
                     @foreach (var PItem in plans)
                     {
-                        <tr id=@PItem.planId
-                            class="tableTr"
-                            draggable="true"
-                            ondragstart="dropElement(event)"
-                            ondragend="spandragOver()"
-                            ondrop="eleOndrop(event,this)"
-                            ondragover="dragOver(event)">
-                            @if (PItem.isHidden != "hidden")
-                            {
+                        if (PItem.isHidden != "hidden")
+                        {
+                            <tr id=@PItem.planId
+                                class="tableTr"
+                                draggable="true"
+                                ondragstart="dropElement(event)"
+                                ondragend="spandragOver()"
+                                ondrop="eleOndrop(event,this)"
+                                ondragover="dragOver(event)">
+
                                 <td class="LeftBoxPlan">@PItem.planName</td>
-                            }
+                                
 
 
-                            <td id="LeftSpan @PItem.planId">
-                                @{ var L = Model.Where(a => a.planId == PItem.planId).ToList();}
-                                @foreach (var C in L)
-                                {
-                                    if (C.isHidden != "hidden")
+                                <td id="LeftSpan @PItem.planId">
+                                    @{ var L = Model.Where(a => a.planId == PItem.planId).ToList();}
+                                    @foreach (var C in L)
                                     {
-                                        <span id="@PItem.planId bind @C.courseId"
-                                              class="DragSpan"                                              
-                                              ondragstart="spanDrag(event)"
-                                              ondragend="spandragOver()"
-                                              draggable="true">
-                                            @C.Course.courseName <br />
-                                        </span>
-                                    }
+                                        if (C.isHidden != "hidden")
+                                        {
+                                            <span id="@PItem.planId bind @C.courseId"
+                                                  class="DragSpan"
+                                                  ondragstart="spanDrag(event)"
+                                                  ondragend="spandragOver()"
+                                                  draggable="true">
+                                                @C.Course.courseName <br />
+                                            </span>
+                                        }
 
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
+                                    }
+                                </td>
+                            </tr>}
+                        }
+                    </tbody>
             </table>
         </div>
         <div id="Right">
@@ -263,12 +268,12 @@
 
     </div>
     <div id="AddNewCourse"
-         hidden="hidden">
+         >
         <input onclick="canceldiv()"
                class="btn btn-danger cancelDivBtn"
                type="button"/>
         <div id="edtText" >
-            <div class="table table-hover" id="tableExcel">
+            <div class="" id="tableExcel">
                 <div class="Additems">
                     <input type="text"
                            class="form-control col-md-10"
@@ -303,13 +308,13 @@
         </div>
     </div>
     <div id="AddNewPlan"
-         hidden="hidden">
+         >
         <input onclick="cancelPlandiv()"
                class="btn btn-danger cancelDivBtn"
                type="button"
                 />
         <div id="edtText" class="edtText">
-            <div class="table table-hover" id="tableExcel">
+            <div class="" id="tableExcel">
                 <div class="Additems">
                     <input type="text"
                            class="form-control col-md-10"
@@ -360,6 +365,7 @@
     <script type="text/javascript">
 
         function dropElement(e) {
+            e = e || window.event;
             document.getElementById("delete").style.display = "inherit";
             e.dataTransfer.setData('text', e.target.id);
             e.dataTransfer.setData('Pid', e.target.parentElement.id);
@@ -367,6 +373,7 @@
         }
 
         function eleOndrop(e, t) {
+            e = e || window.event;
             //when take Right<tr>(course) to Left<tr>(plan),use this function to add selected course into selected plan
             var someID = e.dataTransfer.getData('text');
             var Pid = e.dataTransfer.getData('Pid');
@@ -409,6 +416,7 @@
 
 
         function spanDrag(e) {
+            e = e || window.event;
             //when drag "Course in this Plan"<span>,get the span's information, include spanID courseID,
             @*document.getElementById("delete").style.display = "inherit";*@
             e.dataTransfer.setData('delID', e.target.id);
@@ -422,6 +430,7 @@
 
 
         function dragOver(e) {
+            e = e || window.event;
             //cancel the default event, if i don't use "e.preventDefault();", the other function can not work properly
             e.preventDefault();
         }
@@ -434,6 +443,7 @@
 
         }
         function hiddenPlanCourseSpan(e) {
+            e = e || window.event;
             var deldata = e.dataTransfer.getData("delID");
             var ppid = e.dataTransfer.getData("PPid");
             var pppid = e.dataTransfer.getData("PPPid");
@@ -455,7 +465,7 @@
 
 
         function spanOndrag(e) {
-
+            e = e || window.event;
             var deldata = e.dataTransfer.getData("delID");
             var pppid = e.dataTransfer.getData("PPPid");
             var ppid = e.dataTransfer.getData("PPid");
@@ -509,13 +519,22 @@
                 })
             }
         }
+        function InvalidCharacter(t) {
 
+            var re = /^[a-zA-Z0-9 ]*$/;//Only numbers and upper or lower case letters are allowed 
+            if (!re.test(t.value)) {
+                
+                //delete the last letter
+            } 
 
+        }
+        
         function AddNewCourseHref() {
 
             document.getElementById("AddNewCourse").style.display = "initial";
         }
         function AddNewCourseCidOnBlur(t) {
+            
             $.ajax({
                 type: "POST",
                 url: "/NewPlanCourse/IsCourseIdRepeated",
@@ -528,8 +547,16 @@
                         Cid.value = "";
                     }
                     if (data == "OK") {
+                        var re = /^[0-9]*$/;//Only numbers are allowed 
+                        if (!re.test(t.value)) {
+                            document.getElementById("addCidSpan").style.color = "red";
+                            document.getElementById("addCidSpan").innerHTML = "Please do not input invaild character";
+                            var Cid = document.getElementById(t.id);
+                            Cid.value = "";
+                        } else { 
                         document.getElementById("addCidSpan").style.color = "green";
-                        document.getElementById("addCidSpan").innerHTML = "OK";
+                            document.getElementById("addCidSpan").innerHTML = "OK";
+                        }
                     } if (data == "null") {
                         document.getElementById("addCidSpan").style.color = "red";
                         document.getElementById("addCidSpan").innerHTML = "ID can not be empty";
@@ -551,9 +578,16 @@
                         Cname.value = "";
                     }
                     if (data == "OK") {
+                        var re = /^[a-zA-Z0-9 ]*$/;//Only numbers and upper or lower case letters and space are allowed 
+                        if (!re.test(t.value)) {
+                            document.getElementById("addCnameSpan").style.color = "red";
+                            document.getElementById("addCnameSpan").innerHTML = "Please do not input invaild character";
+                            var Cname = document.getElementById(t.id);
+                            Cname.value = "";
+                        } else { 
                         document.getElementById("addCnameSpan").style.color = "green";
                         document.getElementById("addCnameSpan").innerHTML = "OK";
-                    }
+                    }}
                     if (data == "null") {
                         document.getElementById("addCnameSpan").style.color = "red";
                         document.getElementById("addCnameSpan").innerHTML = "Name can not be empty";
@@ -577,9 +611,17 @@
 
                     }
                     if (data == "OK") {
-                        console.log(data);
-                        document.getElementById("addCcodeSpan").style.color = "green";
-                        document.getElementById("addCcodeSpan").innerHTML = "OK";
+                        var re = /^[a-zA-Z0-9 ]*$/;//Only numbers and upper or lower case letters and space are allowed 
+                        if (!re.test(t.value)) {
+                            document.getElementById("addCcodeSpan").style.color = "red";
+                            document.getElementById("addCcodeSpan").innerHTML = "Please do not input invaild character";
+                            var Ccode = document.getElementById(t.id);
+                            Ccode.value = "";
+                        } else {
+
+                            document.getElementById("addCcodeSpan").style.color = "green";
+                            document.getElementById("addCcodeSpan").innerHTML = "OK";
+                        }
                     }
                     if (data == "null") {
                         console.log(data);
@@ -608,6 +650,7 @@
 
         }
         function AddNewPlanNameOnBlur(t) {
+            InvalidCharacter(t);
             $.ajax({
                 type: "POST",
                 url: "/NewPlanCourse/IsPlanNameRepeated",
@@ -617,11 +660,19 @@
                         document.getElementById("addPnameSpan").style.color = "red";
                         document.getElementById("addPnameSpan").innerHTML = "This Name is already in use";
                         var Pname = document.getElementById(t.id);
-                        Cname.value = "";
+                        Pname.value = "";
                     }
                     if (data == "OK") {
-                        document.getElementById("addPnameSpan").style.color = "green";
-                        document.getElementById("addPnameSpan").innerHTML = "OK";
+                        var re = /^[a-zA-Z0-9 ]*$/;//Only numbers and upper or lower case letters and space are allowed 
+                        if (!re.test(t.value)) {
+                            document.getElementById("addPnameSpan").style.color = "red";
+                            document.getElementById("addPnameSpan").innerHTML = "Please do not input invaild character";
+                            var Pname = document.getElementById(t.id);
+                            Pname.value = "";
+                        } else {
+                            document.getElementById("addPnameSpan").style.color = "green";
+                            document.getElementById("addPnameSpan").innerHTML = "OK";
+                        }
                     }
                     if (data == "null") {
                         document.getElementById("addPnameSpan").style.color = "red";
@@ -642,12 +693,20 @@
                     if (data == "repeated") {
                         document.getElementById("addPcodeSpan").style.color = "red";
                         document.getElementById("addPcodeSpan").innerHTML = "This Code is already in use";
-                        var Pname = document.getElementById(t.id);
-                        Cname.value = "";
+                        var Pcode = document.getElementById(t.id);
+                        Pcode.value = "";
                     }
                     if (data == "OK") {
-                        document.getElementById("addPcodeSpan").style.color = "green";
-                        document.getElementById("addPcodeSpan").innerHTML = "OK";
+                        var re = /^[a-zA-Z0-9 ]*$/;//Only numbers and upper or lower case letters and space are allowed 
+                        if (!re.test(t.value)) {
+                            document.getElementById("addPcodeSpan").style.color = "red";
+                            document.getElementById("addPcodeSpan").innerHTML = "Please do not input invaild character";
+                            var Pcode = document.getElementById(t.id);
+                            Pcode.value = "";
+                        } else {
+                            document.getElementById("addPcodeSpan").style.color = "green";
+                            document.getElementById("addPcodeSpan").innerHTML = "OK";
+                        }
                     }
                     if (data == "null") {
                         document.getElementById("addPcodeSpan").style.color = "red";

@@ -16,7 +16,8 @@
         UpdateTargetId = "edtText"
     }))
     {
-        <input id="STID" name="STID" value="" hidden="hidden" />        
+        <input id="STID" name="STID" value="" hidden="hidden" />
+
         <input id="EDTsbmt" type="submit" hidden="hidden" />
     }
 
@@ -26,6 +27,34 @@
 <head>
 
     <title></title>
+    <!-- Polyfill.io will load polyfills your browser needs -->
+    <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js"></script>
+    <script>
+        // Fix preventDefault for IE
+        (function () {
+            var workingDefaultPrevented = (function () {
+                var e = document.createEvent('CustomEvent')
+                e.initEvent('Bootstrap', true, true)
+                e.preventDefault()
+                return e.defaultPrevented
+            })()
+            if (!workingDefaultPrevented) {
+                var origPreventDefault = Event.prototype.preventDefault
+                Event.prototype.preventDefault = function () {
+                    if (!this.cancelable) {
+                        return
+                    }
+                    origPreventDefault.call(this)
+                    Object.defineProperty(this, 'defaultPrevented', {
+                        get: function () {
+                            return true
+                        },
+                        configurable: true
+                    })
+                }
+            }
+        })()
+    </script>
     <script src="~/Scripts/jquery-3.4.1.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script type="text/javascript">
@@ -35,38 +64,37 @@
         #edtDiv {
             position: fixed;
             border: 1px solid #000;
-            top:25%;
-            bottom:25%;
-            right:30%;
-            left:30%;
-            background-color:white;
-            z-index:999;
+            top: 25%;
+            bottom: 25%;
+            right: 30%;
+            left: 30%;
+            background-color: white;
+            z-index: 999;
         }
+
         #Edt {
             color: #0c5fc4;
             background-color: #FFFFFF;
             border: 0px none;
-
-
             font-size: 15px;
         }
-        #LeftTop{
-            position:absolute;
-            top:10%;
-            bottom:75%;
-            left:5%;
-            right:53%;
 
+        #LeftTop {
+            position: absolute;
+            top: 10%;
+            bottom: 75%;
+            left: 5%;
+            right: 53%;
         }
+
         #RightTop1 {
             position: absolute;
             top: 10%;
             bottom: 10%;
             left: 53%;
             right: 20px;
-           
         }
-        
+
         #LeftBottom {
             position: absolute;
             top: 27%;
@@ -74,52 +102,59 @@
             left: 5%;
             right: 53%;
             overflow: auto;
-           
         }
+
         #RightBottom {
             position: absolute;
             top: 42%;
             bottom: 5%;
             left: 53%;
             right: 20px;
-            margin-top:-10px;
-            overflow:auto;
-           
+            margin-top: -10px;
+            overflow: auto;
         }
+
         .timeDropDown {
             position: absolute;
         }
+
         .timeSeletor {
             bottom: 30%;
             top: 30%
         }
+
         .ddyear {
             right: 55%;
             left: 1px
         }
+
         .ddsem {
             left: 55%;
             right: 1px
         }
-        
+
         .timebtn {
             right: 10%;
             left: 67%;
         }
+
         .timediv {
             right: 35%;
             left: 5%;
         }
+
         .leftTableName {
             min-height: 10px
         }
+
         #sort {
-            
             width: 50%
         }
+
         .tableHead {
             display: block
         }
+
         .tableBody {
             position: absolute;
             display: block;
@@ -129,14 +164,17 @@
             right: 0px;
             overflow-y: scroll;
         }
+
         .tableTr {
             display: table;
             width: 100%;
             table-layout: fixed;
         }
+
         .hiddenOnLoad {
             display: none
         }
+
         .cancelBtn {
             position: absolute;
             width: 10px;
@@ -144,6 +182,7 @@
             right: 5px;
             top: 5px;
         }
+
         #edtText {
             position: absolute;
             left: 20%;
@@ -151,12 +190,34 @@
             top: 15px;
             bottom: 15px;
         }
+        select {
+            background: rgba(255,255,255,1) url("../../Content/xiala.png") no-repeat center right;
+            border: 1px solid #ced4da !important;
+            outline: none !important;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -ms-appearance: none;
+            -o-appearance: none;
+            -khtml-appearance: none;
+            background-size: 18px 18px;
+            /*background-position-x: 60px;*/
+        }
+
+            select:focus {
+                outline: none !important;
+            }
+
+            select::-ms-expand {
+                display: none;
+            }
+
     </style>
-    
+
 </head>
 <body>
-   
-    
+
+
     <div id="LeftTop">
         @using (Ajax.BeginForm("ChangeDate", "Allocations", ("ddlyear", "DDLSemester"), new AjaxOptions()
         {
@@ -166,14 +227,14 @@
             UpdateTargetId = "LeftBottom"
         }))
         {
-            <div  class="timeDropDown timeSeletor timediv">
+            <div class="timeDropDown timeSeletor timediv">
 
                 <div class="timeDropDown ddyear">
-                    @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control"  ,id = "selectedYear" ,onchange= "sbmt('sbmtSearch'),changeDateStaff()" })
+                    @Html.DropDownList("ddlyear", null, htmlAttributes: new { @class = "form-control", id = "selectedYear", onchange = "sbmt('sbmtSearch'),changeDateStaff()" })
                     @*a drop-down list to show the year, the value was defined in controller*@
                 </div>
                 <div class="timeDropDown ddsem">
-                    @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control", id = "selectedSem" , onchange = "sbmt('sbmtSearch'),changeDateStaff()" })
+                    @Html.DropDownList("DDLSemester", null, htmlAttributes: new { @class = "form-control", id = "selectedSem", onchange = "sbmt('sbmtSearch'),changeDateStaff()" })
                     @*a drop-down list to show the semester, the value was defined in controller*@
                 </div>
 
@@ -323,7 +384,7 @@
                 }
                 @using (Ajax.BeginForm("Change", "Allocations", ("pop", "YearBeSel", "SemBeSel"), new AjaxOptions()
                 {
-                        @*this ajax from just use to tell controller to get a refreshed table in right bottom*@
+                    @*this ajax from just use to tell controller to get a refreshed table in right bottom*@
                     HttpMethod = "post",
                     InsertionMode = InsertionMode.Replace,
                     UpdateTargetId = "RightBottom"
@@ -346,7 +407,7 @@
                     UpdateTargetId = "RightBottom"
                 }))
                 {
-                    <select id="planSelect" class=" form-control" name="planSelecter"  onchange="ChangeSortInside(this), sbmt('SelectPlan')">
+                    <select id="planSelect" class=" form-control" name="planSelecter" onchange="ChangeSortInside(this), sbmt('SelectPlan')">
 
                         @*the planid's default value is 0, so it will default show "All plans" in this drop down box *@
                         <option label="All Plans" id="AllPlan" value="AllPlan" name="plan" selected="selected">All Plans</option>
@@ -366,7 +427,7 @@
 
                     <input id="SelectPlan" type="submit" hidden="hidden" />
                 }
-                @using (Ajax.BeginForm("ChangeSortPlan", "Allocations","SelecedPlan", new AjaxOptions()
+                @using (Ajax.BeginForm("ChangeSortPlan", "Allocations", "SelecedPlan", new AjaxOptions()
                 {
 
                     HttpMethod = "post",
@@ -374,10 +435,10 @@
                     //when submit the ajaxform, document will replace "ChangeSortPlan" with a new view (Asynchronous refresh)
                     UpdateTargetId = "sort"
                 }))
-                {   <input id="SelecedPlan" name="SelecedPlan" value="" hidden="hidden" />
-                    
+                {<input id="SelecedPlan" name="SelecedPlan" value="" hidden="hidden" />
+
                     <input id="AddPlansbmt" type="submit" hidden="hidden" />
-                    }
+                }
 
             </div>
         </div>
@@ -391,7 +452,7 @@
                 <select id="sortSelecter" class=" form-control" name="SortSelection">
                     <option id="SortName" label="Name" value="name">Name</option>
                     <option id="SortGPA" label="GPA" value="GPA">GPA</option>
-            @*the sort selection, if user change plan, the option will change too*@
+                    @*the sort selection, if user change plan, the option will change too*@
                 </select>
             </div>
             <div class="col-md-5">
@@ -410,16 +471,16 @@
                 }
                 <button class="btn btn-primary" onclick="OrderBy('P')">ASC</button>
                 <button class="btn btn-primary" onclick="OrderBy('N')">DESC</button>
-                <input hidden value="P" id="WhichBtnBeClicked"/>
+                <input hidden value="P" id="WhichBtnBeClicked" />
             </div>
-            
+
         </div>
     </div>
 
     <div id="RightBottom">
         <table class="table table-hover stud"
                ondrop="dropPeopleBack(event)">
-            <thead  class="tableHead">
+            <thead class="tableHead">
                 <tr class="tableTr">
                     <th>Name</th>
                     <th>GPA</th>
@@ -427,8 +488,7 @@
             </thead>
             <tbody id="studenttable"
                    class="tableBody"
-                   ondragover="dragOver(event)"
-                   >
+                   ondragover="dragOver(event)">
                 @foreach (var item in students)
                 {
                     if (Model.FirstOrDefault(a => a.personID == item.studentID) == null)
@@ -456,7 +516,7 @@
     </div>
     <div id="edtDiv" class="hiddenOnLoad">
         <input onclick="canceldiv()" class="btn btn-danger cancelBtn" type="button" />
-        <div id="edtText" ></div>
+        <div id="edtText"></div>
     </div>
 </body>
 
@@ -473,7 +533,7 @@
             type: "POST",
             //this is the transmission protocol, you can set it with "GET" or "POST","POST" is more secure
             url: "/Allocations/ChangeStatus",
-            //using this url to tell the JS which controller and which function will be used 
+            //using this url to tell the JS which controller and which function will be used
             data: {
                 //this will send some value to controller
                 projId: projID,
@@ -498,10 +558,10 @@
             sbmt('changeToStaffTablesbmt');
         }
        //After changing the time, submit the Ajax form to refresh the staff list data asynchronously
-            
 
 
-        
+
+
     }
 
     function selectedDate() {
@@ -514,34 +574,36 @@
     function DragStudentsStart(e) {
         //put the value(information) of the <tr>tag, which will be draged, into script(student)
         e.dataTransfer.setData('Student', e.target.parentElement.id)
-        
+
         e.dataTransfer.setData('StudentTableId', e.target.id);
         e.dataTransfer.setData('StudentId', e.target.id.slice(8));
     }
 
     function DragStaffStart(e) {
+        e = e || window.event;
         //put the value(information) of the <tr>tag, which will be draged, into script(staff)
         e.dataTransfer.setData('Staff', e.target.parentElement.id)
         e.dataTransfer.setData('StaffTableId', e.target.id);
-        
+
         e.dataTransfer.setData('StaffId', e.target.id.slice(7));
     }
-    function ProjectPeopleBind(e,t) {
+    function ProjectPeopleBind(e, t) {
+        e = e || window.event;
         //drag people to project to allocated
         var thisid = t.id.slice(13);
         if (e.dataTransfer.getData("Student") == "studenttable") {
             var studentId = e.dataTransfer.getData("StudentId");
             $.ajax({
-                
+
                 type: "POST",
-                
+
                 url: "/Allocations/AddStudentToProject",
                 data: { studentId: studentId, projectId: thisid },
                 success: function (data) {
 
                     console.log(data);
                     var newdiv = document.createElement("div");
-                    
+
                     newdiv.setAttribute("id", "ProjectTableStudent " + studentId);
                     newdiv.setAttribute("ondragstart", "LeftStudentTableDragStart(event,this)");
                     newdiv.setAttribute("ondragover", "dragOver(event)");
@@ -552,7 +614,7 @@
                     document.getElementById("divStudent " + thisid).appendChild(newdiv);
                     //creat a new <div> when drag student to project
 
-                    
+
                 },
 
             })
@@ -567,26 +629,51 @@
                     if (data != "Seleced staff is already in this project") {
 
 
-                        console.log(data);
-                        var newdiv = document.createElement("div");
-                        
-                        newdiv.setAttribute("id", thisid + " ProjectTableStaff " + staffID);
-                        newdiv.setAttribute("ondragstart", "LeftStaffTableDragStart(event)");
-                        newdiv.setAttribute("ondragover", "dragOver(event)");
-                        newdiv.setAttribute("draggable", "true");
-                        newdiv.setAttribute("data-staffId", staffID);
-                        newdiv.setAttribute("data-projId", thisid);
-                        newdiv.innerHTML = data;
-                        console.log(newdiv);
-                        console.log(newdiv.nodeType);
-                        console.log(document.getElementById("divStaff " + thisid).getAttribute("data-isDiff"));
-                        document.getElementById("divStaff " + thisid).appendChild(newdiv);
-                        var StaffProjectNumber = document.getElementById("pro" + staffID);
-                        var StaffDiffProjectNumber = document.getElementById("diff" + staffID);
-                        StaffProjectNumber.innerText = parseInt(StaffProjectNumber.innerText) + 1;
-                        //just like the previous, this is for staff
-                        if (document.getElementById("divStaff " + thisid).getAttribute("data-isDiff") == "yes") {
-                            StaffDiffProjectNumber.innerText = parseInt(StaffDiffProjectNumber.innerText) + 1;
+                        if (navigator.appName.indexOf("Explorer") > -1) {
+                            //for IE
+                            var newdiv = document.createElement("<div id=" + thisid + " ProjectTableStaff " + staffID + " data-staffId=" + staffID +" data-projId="+thisid+" draggable=true");
+                            newdiv.ondragstart = function () { LeftStaffTableDragStart(event) }
+                            newdiv.ondragover = function () { dragOver(event) }
+                          @*  newdiv.setAttribute("id", thisid + " ProjectTableStaff " + staffID);
+                            newdiv.setAttribute("ondragstart", "LeftStaffTableDragStart(event)");
+                            newdiv.setAttribute("ondragover", "dragOver(event)");
+                            newdiv.setAttribute("draggable", "true");
+                            newdiv.setAttribute("data-staffId", staffID);
+                            newdiv.setAttribute("data-projId", thisid);*@
+                            newdiv.innerHTML = data;
+                            console.log(newdiv);
+                            console.log(newdiv.nodeType);
+                            console.log(document.getElementById("divStaff " + thisid).getAttribute("data-isDiff"));
+                            document.getElementById("divStaff " + thisid).appendChild(newdiv);
+                            var StaffProjectNumber = document.getElementById("pro" + staffID);
+                            var StaffDiffProjectNumber = document.getElementById("diff" + staffID);
+                            StaffProjectNumber.innerText = parseInt(StaffProjectNumber.innerText) + 1;
+                            //just like the previous, this is for staff
+                            if (document.getElementById("divStaff " + thisid).getAttribute("data-isDiff") == "yes") {
+                                StaffDiffProjectNumber.innerText = parseInt(StaffDiffProjectNumber.innerText) + 1;
+                            }
+                        } else {
+                            //for other browser
+                            var newdiv = document.createElement("div");
+
+                            newdiv.setAttribute("id", thisid + " ProjectTableStaff " + staffID);
+                            newdiv.setAttribute("ondragstart", "LeftStaffTableDragStart(event)");
+                            newdiv.setAttribute("ondragover", "dragOver(event)");
+                            newdiv.setAttribute("draggable", "true");
+                            newdiv.setAttribute("data-staffId", staffID);
+                            newdiv.setAttribute("data-projId", thisid);
+                            newdiv.innerHTML = data;
+                            console.log(newdiv);
+                            console.log(newdiv.nodeType);
+                            console.log(document.getElementById("divStaff " + thisid).getAttribute("data-isDiff"));
+                            document.getElementById("divStaff " + thisid).appendChild(newdiv);
+                            var StaffProjectNumber = document.getElementById("pro" + staffID);
+                            var StaffDiffProjectNumber = document.getElementById("diff" + staffID);
+                            StaffProjectNumber.textContent = parseInt(StaffProjectNumber.textContent) + 1;
+                            //just like the previous, this is for staff
+                            if (document.getElementById("divStaff " + thisid).getAttribute("data-isDiff") == "yes") {
+                                StaffDiffProjectNumber.textContent = parseInt(StaffDiffProjectNumber.textContent) + 1;
+                            }
                         }
                         //if the project is diffcult, count + 1
 
@@ -605,6 +692,7 @@
 
 @*student*@
     function LeftStudentTableDragStart(e, t) {
+        e = e || window.event;
         //get the student info
         var thisdrag = document.getElementById(e.target.id).getAttribute("data-plan");
         var planID = $("#planSelect").find("option:selected").attr("id");
@@ -620,8 +708,9 @@
     }
     @* staff *@
     function LeftStaffTableDragStart(e, t) {
+        e = e || window.event;
         //get the staff info
-        
+
         var thisstaffId = document.getElementById(e.target.id).getAttribute("data-staffId");
         var thisprojId = document.getElementById(e.target.id).getAttribute("data-projId");
         console.log(thisstaffId + "+" + thisprojId)
@@ -632,12 +721,13 @@
     }
 
     function dropPeopleBack(e) {
+        e = e || window.event;
         if (e.dataTransfer.getData('MakeSureStudentOrStaff') == "student") {
             //to make sure the draged div is student or staff
             var rmId = e.dataTransfer.getData('LeftTableRemoveId');
             var planID = $("#planSelect").find("option:selected").attr("id");
             var dataplan = e.dataTransfer.getData('dataplan');
-            
+
             $.ajax({
                 type: "POST",
                 url: "/Allocations/DeleteStudentAllocation",
@@ -647,19 +737,19 @@
                 },
                 success: function (data) {
                    @*this data from controller is the PlanId of the student*@
-                    
+
                     document.getElementById(rmId).remove();
                     if (document.getElementById("selopt").value == "student") {
                         if (planID == "AllPlan" || planID.slice(5) == data) {
-                            
-                            
-                            
-                            
+
+
+
+
                             OrderBy(document.getElementById("WhichBtnBeClicked").value);
-                            //OrderBy is another JS function to sort student table, I can use that to asynchronous refresh the page 
+                            //OrderBy is another JS function to sort student table, I can use that to asynchronous refresh the page
                             //when we drag student back
                         }
-                          
+
                     }
 
                 },
@@ -679,7 +769,7 @@
                     projectId: ProjId
                 },
                 success: function (data) {
-                    
+
 
                     document.getElementById(rmId).remove();
                     if (document.getElementById("selopt").value == "staff") {
@@ -692,9 +782,9 @@
                         //when drag back staff, count - 1
                         }
 
-                    
-                 
-                    
+
+
+
 
                 },
 
@@ -704,19 +794,20 @@
 
     }
 
-    
+
 
 
 
 
 
     function dragOver(e) {
+        e = e || window.event;
         //cancel the default event, if i don't use "e.preventDefault();", the other function maybe not work
         e.preventDefault();
     }
     function ChangeSortInside(t) {
         var Sort = document.getElementById("SelecedPlan");
-      
+
         Sort.value = t.value;
         document.getElementById("AddPlansbmt").click();
     }
@@ -730,9 +821,9 @@
         //this function is used to hidden or show the plan selection.
         var selstf = document.getElementById("selstf");
         var selstd = document.getElementById("selstd");
-       
+
         if (selstf.getAttribute("selected") == "selected") {
-            
+
             $("#sortslide").slideDown();
             selstd.setAttribute("selected", "selected");
             selstf.removeAttribute("selected");
@@ -747,7 +838,7 @@
         }
 
     }
-  
+
 
     function sbmtEdit(stffid) {
         document.getElementById("STID").value = (stffid);
