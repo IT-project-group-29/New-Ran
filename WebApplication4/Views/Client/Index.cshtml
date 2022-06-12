@@ -8,15 +8,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <style>
-        table {
-            position: relative;
-            top: 50px;
-        }
     </style>
 </head>
 
 <body>
     <h2>Client Management</h2>
+    <hr />
     <table class="table table-hover">
         <thead>
             <tr>
@@ -41,34 +38,38 @@
             @* Use foreach to get all data *@
             @foreach (var db in Model)
             {
-            <tr>
-                <td>
-                    @* This is used to get data from users we get from AspNetUsers *@
-                    @users.FirstOrDefault(a => a.personID == db.clientID).UserName
-                </td>
-                <td>
-                    @users.FirstOrDefault(a => a.personID == db.clientID).title
-                </td>
-                <td>
-                    @users.FirstOrDefault(a => a.personID == db.clientID).Email
-                </td>
-                <td>
-                    @users.FirstOrDefault(a => a.personID == db.clientID).PhoneNumber
-                </td>
-                <td>
-                    @* Because we use the strongly typed binding Clients as a Model, we can use the db to get the data directly *@
-                    @db.companyName
-                </td>
-                <td style="white-space:nowrap;">
-                    @* The first "Edit" is the name of the page we turn to, the second is the name of the button *@
-                    @* The third one is use to pass a parameter, the last one is the style of the button *@
-                    @Html.ActionLink("Edit", "Edit", new { id = db.clientID }, new { @class = "btn btn-primary" }) |
-                    @Html.ActionLink("Detail", "Detail", new { id = db.clientID }, new { @class = "btn btn-primary" }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = db.clientID }, new { @class = "btn btn-primary" })
-                </td>
-            </tr>
+                <tr id=@db.clientID , onclick="clk(@db.clientID)">
+                    <td>
+                        @* This is used to get data from users we get from AspNetUsers *@
+                        @users.FirstOrDefault(a => a.personID == db.clientID).UserName
+                    </td>
+                    <td>
+                        @users.FirstOrDefault(a => a.personID == db.clientID).title
+                    </td>
+                    <td>
+                        @users.FirstOrDefault(a => a.personID == db.clientID).Email
+                    </td>
+                    <td>
+                        @users.FirstOrDefault(a => a.personID == db.clientID).PhoneNumber
+                    </td>
+                    <td>
+                        @* Because we use the strongly typed binding Clients as a Model, we can use the db to get the data directly *@
+                        @db.companyName
+                    </td>
+                    <td style="white-space:nowrap;">
+                        @* The first "Edit" is the name of the page we turn to, the second is the name of the button *@
+                        @* The third one is use to pass a parameter, the last one is the style of the button *@
+                        @Html.ActionLink("Edit", "Edit", new { id = db.clientID }, new { @class = "btn btn-primary" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = db.clientID }, new { @class = "btn btn-primary btn-danger" })
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
 </body>
 </html>
+<script>
+    function clk(id) {
+        window.location.href = "/Client/Detail/" + id;
+    }
+</script>

@@ -5,6 +5,7 @@
 }
 
 <h2>Projects Management</h2>
+<hr />
 
 @*The Create New button is used to link to the Create page*@
 <p>
@@ -55,7 +56,7 @@
     @*Set an item value in Model.Projects to froeach to show the detail of all the projects*@
     @foreach (var item in Model)
     {
-        <tr>
+        <tr id=@item.projectID onclick="clk(@item.projectID)">
             @*Show all the project title from Model.Peojects*@
             <td>
                 @Html.DisplayFor(modelItem => item.projectTitle)
@@ -74,11 +75,16 @@
             @*Three link button to link to three pages:Edit, Details and Delete*@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.projectID }, new { @class = "btn btn-primary" }) |
-                @Html.ActionLink("Details", "Details", new { id = item.projectID }, new { @class = "btn btn-primary" }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.projectID }, new { @class = "btn btn-primary" })
+                @*@Html.ActionLink("Details", "Details", new { id = item.projectID }, new { @class = "btn btn-primary" }) |*@
+                @Html.ActionLink("Delete", "Delete", new { id = item.projectID }, new { @class = "btn btn-primary  btn-danger" })
             </td>
         </tr>
     }
 
 </table>
+<script>
+    function clk(id) {
+        window.location.href = "/Projects/Details/" + id;
+    }
+</script>
 
