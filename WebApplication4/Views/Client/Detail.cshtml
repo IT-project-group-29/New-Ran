@@ -1,24 +1,22 @@
 ﻿
-@{
-    ViewBag.Title = "Detail";
-}
+@{ViewBag.Title = "Detail";}
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+    
+@{//Get value from controller: the data from AspNetUsers where has same personID
+    var userDetail = ViewBag.getPersonID;
+  }
+
+<body>
     <style>
         .div {
             position: relative;
             top: 50px;
         }
     </style>
-</head>
-@{
-    //Get value from controller: the data from AspNetUsers where has same personID
-    var userDetail = ViewBag.getPersonID;
-}
-
-<body>
     <h2>Client Detail</h2>
+    <hr />
+
     <div class="div">
         <dl class="dl-horizontal">
             <dt>

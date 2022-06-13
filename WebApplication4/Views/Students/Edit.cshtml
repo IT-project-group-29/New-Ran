@@ -15,6 +15,8 @@
     <h4>Students</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.studentID)
+    @Html.HiddenFor(Model => Model.planId)
  
 
     <div class="form-group">
@@ -73,7 +75,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />@*//Define the submit button. The submit button sends the form data to the server.*@
+            <input type="submit" value="Save" class="btn btn-primary " />@*//Define the submit button. The submit button sends the form data to the server.*@
         </div>
     </div>
 </div>

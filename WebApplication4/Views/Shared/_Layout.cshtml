@@ -73,7 +73,6 @@
                                     <li>@Html.ActionLink("Project Management", "index", null, new {controller = "Projects" })</li>
                                     <li>@Html.ActionLink("Email Allocated Students", "LiEmailStudents", "Email", null, new { @class = "dropdown-item" })</li>
                                     <li>@Html.ActionLink("Email Allocated Staff", "LiEmailStaff", "Email", null, new { @class = "dropdown-item" })</li>
-                                    <li>@Html.ActionLink("Email Clients", "LiEmailClients", "Email", null, new { @class = "dropdown-item" })</li>
                                 </ul>
 
                             </li>
@@ -87,12 +86,10 @@
 
 
                                     <li>@Html.ActionLink("Project Management", "index", "Projects", null, new { @class = "dropdown-item" })</li>
-                                    <li>@Html.ActionLink("Project Allocation", "Index", "ProjectPeopleAllocations", null, new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Project Allocation", "Index", "Allocations", null, new { @class = "dropdown-item" })</li>
                                     <li>@Html.ActionLink("Detailed Information", "Index", "DetailedInformation", null, new { @class = "dropdown-item" })</li>
-                                    <li>@Html.ActionLink("Project Prioritisation", "Index", "PriorityProjects", null, new { @class = "dropdown-item" })</li>
                                     <li>@Html.ActionLink("Email Allocated Students", "LiEmailStudents", "Email", null, new { @class = "dropdown-item" })</li>
                                     <li>@Html.ActionLink("Email Allocated Staff", "LiEmailStaff", "Email", null, new { @class = "dropdown-item" })</li>
-                                    <li>@Html.ActionLink("Email Clients", "LiEmailClients", "Email", null, new { @class = "dropdown-item" })</li>
                                 </ul>
 
                             </li>
@@ -105,13 +102,12 @@
 
                                     <li>@Html.ActionLink("Add Single Account", "Create", "AspNetUsers", null, new { @class = "dropdown-item" })</li>
                                     <li>@Html.ActionLink("Add Multiple Accounts", "Index", "MulAccount", null, new { @class = "dropdown-item" })</li>
-                                    <li>@Html.ActionLink("Link Students to Courses", "Index", "StudentCourses", null, new { @class = "dropdown-item" })</li>
-                                    <li>@Html.ActionLink("Link Courses to Plans", "Index", "PlanCourses", null, new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Link Courses to Plans", "Index", "NewPlanCourse", null, new { @class = "dropdown-item" })</li>
                                     <li>@Html.ActionLink("Student Management", "Index", "Students", null, new { @class = "dropdown-item" })</li>
                                     <li>@Html.ActionLink("Staff Management", "Index", "Staff", null, new { @class = "dropdown-item" })</li>
                                     <li>@Html.ActionLink("Client Management", "Index", "Client", null, new { @class = "dropdown-item" })</li>
                                     <li>@Html.ActionLink("Role Management", "Index", "AspNetRoles", null, new { @class = "dropdown-item" })</li>
-                                    <li>@Html.ActionLink("Effort Management", "Index", "ProjectEfforts", null, new { @class = "dropdown-item" })</li>
+                                    @*<li>@Html.ActionLink("Effort Management", "Index", "ProjectEfforts", null, new { @class = "dropdown-item" })</li>*@
                                 </ul>
                             </li>
                         }

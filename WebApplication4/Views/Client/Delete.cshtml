@@ -9,9 +9,8 @@
     //Get value from controller: the data from AspNetUsers where has same personID
     var userDetail = ViewBag.getPersonID;
 }
-<head>
-    <style>
-        @* This style is used to adjust the top margin*@
+<body>
+    <style>@* This style is used to adjust the top margin*@
         .div {
             position: relative;
             top: 50px;
@@ -21,9 +20,6 @@
             top: 30px;
         }
     </style>
-</head>
-
-<body>
     <h2>Delete Client</h2>
     <h3>Are you sure you want to delete this?</h3>
     <div class="div">
@@ -62,8 +58,8 @@
             </dd>
         </dl>
         <div class="downMove">
-            <input type="submit" value="Delete" class="btn btn-primary" /> 
-            
+            <input type="submit" value="Delete" class="btn btn-primary" />
+
             <p>
                 <br />
                 @* The first is the word of the link, and the second is the name of page which will turn to. *@
@@ -72,6 +68,6 @@
         </div>
     </div>
 
-    
+
 </body>
 </html>

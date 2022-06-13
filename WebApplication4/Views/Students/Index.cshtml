@@ -3,6 +3,7 @@
 @{ ViewBag.Title = "Index"; }
 
 <h2>Student Management</h2>
+<hr />
 <form class="row g-3" asp-action="Index">
     <div class="col-auto">
         <label for="Student" class="visually-hidden">Search Student FirstName</label>
@@ -12,9 +13,7 @@
         <button type="submit" class="btn btn-primary mb-3">Search Student</button>
     </div>
 </form>
-<p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
-</p>
+
 
 <table class="table text-nowrap">
     <tr>
@@ -31,33 +30,39 @@
         <th>
             <label class=" control-label col-md-1"> GPA </label>
         </th>
-     
+
 
         <th></th>
     </tr>
     @*get the data from model*@
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Plans.planName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.uniUserName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.uniStudentID)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.gpa)
-    </td>
- 
-    @*actionlink which link to edit details and delete page*@
-    <td style="white-space:nowrap;">
-        @Html.ActionLink("Edit", "Edit", new { id = item.studentID }, new { @class = "btn btn-primary" }) |
-        @Html.ActionLink("Details", "Details", new { id = item.studentID }, new { @class = "btn btn-primary" }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.studentID }, new { @class = "btn btn-primary" })
-    </td>
-</tr>}
+        <tr id=@item.studentID onclick="clk(@item.studentID)">
+            <td>
+                @Html.DisplayFor(modelItem => item.Plans.planName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.uniUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.uniStudentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gpa)
+            </td>
+
+            @*actionlink which link to edit details and delete page*@
+            <td style="white-space:nowrap;">
+                @Html.ActionLink("Edit", "Edit", new { id = item.studentID }, new { @class = "btn btn-primary" }) |
+                @*@Html.ActionLink("Details", "Details", new { id = item.studentID }, new { @class = "btn btn-primary" }) |*@
+                @Html.ActionLink("Delete", "Delete", new { id = item.studentID }, new { @class = "btn btn-primary  btn-danger" })
+            </td>
+        </tr>
+}
 
 </table>
+<script>
+    function clk(id) {
+        window.location.href = "/Students/Details/" + id;
+    }
+</script>

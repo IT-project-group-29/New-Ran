@@ -7,14 +7,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <style>
-        table {
-            position: relative;
-            top: 50px;
-        }
     </style>
 </head>
 <body>
     <h2>Staff Management</h2>
+    <hr />
     <table class="table table-hover">
         <thead>
             <tr>
@@ -33,7 +30,7 @@
             @* Use foreach to get all data *@
             @foreach (var db in Model)
             {
-                <tr>
+                <tr id=@db.staffID, onclick="clk(@db.staffID)">
                     <td>
                         @* This is used to get data from users we get from AspNetUsers *@
                         @db.username
@@ -49,8 +46,8 @@
                         @* The first "Edit" is the name of the page we turn to, the second is the name of the button *@
                         @* The third one is use to pass a parameter, the last one is the style of the button *@
                         @Html.ActionLink("Edit", "Edit", new { id = db.staffID }, new { @class = "btn btn-primary" }) |
-                        @Html.ActionLink("Detail", "Detail", new { id = db.staffID }, new { @class = "btn btn-primary" }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = db.staffID }, new { @class = "btn btn-primary" })
+                        @*@Html.ActionLink("Detail", "Detail", new { id = db.staffID }, new { @class = "btn btn-primary" }) |*@
+                        @Html.ActionLink("Delete", "Delete", new { id = db.staffID }, new { @class = "btn btn-primary  btn-danger" })
                     </td>
                 </tr>
             }
@@ -58,5 +55,10 @@
     </table>
 </body>
 </html>
+<script>
+    function clk(id) {
+        window.location.href = "/Staff/Detail/" + id;
+    }
+</script>
 
 
