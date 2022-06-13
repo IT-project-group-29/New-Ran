@@ -19,8 +19,8 @@
 
             {@*make sure the selected student will not be displayed in the student table*@
 
-
-            <tr id="stddrag @item.studentID"
+         var stddragId = "stddrag" + item.studentID;
+                <tr id=@stddragId
                 style="display: table; width: 100%; table-layout: fixed;"
                 draggable="true"
                 ondragover="dragOver(event)"

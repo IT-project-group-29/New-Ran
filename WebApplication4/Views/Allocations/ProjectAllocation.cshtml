@@ -26,7 +26,8 @@
     <tbody class="tableBody">
         @foreach (var pjt in projects)
         {
-            <tr id="ProjectTable @pjt.projectID"
+            var ProjectTableId = "ProjectTable" + pjt.projectID;
+            <tr id=@ProjectTableId
                 ondrop="ProjectPeopleBind(event,this)"
                 ondragover="dragOver(event)"
                 class="tableTr">
@@ -44,8 +45,8 @@
                 <td>
                     @Html.DisplayFor(modelItem => pjt.projectTitle)
                     <div>
-
-                        <select class="form-control" id="projStatu @pjt.projectID" onchange="selectedStatu(this)">
+                        @{ var projStatuId = "projStatu" + pjt.projectID;}
+                        <select class="form-control" id=@projStatuId onchange="selectedStatu(this)">
                             @foreach (var psta in pstatus)
                             {
 
@@ -65,15 +66,16 @@
                 </td>
                 <td>
                     <div>
-                        <div id="divStaff @pjt.projectID" ondragover="dragOver(event)" data-isDiff=@pjt.difficult class="leftTableName">
+                        @{ var divStaffId = "divStaff" + pjt.projectID;}
+                        <div id=@divStaffId ondragover="dragOver(event)" data-isDiff=@pjt.difficult class="leftTableName">
                             @*define this tag's id, it will be used in javascript to get this tag*@
                             @{
                                 var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
                             }
                             @foreach (var pstaff in staffs)
                             {
-
-                                <div id="@pjt.projectID ProjectTableStaff @pstaff.personID"
+                                var IdProjectTableStaffId = pjt.projectID + "ProjectTableStaff" + pstaff.personID;
+                                <div id=@IdProjectTableStaffId
                                      data-staffId=@pstaff.personID
                                      data-projId=@pjt.projectID
                                      ondragstart="LeftStaffTableDragStart(event)"
@@ -85,7 +87,8 @@
                 </td>
                 <td>
                     <div>
-                        <div id="divStudent @pjt.projectID" ondragover="dragOver(event)" class="leftTableName">
+                        @{ var divStudentId = "divStudent" + pjt.projectID;}
+                        <div id=@divStudentId ondragover="dragOver(event)" class="leftTableName">
 
                             @{
                                 var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
@@ -93,8 +96,8 @@
                             }
                             @foreach (var pstudent in prostudents)
                             {
-
-                                <div id="ProjectTableStudent @pstudent.personID"
+                                var ProjectTableStudentId = "ProjectTableStudent" + pstudent.personID;
+                                <div id=@ProjectTableStudentId
                                      data-plan=@students.FirstOrDefault(a => a.studentID == pstudent.personID).planId
                                      data-StudprojId=@projects.FirstOrDefault(a => a.projectID == pjt.projectID).projectID
                                      ondragstart="LeftStudentTableDragStart(event,this)"

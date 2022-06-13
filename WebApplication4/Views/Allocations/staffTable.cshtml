@@ -19,18 +19,20 @@
 
                 <th>
                     Difficulty
+                   
                 </th>
                 <th>
-
+                    <a style="text-decoration: none" href="~/Allocations/StaffProjectIndex">Details</a>
                 </th>
             </tr>
         </thead>
         <tbody style="position:absolute; display:block;top:38px;bottom:0px;left:0px;right:0px; overflow-y:scroll; overflow-x: hidden;"
-               id="stafftable" ondrop="dropTablestaff(event)" ondragover="dragOver(event)">
+               id="stafftable"  ondragover="dragOver(event)">
             @*to display staff's list*@
             @foreach (var item in staff)
             {
-            <tr id="istaff @item.staffID"
+                var istaffId = "istaff" + item.staffID;
+            <tr id=@istaffId
                 style="display: table; width: 100%; table-layout: fixed;"
                 ondragstart="DragStaffStart(event)"
                 ondragover="dragOver(event)"
@@ -64,7 +66,7 @@
                     <div id="@tutss">@diffCount</div>
                 </td>
                 <td>
-                    <a onclick="sbmtEdit(@item.staffID)">Edit</a>
+                    <a onclick="sbmtEdit(@item.staffID)">Detail</a>
                 </td>
             </tr>
             }

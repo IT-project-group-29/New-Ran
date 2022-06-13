@@ -136,6 +136,7 @@
                 inputvalue: searchinput
             },
             success: function (data) {
+                //get a Json file from controller, include the keyword
                 console.log(data);
                 for (ObjType in data) {
                     for (ObjID in data[ObjType]) {

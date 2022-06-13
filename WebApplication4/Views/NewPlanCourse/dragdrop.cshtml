@@ -38,13 +38,15 @@
 
 
 
-                    <td id="LeftSpan @PItem.planId">
+                    @{var theTdID = "LeftSpan" + PItem.planId}
+                    <td id=@theTdID>
                         @{ var L = Model.Where(a => a.planId == PItem.planId).ToList();}
                         @foreach (var C in L)
                         {
                             if (C.isHidden != "hidden")
                             {
-                                <span id="@PItem.planId bind @C.courseId"
+                                var thespanID = @PItem.planId + "bind" + @C.courseId;
+                                <span id=@thespanID
                                       class="DragSpan"
                                       ondragstart="spanDrag(event)"
                                       ondragend="spandragOver()"

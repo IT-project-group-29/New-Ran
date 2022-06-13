@@ -12,8 +12,8 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    
+    
     <style>
         #Left {
             position: absolute;
@@ -40,7 +40,6 @@
             width: 120px;
             height: 120px;
             z-index: 999;
-            @*background-color: red;*@
         }
         #AddNewCourse {
             position: fixed;
@@ -105,7 +104,7 @@
             top: 5px;
 
         }
-        #edtText {
+        .edtText {
             position: absolute;
             left: 30%;
             right: 30%;
@@ -115,6 +114,15 @@
         .Additems {
             margin-bottom: 20px;
             border-top: 0px solid currentColor;
+        }
+        .AddPlus {
+            font-size:medium;
+            color: green;
+            text-decoration: none
+        }
+        .JumpToOtherPage {
+            float: right;
+            text-decoration: none
         }
     </style>
     <script></script>
@@ -172,13 +180,11 @@
                 <thead class="tableHead">
                     <tr class="tableTr">
                         <th>
-                            Plan <a style="color:green; text-decoration: none"
+                            Plan <a class="AddPlus"
                                     href="javascript:void(0)"
-                                    onclick="AddNewPlanHref()">
-                                <font size="3">+</font>
-                            </a>
+                                    onclick="AddNewPlanHref()">+</a>
                         </th>
-                        <th>Course in this Plan</th>
+                        <th>Course in this Plan </th>
                     </tr>
                 </thead>
                 <tbody id="Lefttable"
@@ -199,14 +205,15 @@
                                 <td class="LeftBoxPlan">@PItem.planName</td>
                                 
 
-
-                                <td id="LeftSpan @PItem.planId">
+                    @{var theTdID = "LeftSpan" + PItem.planId;}
+                                <td id=@theTdID>
                                     @{ var L = Model.Where(a => a.planId == PItem.planId).ToList();}
                                     @foreach (var C in L)
                                     {
                                         if (C.isHidden != "hidden")
                                         {
-                                            <span id="@PItem.planId bind @C.courseId"
+                                            var thespanID = @PItem.planId + "bind" + @C.courseId;
+                                            <span id=@thespanID
                                                   class="DragSpan"
                                                   ondragstart="spanDrag(event)"
                                                   ondragend="spandragOver()"
@@ -228,9 +235,10 @@
                 <thead  class="tableHead">
                     <tr class="tableTr">
                         <th>
-                            Course <a class="AddCoursebutton"
+                            Course <a class="AddPlus"
                                       href="javascript:void(0)"
-                                      onclick="AddNewCourseHref()"><font size="3">+</font></a>
+                                      onclick="AddNewCourseHref()">+</a>
+                            <a class="JumpToOtherPage" href="~/NewPlanCourse/CourseAndPlan">Details</a>
                         </th>
                         @* <th>Having this course's Plan</th>*@
                     </tr>
@@ -271,9 +279,10 @@
          >
         <input onclick="canceldiv()"
                class="btn btn-danger cancelDivBtn"
+               value=""
                type="button"/>
-        <div id="edtText" >
-            <div class="" id="tableExcel">
+        <div class="edtText" >
+            <div>
                 <div class="Additems">
                     <input type="text"
                            class="form-control col-md-10"
@@ -312,9 +321,10 @@
         <input onclick="cancelPlandiv()"
                class="btn btn-danger cancelDivBtn"
                type="button"
+               value=""
                 />
-        <div id="edtText" class="edtText">
-            <div class="" id="tableExcel">
+        <div class="edtText">
+            <div>
                 <div class="Additems">
                     <input type="text"
                            class="form-control col-md-10"
@@ -334,14 +344,14 @@
                 <div class="Additems">
                     <input type="number"
                            class="form-control col-md-10"
-                           maxlength="1"
+                           
                            min="1"
                            max="5"
                            value="1"
                            id="AddNewPlanDuration"
                            placeholder="New Plan Duration"
                            onkeyup="AddNewPlanDurationOnKeyPress(this)" />
-                    <br /><span id="addCcodeSpan"></span><br />
+                    <br />
                 </div>
 
             </div>
@@ -369,7 +379,7 @@
             document.getElementById("delete").style.display = "inherit";
             e.dataTransfer.setData('text', e.target.id);
             e.dataTransfer.setData('Pid', e.target.parentElement.id);
-            @* console.log(e.target.parentElement.id);*@
+
         }
 
         function eleOndrop(e, t) {
@@ -388,7 +398,7 @@
                         if (data != "This course is already selected") {
                             //console.log(data + "be Added to" + t.id)
                             var newSpan = document.createElement("span");
-                            newSpan.setAttribute("id", t.id + " bind " + someID);
+                            newSpan.setAttribute("id", t.id + "bind" + someID);
                             newSpan.style.border = "1px solid #000";
                             newSpan.style.marginTop = "5px";
                             newSpan.style.marginBottom = "5px";
@@ -396,7 +406,7 @@
                             newSpan.setAttribute("ondragend", "spandragOver(event)");
                             newSpan.draggable = "true";
                             newSpan.innerHTML = data + "<br />";
-                            document.getElementById("LeftSpan " + thisid).appendChild(newSpan);
+                            document.getElementById("LeftSpan" + thisid).appendChild(newSpan);
 
                         } else {
                             alert(data);
@@ -405,12 +415,6 @@
 
                 })
 
-
-                @* document.getElementById("csID").value = someID;
-                document.getElementById("plID").value = t.id;
-                document.getElementById("PorC").value = 1;
-                console.log("b");
-                document.getElementById("sbmt").click();*@
             }
         }
 
@@ -454,7 +458,6 @@
                     data: { thisid: ppid, deld: deldata },
                     success: function (data) {
                         if (data == "removed") {
-                            //console.log(deldata + "be removed")
                             document.getElementById(deldata).remove();
                         }
                     },
@@ -471,8 +474,7 @@
             var ppid = e.dataTransfer.getData("PPid");
             var pid = e.dataTransfer.getData("Pid");
             var delcourse = e.dataTransfer.getData("text");
-            //console.log(pppid);
-            //console.log(deldata);
+
 
 
             if (pppid == "Lefttable") {
@@ -482,7 +484,7 @@
                     data: { thisid: ppid, deld: deldata },
                     success: function (data) {
                         if (data == "removed") {
-                            //console.log(deldata + "be removed")
+
                             document.getElementById(deldata).remove();
                         }
                     },
@@ -519,16 +521,10 @@
                 })
             }
         }
-        function InvalidCharacter(t) {
 
-            var re = /^[a-zA-Z0-9 ]*$/;//Only numbers and upper or lower case letters are allowed 
-            if (!re.test(t.value)) {
-                
-                //delete the last letter
-            } 
 
-        }
-        
+
+        //=========================================================== here to add new data===================================================//
         function AddNewCourseHref() {
 
             document.getElementById("AddNewCourse").style.display = "initial";
@@ -650,7 +646,7 @@
 
         }
         function AddNewPlanNameOnBlur(t) {
-            InvalidCharacter(t);
+            
             $.ajax({
                 type: "POST",
                 url: "/NewPlanCourse/IsPlanNameRepeated",
@@ -717,6 +713,7 @@
             })
         }
         function AddNewPlanDurationOnKeyPress(t) {
+            //to limit the plan duration years <=5 >=1 
             var durInput = document.getElementById(t.id);
             if (durInput.value > 5) {
                 durInput.value = 5;
@@ -743,18 +740,19 @@
             var Pname = document.getElementById("AddNewPlanName");
             var Pcode = document.getElementById("AddNewPlanCode");
             var PDur = document.getElementById("AddNewPlanDuration");
-            var AddPN = document.getElementById("PName");
-            var AddPC = document.getElementById("PCode");
-            var AddPD = document.getElementById("PDur");
+          
             if (Pname.value == "" | Pcode.value == "" | PDur.value == "") {
                 alert("please input information");
             } else {
-                console.log("add");
+                
                
                 document.getElementById("PName").value = Pname.value;
                 document.getElementById("PCode").value = Pcode.value;
                 document.getElementById("PDur").value = PDur.value;
+
+                //here to use an ajax form
                 document.getElementById("AddPlansbmt").click();
+
                 Pname.value = "";
                 Pcode.value = "";
                 PDur.value = 1;
@@ -785,7 +783,10 @@
                 document.getElementById("CId").value = Cid.value;
                 document.getElementById("CName").value = Cname.value;
                 document.getElementById("CCode").value = Ccode.value;
+
+                 //here to use an ajax form
                 document.getElementById("AddCoursesbmt").click();
+               
                 spandragOver();
                 Cid.value = "";
                 Cname.value = "";
@@ -794,34 +795,7 @@
                 document.getElementById("addCnameSpan").innerHTML = "";
                 document.getElementById("addCcodeSpan").innerHTML = "";
 
-         @*       $.ajax({
-                    type: "POST",
-                    url: "/NewPlanCourse/AddCourse",
-                    data: { CId: Cid.value, CName: Cname.value, CCode: Ccode.value },
-                    success: function (data) {
-                        //console.log("22121223", data)
-                        if (data == "success") {
-                            //console.log(data + "be Added to" + t.id)
-                            var newtr = document.createElement("tr");
-                            newtr.setAttribute("id", Cid.value);
-                            newtr.style.display = "table";
-                            newtr.style.width = "100%";
-                            newtr.style.tableLayout = "fixed";
-                            newtr.setAttribute("ondragstart", "dropElement(event)");
-                            newtr.setAttribute("ondragend", "spandragOver(event)");
-                            newtr.setAttribute("ondragover", "dragOver(event)");
-
-                            newtr.draggable = "true";
-                            newtr.innerHTML = "<td>" + Cname.value+"</td > ";
-                            document.getElementById("Righttable").appendChild(newtr);
-                            alert("Add course successful");
-                            Cid.value = "";
-                            Cname.value = "";
-                            Ccode.value = "";
-                        }
-                    },
-
-                })*@
+        
             }
         }
 

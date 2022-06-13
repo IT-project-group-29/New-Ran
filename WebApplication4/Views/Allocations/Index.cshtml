@@ -26,9 +26,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-    <title></title>
-    <!-- Polyfill.io will load polyfills your browser needs -->
-    <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js"></script>
+    
+  
     <script>
         // Fix preventDefault for IE
         (function () {
@@ -271,7 +270,8 @@
             <tbody class="tableBody">
                 @foreach (var pjt in projects)
                 {
-                    <tr id="ProjectTable @pjt.projectID"
+                    var ProjectTableId = "ProjectTable" + pjt.projectID;
+                    <tr id=@ProjectTableId
                         ondrop="ProjectPeopleBind(event,this)"
                         ondragover="dragOver(event)"
                         class="tableTr">
@@ -289,8 +289,8 @@
                         <td>
                             @Html.DisplayFor(modelItem => pjt.projectTitle)
                             <div>
-
-                                <select class="form-control" id="projStatu @pjt.projectID" onchange="selectedStatu(this)">
+                                @{ var projStatuId = "projStatu" + pjt.projectID;}
+                                <select class="form-control" id=@projStatuId onchange="selectedStatu(this)">
                                     @foreach (var psta in pstatus)
                                     {
 
@@ -310,15 +310,16 @@
                         </td>
                         <td>
                             <div>
-                                <div id="divStaff @pjt.projectID" ondragover="dragOver(event)" data-isDiff=@pjt.difficult class="leftTableName">
+                                @{ var divStaffId = "divStaff" + pjt.projectID;}
+                                <div id=@divStaffId ondragover="dragOver(event)" data-isDiff=@pjt.difficult class="leftTableName">
                                     @*define this tag's id, it will be used in javascript to get this tag*@
                                     @{
                                         var staffs = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "staff").ToList();
                                     }
                                     @foreach (var pstaff in staffs)
                                     {
-
-                                        <div id="@pjt.projectID ProjectTableStaff @pstaff.personID"
+                                        var IdProjectTableStaffId = pjt.projectID + "ProjectTableStaff" + pstaff.personID;
+                                        <div id=@IdProjectTableStaffId
                                              data-staffId=@pstaff.personID
                                              data-projId=@pjt.projectID
                                              ondragstart="LeftStaffTableDragStart(event)"
@@ -330,7 +331,8 @@
                         </td>
                         <td>
                             <div>
-                                <div id="divStudent @pjt.projectID" ondragover="dragOver(event)" class="leftTableName">
+                                @{ var divStudentId = "divStudent" + pjt.projectID;}
+                                <div id=@divStudentId ondragover="dragOver(event)" class="leftTableName">
 
                                     @{
                                         var prostudents = Model.Where(p => p.projectID == pjt.projectID && p.personRole == "student").ToList();
@@ -338,8 +340,8 @@
                                     }
                                     @foreach (var pstudent in prostudents)
                                     {
-
-                                        <div id="ProjectTableStudent @pstudent.personID"
+                                        var ProjectTableStudentId = "ProjectTableStudent" + pstudent.personID;
+                                        <div id=@ProjectTableStudentId
                                              data-plan=@students.FirstOrDefault(a => a.studentID == pstudent.personID).planId
                                              data-StudprojId=@projects.FirstOrDefault(a => a.projectID == pjt.projectID).projectID
                                              ondragstart="LeftStudentTableDragStart(event,this)"
@@ -417,7 +419,8 @@
                         {
 
                             @*Find the corresponding planid to output its plan name*@
-                            <option id="Plan @item.planId" value="@item.planId">@item.planName</option>
+                        var PlanId = "Plan" + item.planId;
+                            <option id=@PlanId value="@item.planId">@item.planName</option>
 
 
 
@@ -495,8 +498,8 @@
 
                     {@*make sure the selected student will not be displayed in the student table*@
 
-
-                    <tr id="stddrag @item.studentID"
+                var stddragId = "stddrag" + item.studentID;
+                    <tr id=@stddragId
                         class="tableTr"
                         draggable="true"
                         ondragover="dragOver(event)"
@@ -515,7 +518,7 @@
         </table>
     </div>
     <div id="edtDiv" class="hiddenOnLoad">
-        <input onclick="canceldiv()" class="btn btn-danger cancelBtn" type="button" />
+        <input onclick="canceldiv()" class="btn btn-danger cancelBtn" value="x" type="button" />
         <div id="edtText"></div>
     </div>
 </body>
@@ -524,7 +527,7 @@
 <script>
     function selectedStatu(t) {
         //change the project status
-        var projID = t.id.slice(10);
+        var projID = t.id.slice(9);
         @*var statusID = $("#" + t.id).find("option:selected").attr("data-statu");*@
         var statusName = t.value;
         console.log(projID + "+" + statusName);
@@ -576,7 +579,7 @@
         e.dataTransfer.setData('Student', e.target.parentElement.id)
 
         e.dataTransfer.setData('StudentTableId', e.target.id);
-        e.dataTransfer.setData('StudentId', e.target.id.slice(8));
+        e.dataTransfer.setData('StudentId', e.target.id.slice(7));
     }
 
     function DragStaffStart(e) {
@@ -585,12 +588,12 @@
         e.dataTransfer.setData('Staff', e.target.parentElement.id)
         e.dataTransfer.setData('StaffTableId', e.target.id);
 
-        e.dataTransfer.setData('StaffId', e.target.id.slice(7));
+        e.dataTransfer.setData('StaffId', e.target.id.slice(6));
     }
     function ProjectPeopleBind(e, t) {
         e = e || window.event;
         //drag people to project to allocated
-        var thisid = t.id.slice(13);
+        var thisid = t.id.slice(12);
         if (e.dataTransfer.getData("Student") == "studenttable") {
             var studentId = e.dataTransfer.getData("StudentId");
             $.ajax({
@@ -609,9 +612,9 @@
                     newdiv.setAttribute("ondragover", "dragOver(event)");
                     newdiv.setAttribute("draggable", "true");
                     newdiv.innerHTML = data;
-                    document.getElementById("stddrag " + studentId).remove();
+                    document.getElementById("stddrag" + studentId).remove();
                     //remove draged element, because one student can only work for one project
-                    document.getElementById("divStudent " + thisid).appendChild(newdiv);
+                    document.getElementById("divStudent" + thisid).appendChild(newdiv);
                     //creat a new <div> when drag student to project
 
 
@@ -631,7 +634,7 @@
 
                         if (navigator.appName.indexOf("Explorer") > -1) {
                             //for IE
-                            var newdiv = document.createElement("<div id=" + thisid + " ProjectTableStaff " + staffID + " data-staffId=" + staffID +" data-projId="+thisid+" draggable=true");
+                            var newdiv = document.createElement("<div id=" + thisid + "ProjectTableStaff" + staffID + " data-staffId=" + staffID +" data-projId="+thisid+" draggable=true");
                             newdiv.ondragstart = function () { LeftStaffTableDragStart(event) }
                             newdiv.ondragover = function () { dragOver(event) }
                           @*  newdiv.setAttribute("id", thisid + " ProjectTableStaff " + staffID);
@@ -643,20 +646,20 @@
                             newdiv.innerHTML = data;
                             console.log(newdiv);
                             console.log(newdiv.nodeType);
-                            console.log(document.getElementById("divStaff " + thisid).getAttribute("data-isDiff"));
-                            document.getElementById("divStaff " + thisid).appendChild(newdiv);
+                            console.log(document.getElementById("divStaff" + thisid).getAttribute("data-isDiff"));
+                            document.getElementById("divStaff" + thisid).appendChild(newdiv);
                             var StaffProjectNumber = document.getElementById("pro" + staffID);
                             var StaffDiffProjectNumber = document.getElementById("diff" + staffID);
                             StaffProjectNumber.innerText = parseInt(StaffProjectNumber.innerText) + 1;
                             //just like the previous, this is for staff
-                            if (document.getElementById("divStaff " + thisid).getAttribute("data-isDiff") == "yes") {
+                            if (document.getElementById("divStaff" + thisid).getAttribute("data-isDiff") == "yes") {
                                 StaffDiffProjectNumber.innerText = parseInt(StaffDiffProjectNumber.innerText) + 1;
                             }
                         } else {
                             //for other browser
                             var newdiv = document.createElement("div");
 
-                            newdiv.setAttribute("id", thisid + " ProjectTableStaff " + staffID);
+                            newdiv.setAttribute("id", thisid + "ProjectTableStaff" + staffID);
                             newdiv.setAttribute("ondragstart", "LeftStaffTableDragStart(event)");
                             newdiv.setAttribute("ondragover", "dragOver(event)");
                             newdiv.setAttribute("draggable", "true");
@@ -665,13 +668,13 @@
                             newdiv.innerHTML = data;
                             console.log(newdiv);
                             console.log(newdiv.nodeType);
-                            console.log(document.getElementById("divStaff " + thisid).getAttribute("data-isDiff"));
-                            document.getElementById("divStaff " + thisid).appendChild(newdiv);
+                            console.log(document.getElementById("divStaff" + thisid).getAttribute("data-isDiff"));
+                            document.getElementById("divStaff" + thisid).appendChild(newdiv);
                             var StaffProjectNumber = document.getElementById("pro" + staffID);
                             var StaffDiffProjectNumber = document.getElementById("diff" + staffID);
                             StaffProjectNumber.textContent = parseInt(StaffProjectNumber.textContent) + 1;
                             //just like the previous, this is for staff
-                            if (document.getElementById("divStaff " + thisid).getAttribute("data-isDiff") == "yes") {
+                            if (document.getElementById("divStaff" + thisid).getAttribute("data-isDiff") == "yes") {
                                 StaffDiffProjectNumber.textContent = parseInt(StaffDiffProjectNumber.textContent) + 1;
                             }
                         }
@@ -696,11 +699,9 @@
         //get the student info
         var thisdrag = document.getElementById(e.target.id).getAttribute("data-plan");
         var planID = $("#planSelect").find("option:selected").attr("id");
-        console.log(thisdrag+"is plan id")
-        console.log(e.target.parentElement.id);
-        console.log(e.target.parentElement.id.slice(11));
+       
         e.dataTransfer.setData('MakeSureStudentOrStaff', "student");
-        e.dataTransfer.setData('LeftTableStudentId', e.target.id.slice(20));
+        e.dataTransfer.setData('LeftTableStudentId', e.target.id.slice(19));
         e.dataTransfer.setData('LeftTableRemoveId', e.target.id);
         e.dataTransfer.setData('LeftTableProjId', e.target.parentElement.id.slice(10));
         e.dataTransfer.setData('dataplan', thisdrag);
@@ -776,7 +777,7 @@
                         var StaffProjectNumber = document.getElementById("pro" + staffID);
                         var StaffDiffProjectNumber = document.getElementById("diff" + staffID);
                         StaffProjectNumber.innerText = parseInt(StaffProjectNumber.innerText) - 1;
-                        if (document.getElementById("divStaff " + ProjId).getAttribute("data-isDiff") == "yes") {
+                        if (document.getElementById("divStaff" + ProjId).getAttribute("data-isDiff") == "yes") {
                             StaffDiffProjectNumber.innerText = parseInt(StaffDiffProjectNumber.innerText) - 1;
                         }
                         //when drag back staff, count - 1

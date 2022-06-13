@@ -58,7 +58,7 @@ namespace WebApplication4.Controllers
         public ActionResult DelSpan(int thisid, string deld)
         {
             int pID = thisid;
-            string cID = deld.Substring((deld.IndexOf("bind") + 5));
+            string cID = deld.Substring((deld.IndexOf("bind") + 4));
             var pc = db.PlanCourses.FirstOrDefault(a => a.planId == thisid && a.courseId == cID);
 
             pc.isHidden = "hidden";
