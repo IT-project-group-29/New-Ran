@@ -237,7 +237,7 @@ namespace WebApplication4.Controllers
             var projectPeopleAllocations = db.ProjectPeopleAllocations.Include(p => p.Projects);
             if (OrderByPlanId != "AllPlan")
             {
-                int planid = Convert.ToInt32(OrderByPlanId.Substring(5));
+                int planid = Convert.ToInt32(OrderByPlanId.Substring(4));
                 var studentslist = db.Students.Where(a => a.planId == planid).ToList();
                 List<StudentCourses> studentcoureselist = new List<StudentCourses>();
                

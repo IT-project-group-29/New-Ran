@@ -637,12 +637,7 @@
                             var newdiv = document.createElement("<div id=" + thisid + "ProjectTableStaff" + staffID + " data-staffId=" + staffID +" data-projId="+thisid+" draggable=true");
                             newdiv.ondragstart = function () { LeftStaffTableDragStart(event) }
                             newdiv.ondragover = function () { dragOver(event) }
-                          @*  newdiv.setAttribute("id", thisid + " ProjectTableStaff " + staffID);
-                            newdiv.setAttribute("ondragstart", "LeftStaffTableDragStart(event)");
-                            newdiv.setAttribute("ondragover", "dragOver(event)");
-                            newdiv.setAttribute("draggable", "true");
-                            newdiv.setAttribute("data-staffId", staffID);
-                            newdiv.setAttribute("data-projId", thisid);*@
+ 
                             newdiv.innerHTML = data;
                             console.log(newdiv);
                             console.log(newdiv.nodeType);
@@ -698,13 +693,12 @@
         e = e || window.event;
         //get the student info
         var thisdrag = document.getElementById(e.target.id).getAttribute("data-plan");
-        var planID = $("#planSelect").find("option:selected").attr("id");
        
         e.dataTransfer.setData('MakeSureStudentOrStaff', "student");
         e.dataTransfer.setData('LeftTableStudentId', e.target.id.slice(19));
         e.dataTransfer.setData('LeftTableRemoveId', e.target.id);
         e.dataTransfer.setData('LeftTableProjId', e.target.parentElement.id.slice(10));
-        e.dataTransfer.setData('dataplan', thisdrag);
+        
         console.log(e.target.id);
     }
     @* staff *@
@@ -727,7 +721,7 @@
             //to make sure the draged div is student or staff
             var rmId = e.dataTransfer.getData('LeftTableRemoveId');
             var planID = $("#planSelect").find("option:selected").attr("id");
-            var dataplan = e.dataTransfer.getData('dataplan');
+           
 
             $.ajax({
                 type: "POST",
@@ -741,7 +735,7 @@
 
                     document.getElementById(rmId).remove();
                     if (document.getElementById("selopt").value == "student") {
-                        if (planID == "AllPlan" || planID.slice(5) == data) {
+                        if (planID == "AllPlan" || planID.slice(4) == data) {
 
 
 
