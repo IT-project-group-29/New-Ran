@@ -105,12 +105,14 @@ namespace WebApplication4.Controllers
             //Match the roles of the current user with all roles
             var dic = new Dictionary<string, string>();
             string username = db.AspNetUsers.AsQueryable().Where(q => q.Id == User).Select(p => p.UserName).FirstOrDefault();
+            string sex = db.AspNetUsers.AsQueryable().Where(q => q.Id == User).Select(p => p.sex).FirstOrDefault().ToString();
+            sex = sex == "0" ? "Female" : sex == "1" ? "Male" : "Undefined";
             int i = 0;
             foreach (var item in roles)
             {
                 if (i == 0)
                 {
-                    dic.Add(item.Id, username + ":" + item.Name);
+                    dic.Add(item.Id, username +"    "+ sex + ":" + item.Name);
                 }
                 else
                 {

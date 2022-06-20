@@ -95,7 +95,7 @@ namespace WebApplication4.Controllers
             if (ModelState.IsValid)
             {
 
-                var user = new ApplicationUser { UserName = aspNetUsers.UserName, firstName = aspNetUsers.firstName, lastName = aspNetUsers.lastName, title = aspNetUsers.title, Email = aspNetUsers.Email };
+                var user = new ApplicationUser { UserName = aspNetUsers.UserName, firstName = aspNetUsers.firstName, lastName = aspNetUsers.lastName, title = aspNetUsers.title, Email = aspNetUsers.Email,sex=aspNetUsers.sex };
                 var result = UserManager.CreateAsync(user, "asdQWE123!@#");
 
                 var huh = result.Result;

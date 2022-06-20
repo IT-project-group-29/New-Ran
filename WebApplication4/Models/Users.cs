@@ -22,6 +22,7 @@ namespace WebApplication4.Models
         [Required]
         [StringLength(50)]
         public string UserName { get; set; }
+        public int? Sex { get; set; }
 
         public bool IsAnonymous { get; set; }
 

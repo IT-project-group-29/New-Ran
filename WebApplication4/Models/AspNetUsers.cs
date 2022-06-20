@@ -54,6 +54,7 @@ namespace WebApplication4.Models
         public string firstName { get; set; }
 
         public string lastName { get; set; }
+        public int? sex { get; set; }
 
         public bool AccountAccepted { get; set; }
 
@@ -65,5 +66,6 @@ namespace WebApplication4.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
+       
     }
 }

@@ -79,6 +79,7 @@ namespace WebApplication4.Models
         public string lastName { get; set; }
        
         public string UserName { get; set; }
+        public int? sex { get; set; }
 
         public string Role { get; set; }
 

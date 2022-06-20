@@ -14,7 +14,7 @@ namespace WebApplication4.Models
         public string lastName { get; set; }
         public string title { get; set; }
         public int personID { get; }
-
+        public int? sex { get; set; }
         public DateTime dateCreated { get; set; }=DateTime.Now;
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

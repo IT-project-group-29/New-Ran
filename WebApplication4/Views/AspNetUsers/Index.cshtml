@@ -32,7 +32,9 @@
         <th>
             @Html.DisplayNameFor(model => model.lastName)
         </th>
-    
+        <th>
+            @Html.DisplayNameFor(model => model.sex)
+        </th>
         <th></th>
     </tr>
 
@@ -59,7 +61,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.lastName)
         </td>
-      
+        <td>
+            @Html.DisplayFor(modelItem =>item.sex==0?"Female":"Male")
+        </td>
     </tr>
 }
 
